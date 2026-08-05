@@ -22,6 +22,7 @@
 <body>
   <a class="skip-link" href="#main">דלגו לתוכן המרכזי</a>
   <div class="progress" aria-hidden="true"><span></span></div>
+  <div class="cursor-aura" aria-hidden="true"></div>
 
   <header class="site-header" id="header">
     <div class="shell nav-wrap">
@@ -30,13 +31,13 @@
         <span>קלארוויקס <b>ווב</b></span>
       </a>
       <nav class="desktop-nav" aria-label="ניווט ראשי">
-        <a href="#services">שירותים</a><a href="#work">עבודות</a><a href="#process">תהליך</a>
+        <a href="#services">שירותים</a><a href="#lab">אינטראקציה</a><a href="#work">עבודות</a><a href="#process">תהליך</a>
       </nav>
       <a class="button button-small header-cta" href="#contact">בואו נבנה משהו <span aria-hidden="true">←</span></a>
       <button class="menu-button" type="button" aria-label="פתיחת תפריט" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
     </div>
     <nav class="mobile-nav" id="mobile-menu" aria-label="ניווט למכשירים ניידים" hidden>
-      <a href="#services"><span>01</span>שירותים</a><a href="#work"><span>02</span>עבודות</a><a href="#process"><span>03</span>תהליך</a><a href="#contact"><span>04</span>יצירת קשר</a>
+      <a href="#services"><span>01</span>שירותים</a><a href="#lab"><span>02</span>אינטראקציה</a><a href="#work"><span>03</span>עבודות</a><a href="#process"><span>04</span>תהליך</a><a href="#contact"><span>05</span>יצירת קשר</a>
     </nav>
   </header>
 
@@ -57,7 +58,7 @@
           <ul class="trust-list" aria-label="היתרונות שלנו"><li><span>✓</span>ללא תבניות</li><li><span>✓</span>מובייל תחילה</li><li><span>✓</span>מהיר ונגיש</li></ul>
         </div>
 
-        <div class="hero-stage reveal delay" aria-label="תצוגת אתר שנבנה ב-Clarvix Web">
+        <div class="hero-stage reveal delay" data-depth-scene aria-label="תצוגת אתר שנבנה ב-Clarvix Web">
           <div class="pulse-line" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <div class="browser browser-main">
             <div class="browser-bar"><span>web.clarvix.net</span><i></i><i></i><i></i></div>
@@ -73,6 +74,7 @@
         </div>
       </div>
       <div class="hero-ticker" aria-hidden="true"><div><span>אתרים עם אופי</span><i>✦</i><span>חוויות עם כיוון</span><i>✦</i><span>קוד עם מחשבה</span><i>✦</i><span>אתרים עם אופי</span><i>✦</i><span>חוויות עם כיוון</span><i>✦</i><span>קוד עם מחשבה</span></div></div>
+      <a class="scroll-cue" href="#services"><span>גלו מה אפשר לבנות</span><i aria-hidden="true"></i></a>
     </section>
 
     <section class="statement section-light">
@@ -94,25 +96,52 @@
       </div>
     </section>
 
+    <section class="motion-lab" id="lab">
+      <canvas id="signal-canvas" aria-hidden="true"></canvas>
+      <div class="lab-noise" aria-hidden="true"></div>
+      <div class="shell lab-grid">
+        <div class="lab-copy reveal">
+          <p class="section-index">03 — מעבדת האינטראקציה</p>
+          <h2>לא רק לראות.<br><em data-scramble>להרגיש את האתר.</em></h2>
+          <p>תנועה, עומק ואינטראקציה שנכתבים במיוחד למותג — בלי להעמיס על המסר ובלי להאט את החוויה.</p>
+          <div class="lab-controls" role="group" aria-label="בחירת הדגמה">
+            <button type="button" class="active" data-lab-mode="signal" aria-pressed="true"><span>01</span>אות חי</button>
+            <button type="button" data-lab-mode="orbit" aria-pressed="false"><span>02</span>עומק ותנועה</button>
+            <button type="button" data-lab-mode="flow" aria-pressed="false"><span>03</span>מסלול פעולה</button>
+          </div>
+        </div>
+        <div class="lab-stage reveal delay" data-tilt-card>
+          <div class="lab-topline"><span><i></i> LIVE EXPERIENCE</span><b>CLARVIX / WEB</b></div>
+          <div class="lab-display">
+            <span class="lab-coordinate">X 032 / Y 087</span>
+            <div class="lab-orb" aria-hidden="true"><i></i><i></i><b>W</b></div>
+            <div class="lab-message"><small>INTERACTION MODE</small><strong id="lab-title">המותג מגיב אליכם</strong><p id="lab-description">הזיזו את הסמן או החליקו על המסך</p></div>
+          </div>
+          <div class="lab-bottomline"><span>POINTER REACTIVE</span><span>FLUID MOTION</span><span>ACCESSIBLE MOTION</span></div>
+        </div>
+      </div>
+      <div class="kinetic-type" aria-hidden="true"><span>DESIGN IN MOTION — CODE WITH CHARACTER — </span><span>DESIGN IN MOTION — CODE WITH CHARACTER — </span></div>
+    </section>
+
     <section class="work" id="work">
-      <div class="shell work-head reveal"><p class="section-index">03 — עבודות נבחרות</p><div><h2>לכל מותג,<br><em>עולם משלו.</em></h2><p>לא וריאציה על אותה תבנית. כל פרויקט מקבל קצב, צבע ושפה שמשרתים בדיוק את הסיפור שלו.</p></div></div>
+      <div class="shell work-head reveal"><p class="section-index">04 — עבודות נבחרות</p><div><h2>לכל מותג,<br><em>עולם משלו.</em></h2><p>לא וריאציה על אותה תבנית. כל פרויקט מקבל קצב, צבע ושפה שמשרתים בדיוק את הסיפור שלו.</p></div></div>
       <div class="shell project-grid">
-        <article class="project project-wide reveal"><div class="project-chrome"><span>01</span><span>אתר תדמית</span><span>2026</span></div><div class="project-art architecture-art"><div class="sun"></div><div class="building b1"></div><div class="building b2"></div><div class="building b3"></div><strong>מרחב<br>שנשאר.</strong><span class="art-tag">אדריכלות מדויקת</span></div><div class="project-caption"><div><h3>קו ראשון</h3><p>סטודיו לאדריכלות · אסטרטגיה, עיצוב ופיתוח</p></div><a href="#contact" aria-label="פרויקט קו ראשון — יצירת קשר">↙</a></div></article>
-        <article class="project reveal"><div class="project-chrome"><span>02</span><span>מסחר דיגיטלי</span><span>2026</span></div><div class="project-art wellness-art"><div class="liquid l1"></div><div class="liquid l2"></div><div class="bottle"><i></i><b>נביעה</b><small>טיפוח טבעי</small></div><strong>פחות רעש.<br>יותר טבע.</strong></div><div class="project-caption"><div><h3>נביעה</h3><p>מותג טיפוח · זהות, חנות וחוויית משתמש</p></div><a href="#contact" aria-label="פרויקט נביעה — יצירת קשר">↙</a></div></article>
-        <article class="project reveal"><div class="project-chrome"><span>03</span><span>מוצר דיגיטלי</span><span>2026</span></div><div class="project-art tech-art"><div class="tech-ring r1"></div><div class="tech-ring r2"></div><div class="tech-ring r3"></div><div class="tech-core">ו</div><strong>רעיונות<br>בתנועה.</strong><div class="tech-status"><span></span>מערכת פעילה</div></div><div class="project-caption"><div><h3>וקטור</h3><p>חברת טכנולוגיה · קונספט, מוצר ופיתוח</p></div><a href="#contact" aria-label="פרויקט וקטור — יצירת קשר">↙</a></div></article>
+        <article class="project project-wide reveal" data-tilt-card><div class="project-chrome"><span>01</span><span>אתר תדמית</span><span>2026</span></div><div class="project-art architecture-art"><div class="sun"></div><div class="building b1"></div><div class="building b2"></div><div class="building b3"></div><strong>מרחב<br>שנשאר.</strong><span class="art-tag">אדריכלות מדויקת</span></div><div class="project-caption"><div><h3>קו ראשון</h3><p>סטודיו לאדריכלות · אסטרטגיה, עיצוב ופיתוח</p></div><a href="#contact" aria-label="פרויקט קו ראשון — יצירת קשר">↙</a></div></article>
+        <article class="project reveal" data-tilt-card><div class="project-chrome"><span>02</span><span>מסחר דיגיטלי</span><span>2026</span></div><div class="project-art wellness-art"><div class="liquid l1"></div><div class="liquid l2"></div><div class="bottle"><i></i><b>נביעה</b><small>טיפוח טבעי</small></div><strong>פחות רעש.<br>יותר טבע.</strong></div><div class="project-caption"><div><h3>נביעה</h3><p>מותג טיפוח · זהות, חנות וחוויית משתמש</p></div><a href="#contact" aria-label="פרויקט נביעה — יצירת קשר">↙</a></div></article>
+        <article class="project reveal" data-tilt-card><div class="project-chrome"><span>03</span><span>מוצר דיגיטלי</span><span>2026</span></div><div class="project-art tech-art"><div class="tech-ring r1"></div><div class="tech-ring r2"></div><div class="tech-ring r3"></div><div class="tech-core">ו</div><strong>רעיונות<br>בתנועה.</strong><div class="tech-status"><span></span>מערכת פעילה</div></div><div class="project-caption"><div><h3>וקטור</h3><p>חברת טכנולוגיה · קונספט, מוצר ופיתוח</p></div><a href="#contact" aria-label="פרויקט וקטור — יצירת קשר">↙</a></div></article>
       </div>
     </section>
 
     <section class="process section-light" id="process">
-      <div class="shell process-grid"><div class="process-intro reveal"><p class="section-index">04 — איך זה קורה</p><h2>פשוט לעבוד יחד.<br><em>מעניין לראות מה יוצא.</em></h2><p>תהליך שקוף, ממוקד ומשותף. אתם תמיד יודעים מה קורה, למה זה קורה ומה השלב הבא.</p><a class="text-link dark" href="#contact">ספרו לנו על הרעיון <span>←</span></a></div><ol class="steps"><li class="reveal"><span>01</span><div><h3>מגלים</h3><p>שיחה, מחקר והגדרה של הסיפור, הקהל והמטרה.</p></div><small>יוצרים כיוון</small></li><li class="reveal"><span>02</span><div><h3>מדמיינים</h3><p>קונספט, שפה חזותית וחוויית משתמש שנבנית סביבכם.</p></div><small>נותנים צורה</small></li><li class="reveal"><span>03</span><div><h3>בונים</h3><p>פיתוח, תנועה, התאמה לכל מסך ובדיקות עומק.</p></div><small>מחברים הכול</small></li><li class="reveal"><span>04</span><div><h3>משיקים</h3><p>עלייה לאוויר, ליטוש אחרון וליווי אחרי ההשקה.</p></div><small>יוצאים לעולם</small></li></ol></div>
+      <div class="shell process-grid"><div class="process-intro reveal"><p class="section-index">05 — איך זה קורה</p><h2>פשוט לעבוד יחד.<br><em>מעניין לראות מה יוצא.</em></h2><p>תהליך שקוף, ממוקד ומשותף. אתם תמיד יודעים מה קורה, למה זה קורה ומה השלב הבא.</p><a class="text-link dark" href="#contact">ספרו לנו על הרעיון <span>←</span></a></div><ol class="steps"><li class="reveal"><span>01</span><div><h3>מגלים</h3><p>שיחה, מחקר והגדרה של הסיפור, הקהל והמטרה.</p></div><small>יוצרים כיוון</small></li><li class="reveal"><span>02</span><div><h3>מדמיינים</h3><p>קונספט, שפה חזותית וחוויית משתמש שנבנית סביבכם.</p></div><small>נותנים צורה</small></li><li class="reveal"><span>03</span><div><h3>בונים</h3><p>פיתוח, תנועה, התאמה לכל מסך ובדיקות עומק.</p></div><small>מחברים הכול</small></li><li class="reveal"><span>04</span><div><h3>משיקים</h3><p>עלייה לאוויר, ליטוש אחרון וליווי אחרי ההשקה.</p></div><small>יוצאים לעולם</small></li></ol></div>
     </section>
 
     <section class="promise"><div class="promise-rings" aria-hidden="true"><i></i><i></i><i></i></div><div class="shell promise-inner reveal"><p>היתרון של Clarvix Web</p><h2>חופש יצירתי של סטודיו.<br><em>חשיבה עסקית של Clarvix.</em></h2><ul><li><b>01</b>ייחודי למותג</li><li><b>02</b>מהיר כברירת מחדל</li><li><b>03</b>בנוי לצמיחה</li></ul></div></section>
 
-    <section class="contact" id="contact"><div class="shell contact-grid reveal"><div><p class="section-index">05 — הפרויקט הבא</p><h2>יש לכם רעיון<br>שצריך <em>נוכחות?</em></h2><p>ספרו לנו מה אתם בונים. אנחנו כבר נדמיין איך זה יכול להרגיש — ולעבוד.</p></div><a class="contact-orb" href="mailto:contact@clarvix.net?subject=Clarvix%20Web%20-%20New%20Project"><span>בואו<br>נדבר</span><i aria-hidden="true">↙</i></a></div></section>
+    <section class="contact" id="contact"><div class="shell contact-grid reveal"><div><p class="section-index">06 — הפרויקט הבא</p><h2>יש לכם רעיון<br>שצריך <em>נוכחות?</em></h2><p>ספרו לנו מה אתם בונים. אנחנו כבר נדמיין איך זה יכול להרגיש — ולעבוד.</p></div><a class="contact-orb" href="mailto:contact@clarvix.net?subject=Clarvix%20Web%20-%20New%20Project"><span>בואו<br>נדבר</span><i aria-hidden="true">↙</i></a></div></section>
   </main>
 
-  <footer><div class="shell footer-grid"><a class="brand" href="#top"><img src="images/clarvix-mark.svg" alt=""><span>קלארוויקס <b>ווב</b></span></a><p>חטיבת העיצוב והפיתוח של Clarvix.<br>אתרים לעסקים שלא רוצים להיראות כמו כולם.</p><nav aria-label="ניווט תחתון"><a href="#services">שירותים</a><a href="#work">עבודות</a><a href="#process">תהליך</a><a href="#contact">קשר</a></nav><small>© <span id="year"></span> Clarvix. כל הזכויות שמורות.</small></div></footer>
+  <footer><div class="shell footer-grid"><a class="brand" href="#top"><img src="images/clarvix-mark.svg" alt=""><span>קלארוויקס <b>ווב</b></span></a><p>חטיבת העיצוב והפיתוח של Clarvix.<br>אתרים לעסקים שלא רוצים להיראות כמו כולם.</p><nav aria-label="ניווט תחתון"><a href="#services">שירותים</a><a href="#lab">אינטראקציה</a><a href="#work">עבודות</a><a href="#process">תהליך</a><a href="#contact">קשר</a></nav><small>© <span id="year"></span> Clarvix. כל הזכויות שמורות.</small></div></footer>
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,30 +1,39 @@
 const header = document.querySelector('#header');
 const menuButton = document.querySelector('.menu-button');
 const mobileMenu = document.querySelector('#mobile-menu');
+const progressBar = document.querySelector('.progress span');
 
-function updateHeader() {
+function updatePageChrome() {
   header.classList.toggle('scrolled', window.scrollY > 10);
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollable > 0 ? Math.min(1, window.scrollY / scrollable) : 0;
+  progressBar.style.width = `${progress * 100}%`;
 }
 
-updateHeader();
-window.addEventListener('scroll', updateHeader, { passive: true });
+updatePageChrome();
+window.addEventListener('scroll', updatePageChrome, { passive: true });
+window.addEventListener('resize', updatePageChrome, { passive: true });
+
+function closeMenu() {
+  menuButton.setAttribute('aria-expanded', 'false');
+  menuButton.setAttribute('aria-label', 'פתיחת תפריט');
+  mobileMenu.hidden = true;
+  header.classList.remove('menu-open');
+}
 
 menuButton.addEventListener('click', () => {
-  const open = menuButton.getAttribute('aria-expanded') === 'true';
-  menuButton.setAttribute('aria-expanded', String(!open));
-  menuButton.setAttribute('aria-label', open ? 'פתיחת תפריט' : 'סגירת תפריט');
-  mobileMenu.hidden = open;
-  mobileMenu.classList.toggle('open', !open);
+  const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
+  if (isOpen) {
+    closeMenu();
+    return;
+  }
+  menuButton.setAttribute('aria-expanded', 'true');
+  menuButton.setAttribute('aria-label', 'סגירת תפריט');
+  mobileMenu.hidden = false;
+  header.classList.add('menu-open');
 });
 
-mobileMenu.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => {
-    menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.setAttribute('aria-label', 'פתיחת תפריט');
-    mobileMenu.hidden = true;
-    mobileMenu.classList.remove('open');
-  });
-});
+mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
 
 document.querySelector('#year').textContent = new Date().getFullYear();
 
@@ -41,6 +50,6 @@ if (reducedMotion || !('IntersectionObserver' in window)) {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
+  }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
   revealItems.forEach((item) => observer.observe(item));
 }

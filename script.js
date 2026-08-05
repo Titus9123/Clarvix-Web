@@ -258,3 +258,69 @@ if (!reducedMotion && 'IntersectionObserver' in window) {
   sizeCanvas();
   window.addEventListener('resize', sizeCanvas, { passive: true });
 }
+
+// Lightweight autonomous signal field for the first viewport on pointer and touch devices.
+const hero = document.querySelector('.hero');
+const heroCanvas = document.querySelector('#hero-canvas');
+const heroContext = heroCanvas.getContext('2d');
+let heroFrame = 0;
+let heroActive = false;
+let heroTime = 0;
+let heroSignals = [];
+
+function sizeHeroCanvas() {
+  const rect = hero.getBoundingClientRect();
+  const height = hero.offsetHeight;
+  const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+  heroCanvas.width = Math.max(1, Math.round(rect.width * ratio));
+  heroCanvas.height = Math.max(1, Math.round(height * ratio));
+  heroCanvas.style.width = `${rect.width}px`;
+  heroCanvas.style.height = `${height}px`;
+  heroContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+  const count = rect.width < 700 ? 20 : 36;
+  heroSignals = Array.from({ length: count }, (_, index) => ({
+    x: ((index * 83) % 101) / 101 * rect.width,
+    y: ((index * 47) % 97) / 97 * height,
+    phase: index * 0.73,
+    speed: 0.55 + (index % 4) * 0.12
+  }));
+}
+
+function drawHeroField() {
+  if (!heroActive || reducedMotion) return;
+  const width = heroCanvas.clientWidth;
+  const height = heroCanvas.clientHeight;
+  heroContext.clearRect(0, 0, width, height);
+  heroTime += 0.012;
+  const points = heroSignals.map((signal) => ({
+    x: (signal.x + heroTime * 22 * signal.speed) % (width + 40) - 20,
+    y: signal.y + Math.sin(heroTime * 2.4 + signal.phase) * 18
+  }));
+  points.forEach((point, index) => {
+    const next = points[(index + 7) % points.length];
+    const distance = Math.hypot(point.x - next.x, point.y - next.y);
+    if (distance < 270) {
+      heroContext.strokeStyle = `rgba(199,244,59,${(1 - distance / 270) * 0.16})`;
+      heroContext.beginPath();
+      heroContext.moveTo(point.x, point.y);
+      heroContext.lineTo(next.x, next.y);
+      heroContext.stroke();
+    }
+    heroContext.fillStyle = index % 5 === 0 ? 'rgba(199,244,59,.9)' : 'rgba(167,235,219,.42)';
+    heroContext.beginPath();
+    heroContext.arc(point.x, point.y, index % 5 === 0 ? 2 : 1.15, 0, Math.PI * 2);
+    heroContext.fill();
+  });
+  heroFrame = requestAnimationFrame(drawHeroField);
+}
+
+if (!reducedMotion) {
+  sizeHeroCanvas();
+  const heroObserver = new IntersectionObserver(([entry]) => {
+    heroActive = entry.isIntersecting;
+    cancelAnimationFrame(heroFrame);
+    if (heroActive) drawHeroField();
+  }, { threshold: 0.01 });
+  heroObserver.observe(hero);
+  window.addEventListener('resize', sizeHeroCanvas, { passive: true });
+}

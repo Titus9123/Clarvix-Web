@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&family=Noto+Serif+Hebrew:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=hero-motion-2">
 </head>
 <body>
   <a class="skip-link" href="#main">דלגו לתוכן המרכזי</a>
@@ -43,8 +43,10 @@
 
   <main id="main">
     <section class="hero" id="top">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
       <div class="hero-grid-bg" aria-hidden="true"></div>
       <div class="hero-orbit" aria-hidden="true"></div>
+      <div class="hero-energy" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="shell hero-grid">
         <div class="hero-copy reveal">
           <p class="kicker"><span></span>חטיבת האתרים של Clarvix</p>
@@ -59,6 +61,7 @@
         </div>
 
         <div class="hero-stage reveal delay" data-depth-scene aria-label="תצוגת אתר שנבנה ב-Clarvix Web">
+          <div class="stage-live" aria-hidden="true"><i></i> LIVE DIGITAL EXPERIENCE</div>
           <div class="pulse-line" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <div class="browser browser-main">
             <div class="browser-bar"><span>web.clarvix.net</span><i></i><i></i><i></i></div>
@@ -142,6 +145,6 @@
   </main>
 
   <footer><div class="shell footer-grid"><a class="brand" href="#top"><img src="images/clarvix-mark.svg" alt=""><span>קלארוויקס <b>ווב</b></span></a><p>חטיבת העיצוב והפיתוח של Clarvix.<br>אתרים לעסקים שלא רוצים להיראות כמו כולם.</p><nav aria-label="ניווט תחתון"><a href="#services">שירותים</a><a href="#lab">אינטראקציה</a><a href="#work">עבודות</a><a href="#process">תהליך</a><a href="#contact">קשר</a></nav><small>© <span id="year"></span> Clarvix. כל הזכויות שמורות.</small></div></footer>
-  <script src="script.js"></script>
+  <script src="script.js?v=hero-motion-2"></script>
 </body>
 </html>

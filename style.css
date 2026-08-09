@@ -56,6 +56,12 @@
 .sunny-art>strong{position:absolute;z-index:2;right:44px;bottom:44px;left:44px;color:#fff;font-size:42px;line-height:1.2;letter-spacing:-.02em;text-shadow:0 4px 20px rgba(0,0,0,.5)}
 .sunny-art>strong em{font-style:normal;color:#f3c86b}
 .sunny-art .art-tag{background:rgba(255,255,255,.92);color:#3a2a52}
+.project-visit{display:flex;align-items:center;gap:10px;height:54px;padding:0 20px;background:#0d1211;border-bottom:1px solid rgba(255,255,255,.28);color:#fff;font-weight:800;font-size:15px;direction:ltr;transition:.2s}
+.project-visit:hover{background:var(--acid);color:var(--ink)}
+.project-visit span{font-size:16px}
+.screenshot-art{background:#090d0d}
+.screenshot-art img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+@media(max-width:680px){.project-visit{height:46px;padding:0 14px;font-size:13.5px}}
 @media(max-width:680px){.clarvix-art{padding:30px}.clarvix-art>strong{font-size:29px;margin-top:24px}.clarvix-panel{left:20px;right:20px;bottom:20px;width:auto}.sunny-art>strong{font-size:30px;right:24px;left:24px;bottom:28px}}
 
 /* Pricing */

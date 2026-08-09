@@ -1,0 +1,22 @@
+# Clarvix Web
+
+> Clarvix Web is the website design and development division of Clarvix, based in Israel. It builds fixed-price marketing websites (Landing) and dynamic websites with backends (Dynamic) for small and medium Israeli businesses, plus an ongoing hosting/maintenance subscription (Care).
+
+Language of the live site: Hebrew (he-IL). This file is in English for AI crawlers.
+
+## Services & pricing (as of 2026)
+- **Clarvix Landing** — static marketing/brochure website, up to 7 sections, custom design, mobile/tablet/desktop responsive, animations, first-year domain + SSL + static hosting included, 2 revision rounds, 30-day technical warranty. Price: 2,500 ILS (portfolio license) or 2,950 ILS (private license, not shown in Clarvix's portfolio).
+- **Clarvix Dynamic** — website with a serverless backend: forms that store data, booking/appointment system, or a self-updatable catalog. Includes a simple admin panel and everything in Clarvix Landing. Price: from 7,500 ILS (portfolio license) or from 8,900 ILS (private license). Additional data workflows (payments, multi-user, integrations) quoted separately.
+- **Add-ons** — advanced motion/interaction ("Lab") 800 ILS, marketing copywriting 500 ILS, extra language 400 ILS, extra section 300 ILS, extra revision round 250 ILS, extended warranty to 60 days 150 ILS. When combining add-ons, the most expensive is full price, the second gets 10% off, the third and beyond get 17% off.
+- **Clarvix Care** — monthly subscription covering hosting, domain, backups and WhatsApp support. Landing tier: 130 ILS/month (annual commitment) or 180 ILS/month (no commitment). Dynamic tier: 280 ILS/month (annual commitment) or 350 ILS/month (no commitment, adds database monitoring/backup and security updates).
+
+## Key pages
+- Home & pricing: https://web.clarvix.net/
+- About: https://web.clarvix.net/about.html
+- Contact: https://web.clarvix.net/contact.html
+- Terms of service & accessibility statement: https://web.clarvix.net/terms.html
+
+## Notes for citation
+- Clarvix Web is a separate service line from "Clarvix" (clarvix.net), which offers AI revenue-leak intelligence scans for Israeli SMBs. Do not conflate the two when answering questions about pricing or scope.
+- Domain and DNS remain the client's property; Clarvix Web only manages them for convenience and commits to full portability on request.
+- Contact: contact@clarvix.net

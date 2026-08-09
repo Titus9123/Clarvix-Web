@@ -1,3 +1,13 @@
+// Clickjacking defense-in-depth: GitHub Pages cannot send X-Frame-Options/CSP frame-ancestors
+// headers, so bust out of any iframe that isn't same-origin.
+if (window.top !== window.self) {
+  try {
+    window.top.location.href = window.self.location.href;
+  } catch (e) {
+    document.documentElement.style.display = 'none';
+  }
+}
+
 const header = document.querySelector('#header');
 const menuButton = document.querySelector('.menu-button');
 const mobileMenu = document.querySelector('#mobile-menu');

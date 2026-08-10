@@ -486,25 +486,53 @@ if (a11yToggle && a11yPanel) {
   });
 }
 
-// Contact form: build a pre-filled mailto (static site, no backend yet)
+// Contact form: secure first-party lead intake with campaign attribution.
 const contactForm = document.querySelector('#contact-form');
+const CONTACT_ENDPOINT = 'https://n8n.clarvix.net/webhook/clarvix/web-lead';
 if (contactForm) {
   const formStatus = document.querySelector('#form-status');
-  contactForm.addEventListener('submit', (event) => {
+  const submitButton = contactForm.querySelector('[type="submit"]');
+  contactForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const data = new FormData(contactForm);
-    const name = data.get('name');
-    const phone = data.get('phone');
-    const email = data.get('email');
-    const plan = data.get('plan');
-    const message = data.get('message');
-    const subject = `פנייה חדשה מהאתר — ${name}`;
-    const body = `שם: ${name}\nטלפון: ${phone}\nמייל: ${email}\nמתעניין ב: ${plan}\n\n${message}`;
-    const mailto = `mailto:contact@clarvix.net?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
+    const query = new URLSearchParams(window.location.search);
+    const payload = {
+      name: data.get('name'),
+      phone: data.get('phone'),
+      email: data.get('email'),
+      plan: data.get('plan'),
+      message: data.get('message'),
+      company: data.get('company'),
+      page_url: window.location.href,
+      referrer: document.referrer,
+      utm_source: query.get('utm_source') || '',
+      utm_medium: query.get('utm_medium') || '',
+      utm_campaign: query.get('utm_campaign') || '',
+      utm_term: query.get('utm_term') || '',
+      utm_content: query.get('utm_content') || '',
+      source_language: document.documentElement.lang || 'he',
+    };
+
+    if (submitButton) submitButton.disabled = true;
     if (formStatus) {
-      formStatus.textContent = 'תוכנת המייל נפתחת עכשיו — רק צריך לאשר שליחה.';
+      formStatus.textContent = 'שולחים את הפנייה…';
       formStatus.classList.add('visible');
+    }
+
+    try {
+      const response = await fetch(CONTACT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error(`Lead intake failed: ${response.status}`);
+      contactForm.reset();
+      if (formStatus) formStatus.textContent = 'הפנייה נשלחה בהצלחה. נחזור אליכם תוך יום עסקים אחד.';
+    } catch (error) {
+      if (formStatus) formStatus.textContent = 'לא הצלחנו לשלוח כרגע. אפשר לנסות שוב או לפנות אלינו בוואטסאפ.';
+      console.error('Clarvix contact form submission failed', error);
+    } finally {
+      if (submitButton) submitButton.disabled = false;
     }
   });
 }

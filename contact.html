@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090d0d">
   <meta name="color-scheme" content="light">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://n8n.clarvix.net; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="description" content="בואו נדבר על האתר שלכם. השאירו פרטים או כתבו לנו בוואטסאפ — נחזור עם הצעת מחיר סופית תוך יום עסקים.">
   <meta property="og:title" content="צור קשר — Clarvix Web">
@@ -67,6 +67,10 @@
         </div>
 
         <form class="contact-form reveal delay" id="contact-form">
+          <div hidden aria-hidden="true">
+            <label for="cf-company">חברה</label>
+            <input type="text" id="cf-company" name="company" tabindex="-1" autocomplete="off">
+          </div>
           <div class="form-row">
             <label for="cf-name">שם מלא</label>
             <input type="text" id="cf-name" name="name" required autocomplete="name">
@@ -84,10 +88,10 @@
           <div class="form-row">
             <label for="cf-plan">מה מעניין אתכם?</label>
             <select id="cf-plan" name="plan">
-              <option value="Landing">Clarvix Landing</option>
-              <option value="Dynamic">Clarvix Dynamic</option>
-              <option value="Care">Clarvix Care</option>
-              <option value="לא בטוחים">עדיין לא בטוחים</option>
+              <option value="landing">Clarvix Landing</option>
+              <option value="dynamic">Clarvix Dynamic</option>
+              <option value="care">Clarvix Care</option>
+              <option value="not_sure">עדיין לא בטוחים</option>
             </select>
           </div>
           <div class="form-row">
@@ -96,7 +100,7 @@
           </div>
           <button type="submit" class="button form-submit">שליחת הפנייה <span aria-hidden="true">←</span></button>
           <p class="form-status" id="form-status" role="status"></p>
-          <p class="form-note">בשליחת הטופס תיפתח תוכנת המייל שלכם עם הפרטים מוכנים לשליחה אלינו.</p>
+          <p class="form-note">הפרטים נשלחים אלינו ישירות ובאופן מאובטח. נחזור אליכם תוך יום עסקים אחד.</p>
         </form>
       </div>
     </section>
@@ -125,6 +129,6 @@
     </a>
   </div>
 
-  <script src="script.js?v=offer-4"></script>
+  <script src="script.js?v=lead-intake-1"></script>
 </body>
 </html>

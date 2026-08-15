@@ -1,3 +1,28 @@
+// Google Ads site-wide tag.
+window.dataLayer = window.dataLayer || [];
+function gtag() { dataLayer.push(arguments); }
+gtag('js', new Date());
+gtag('config', 'AW-18364963340');
+
+const GADS_CONVERSION_LABELS = {
+  whatsapp: 'AW-18364963340/NmvECPz3--EcEIy0jLVE',
+  call: 'AW-18364963340/UWaaCP_3--EcEIy0jLVE',
+  formSubmit: 'AW-18364963340/9EsmCPn3--EcEIy0jLVE',
+};
+
+function trackGoogleAdsConversion(sendTo) {
+  if (typeof gtag !== 'function') return;
+  gtag('event', 'conversion', { send_to: sendTo });
+}
+
+document.querySelectorAll('a[href^="https://wa.me/"]').forEach((link) => {
+  link.addEventListener('click', () => trackGoogleAdsConversion(GADS_CONVERSION_LABELS.whatsapp));
+});
+
+document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
+  link.addEventListener('click', () => trackGoogleAdsConversion(GADS_CONVERSION_LABELS.call));
+});
+
 // Clickjacking defense-in-depth: GitHub Pages cannot send X-Frame-Options/CSP frame-ancestors
 // headers, so bust out of any iframe that isn't same-origin.
 if (window.top !== window.self) {
@@ -527,6 +552,7 @@ if (contactForm) {
       });
       if (!response.ok) throw new Error(`Lead intake failed: ${response.status}`);
       contactForm.reset();
+      trackGoogleAdsConversion(GADS_CONVERSION_LABELS.formSubmit);
       if (formStatus) formStatus.textContent = 'הפנייה נשלחה בהצלחה. נחזור אליכם תוך יום עסקים אחד.';
     } catch (error) {
       if (formStatus) formStatus.textContent = 'לא הצלחנו לשלוח כרגע. אפשר לנסות שוב או לפנות אלינו בוואטסאפ.';

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090d0d">
   <meta name="color-scheme" content="light">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.googletagmanager.com; connect-src 'self' https://n8n.clarvix.net https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net https://ad.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.googletagmanager.com; connect-src 'self' https://n8n.clarvix.net https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net https://ad.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18364963340"></script>
   <meta name="description" content="בואו נדבר על האתר שלכם. השאירו פרטים או כתבו לנו בוואטסאפ — נחזור עם הצעת מחיר סופית תוך יום עסקים.">
@@ -26,10 +26,9 @@
   <link rel="icon" type="image/svg+xml" href="images/clarvix-mark.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-icon-32.png">
   <link rel="apple-touch-icon" href="images/favicon-icon-180.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&family=Noto+Serif+Hebrew:wght@500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=offer-4">
+  <link rel="preload" href="fonts/heebo-hebrew.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="style.css?v=perf-1">
 </head>
 <body>
   <a class="skip-link" href="#main">דלגו לתוכן המרכזי</a>
@@ -39,7 +38,7 @@
   <header class="site-header" id="header">
     <div class="shell nav-wrap">
       <a class="brand" href="index.html" aria-label="Clarvix Web — דף הבית">
-        <img class="brand-logo" src="images/clarvix-web-logo.png" alt="Clarvix Web">
+        <img class="brand-logo" src="images/clarvix-web-logo.webp" width="400" height="85" alt="Clarvix Web">
       </a>
       <nav class="desktop-nav" aria-label="ניווט ראשי">
         <a href="index.html#pricing">מחירון</a><a href="index.html#work">עבודות</a><a href="index.html#process">תהליך</a><a href="about.html">אודות</a>
@@ -107,7 +106,7 @@
     </section>
   </main>
 
-  <footer><div class="shell footer-grid"><a class="brand" href="index.html"><img class="brand-logo" src="images/clarvix-web-logo.png" alt="Clarvix Web"></a><p>חטיבת העיצוב והפיתוח של Clarvix.<br>לעסקים שלא רוצים להיראות כמו כולם — ולא מוכנים להתפשר על זה.</p><nav aria-label="ניווט תחתון"><a href="index.html#pricing">מחירון</a><a href="index.html#work">עבודות</a><a href="index.html#process">תהליך</a><a href="about.html">אודות</a><a href="contact.html">צור קשר</a><a href="terms.html">תנאי שימוש</a></nav><small>© <span id="year"></span> Clarvix. כל הזכויות שמורות.</small></div></footer>
+  <footer><div class="shell footer-grid"><a class="brand" href="index.html"><img class="brand-logo" src="images/clarvix-web-logo.webp" width="400" height="85" alt="Clarvix Web"></a><p>חטיבת העיצוב והפיתוח של Clarvix.<br>לעסקים שלא רוצים להיראות כמו כולם — ולא מוכנים להתפשר על זה.</p><nav aria-label="ניווט תחתון"><a href="index.html#pricing">מחירון</a><a href="index.html#work">עבודות</a><a href="index.html#process">תהליך</a><a href="about.html">אודות</a><a href="contact.html">צור קשר</a><a href="terms.html">תנאי שימוש</a></nav><small>© <span id="year"></span> Clarvix. כל הזכויות שמורות.</small></div></footer>
 
   <div class="float-stack">
     <div class="a11y-widget">
@@ -130,6 +129,6 @@
     </a>
   </div>
 
-  <script src="script.js?v=lead-intake-1"></script>
+  <script src="script.js?v=perf-1" defer></script>
 </body>
 </html>

@@ -39,6 +39,7 @@ const mobileMenu = document.querySelector('#mobile-menu');
 const progressBar = document.querySelector('.progress span');
 const root = document.documentElement;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const desktopMotion = window.matchMedia('(min-width: 981px)').matches;
 const finePointer = window.matchMedia('(pointer: fine)').matches;
 
 let scrollFrame = 0;
@@ -358,7 +359,7 @@ function drawHeroField() {
   heroFrame = requestAnimationFrame(drawHeroField);
 }
 
-if (hero && heroCanvas && !reducedMotion) {
+if (hero && heroCanvas && !reducedMotion && desktopMotion) {
   sizeHeroCanvas();
   const heroObserver = new IntersectionObserver(([entry]) => {
     heroActive = entry.isIntersecting;

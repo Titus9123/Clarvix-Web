@@ -10,17 +10,92 @@ const GADS_CONVERSION_LABELS = {
   formSubmit: 'AW-18364963340/9EsmCPn3--EcEIy0jLVE',
 };
 
+// First-touch attribution survives internal navigation. Never store arbitrary URL parameters.
+const ACQUISITION_KEY = 'clarvix_acquisition_v1';
+const UTM_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+// Enable only after the receiving workflow accepts these additional fields.
+const LEAD_ATTRIBUTION_FIELDS_ENABLED = false;
+
+function campaignValue(value) {
+  const text = String(value || '').trim();
+  if (text.length > 160 || /@|https?:|\d[\d\s()+-]{7,}\d/i.test(text)) return '';
+  return /^[\p{L}\p{N}\p{M} ._+()[\]{}|:/'"–—־״׳-]*$/u.test(text) ? text : '';
+}
+
+function readCampaign(search) {
+  const params = new URLSearchParams(search);
+  return Object.fromEntries(UTM_FIELDS.map((field) => [field, campaignValue(params.get(field))]));
+}
+
+function captureAcquisition() {
+  const current = new URL(window.location.href);
+  const campaign = readCampaign(current.search);
+  let originalReferrer = '';
+  try {
+    const referrer = new URL(document.referrer);
+    if (/^https?:$/.test(referrer.protocol) && referrer.origin !== current.origin) {
+      originalReferrer = referrer.origin + '/';
+    }
+  } catch (_) { /* Direct visit or an unavailable referrer. */ }
+  const fresh = {
+    landing_page: current.origin + current.pathname,
+    original_referrer: originalReferrer,
+    captured_at: new Date().toISOString(),
+    ...campaign,
+  };
+  try {
+    const saved = JSON.parse(window.sessionStorage.getItem(ACQUISITION_KEY));
+    if (!Object.values(campaign).some(Boolean) && saved &&
+        typeof saved.landing_page === 'string' &&
+        new URL(saved.landing_page).origin === current.origin &&
+        typeof saved.original_referrer === 'string' &&
+        typeof saved.captured_at === 'string') {
+      return { ...fresh, landing_page: new URL(saved.landing_page).origin + new URL(saved.landing_page).pathname,
+        original_referrer: saved.original_referrer ? new URL(saved.original_referrer).origin + '/' : '',
+        captured_at: saved.captured_at,
+        ...Object.fromEntries(UTM_FIELDS.map((field) => [field, campaignValue(saved[field])])) };
+    }
+    window.sessionStorage.setItem(ACQUISITION_KEY, JSON.stringify(fresh));
+  } catch (_) { /* Storage restrictions must never prevent contacting us. */ }
+  return fresh;
+}
+
+const acquisition = captureAcquisition();
+
+function leadAttributionFields() {
+  const current = readCampaign(window.location.search);
+  const fields = Object.values(current).some(Boolean) ? current :
+    Object.fromEntries(UTM_FIELDS.map((field) => [field, acquisition[field]]));
+  if (LEAD_ATTRIBUTION_FIELDS_ENABLED) {
+    fields.landing_page = acquisition.landing_page;
+    fields.original_referrer = acquisition.original_referrer;
+  }
+  return fields;
+}
+
+// These events contain no form values, URLs, phone numbers or email addresses.
+// A connected GA4 destination still needs to be verified in the Google tag settings.
+function trackContactEvent(eventName, method) {
+  gtag('event', eventName, { contact_method: method });
+}
+
 function trackGoogleAdsConversion(sendTo) {
   if (typeof gtag !== 'function') return;
   gtag('event', 'conversion', { send_to: sendTo });
 }
 
 document.querySelectorAll('a[href^="https://wa.me/"]').forEach((link) => {
-  link.addEventListener('click', () => trackGoogleAdsConversion(GADS_CONVERSION_LABELS.whatsapp));
+  link.addEventListener('click', () => {
+    trackGoogleAdsConversion(GADS_CONVERSION_LABELS.whatsapp);
+    trackContactEvent('whatsapp_click', 'whatsapp');
+  });
 });
 
 document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
-  link.addEventListener('click', () => trackGoogleAdsConversion(GADS_CONVERSION_LABELS.call));
+  link.addEventListener('click', () => {
+    trackGoogleAdsConversion(GADS_CONVERSION_LABELS.call);
+    trackContactEvent('phone_click', 'phone');
+  });
 });
 
 // Clickjacking defense-in-depth: GitHub Pages cannot send X-Frame-Options/CSP frame-ancestors
@@ -520,8 +595,8 @@ if (contactForm) {
   const submitButton = contactForm.querySelector('[type="submit"]');
   contactForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (submitButton && submitButton.disabled) return;
     const data = new FormData(contactForm);
-    const query = new URLSearchParams(window.location.search);
     const payload = {
       name: data.get('name'),
       phone: data.get('phone'),
@@ -531,11 +606,7 @@ if (contactForm) {
       company: data.get('company'),
       page_url: window.location.href,
       referrer: document.referrer,
-      utm_source: query.get('utm_source') || '',
-      utm_medium: query.get('utm_medium') || '',
-      utm_campaign: query.get('utm_campaign') || '',
-      utm_term: query.get('utm_term') || '',
-      utm_content: query.get('utm_content') || '',
+      ...leadAttributionFields(),
       source_language: document.documentElement.lang || 'he',
     };
 
@@ -554,6 +625,7 @@ if (contactForm) {
       if (!response.ok) throw new Error(`Lead intake failed: ${response.status}`);
       contactForm.reset();
       trackGoogleAdsConversion(GADS_CONVERSION_LABELS.formSubmit);
+      trackContactEvent('generate_lead', 'form');
       if (formStatus) formStatus.textContent = 'הפנייה נשלחה בהצלחה. נחזור אליכם תוך יום עסקים אחד.';
     } catch (error) {
       if (formStatus) formStatus.textContent = 'לא הצלחנו לשלוח כרגע. אפשר לנסות שוב או לפנות אלינו בוואטסאפ.';

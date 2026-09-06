@@ -1,0 +1,12 @@
+/* Service and guide content; preserves the existing brand and shared layout. */
+.hero-copy h1{font-size:clamp(42px,5.1vw,76px);line-height:1.1}
+.service-detail-link{display:block;text-decoration:underline;text-underline-offset:4px;margin-block:20px;font-weight:700}
+.breadcrumbs{font-size:14px;line-height:1.8;color:#d2dad6}.breadcrumbs a{text-decoration:underline}.content-cta{margin-top:28px}
+.content-body{max-width:1000px;padding-block:64px 96px}.content-section{padding-block:36px;border-bottom:1px solid var(--line)}
+.content-section h2{font-size:clamp(26px,3.2vw,38px);line-height:1.25;margin-bottom:24px}.content-section p,.content-section li{font-size:18px;line-height:1.85}
+.content-section p+p,.content-section ul+p{margin-top:18px}.content-section ul{padding-inline-start:24px}.content-section li+li{margin-top:10px}
+.content-section a:not(.button){text-decoration:underline;text-underline-offset:4px}.content-section .button{margin-top:24px}
+.comparison-scroll{max-width:100%;overflow-x:auto;margin-block:24px}.comparison-scroll table{width:100%;border-collapse:collapse;font-size:16px;line-height:1.7}
+.comparison-scroll caption{text-align:start;font-weight:700;padding-bottom:12px}.comparison-scroll th,.comparison-scroll td{padding:16px;text-align:start;vertical-align:top;border:1px solid var(--line);min-width:120px}
+.comparison-scroll thead{background:var(--ink);color:white}.comparison-scroll tbody th{background:var(--paper-2)}.content-section .faq-item summary{font-size:19px}
+@media(max-width:680px){.hero-copy h1{font-size:clamp(36px,10.2vw,58px)}.content-body{padding-block:24px 48px}.content-section{padding-block:28px}.content-section p,.content-section li{font-size:17px}.comparison-scroll th,.comparison-scroll td{padding:12px}}

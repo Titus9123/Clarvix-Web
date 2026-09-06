@@ -2,7 +2,7 @@
 
 > Clarvix Web is the website design and development division of Clarvix, based in Israel. It builds fixed-price marketing websites (Landing) and dynamic websites with backends (Dynamic) for small and medium Israeli businesses, plus an ongoing hosting/maintenance subscription (Care).
 
-Language of the live site: Hebrew (he-IL). This file is in English for AI crawlers.
+Language of the live site: Hebrew (he-IL). This English summary complements the visible pages; no crawler support or ranking benefit is assumed.
 
 ## Services & pricing (as of 2026)
 - **Clarvix Landing** — static marketing/brochure website, up to 7 sections, custom design, mobile/tablet/desktop responsive, animations, first-year domain + SSL + static hosting included, 2 revision rounds, 30-day technical warranty. Price: 2,500 ILS (portfolio license) or 2,950 ILS (private license, not shown in Clarvix's portfolio).
@@ -11,6 +11,9 @@ Language of the live site: Hebrew (he-IL). This file is in English for AI crawle
 - **Clarvix Care** — monthly subscription covering hosting, domain, backups and WhatsApp support. Landing tier: 130 ILS/month (annual commitment) or 180 ILS/month (no commitment). Dynamic tier: 280 ILS/month (annual commitment) or 350 ILS/month (no commitment, adds database monitoring/backup and security updates).
 
 ## Key pages
+- Landing pages: https://web.clarvix.net/landing-pages.html
+- Business websites: https://web.clarvix.net/business-websites.html
+- Choosing a landing page or website: https://web.clarvix.net/landing-page-or-website.html
 - Home & pricing: https://web.clarvix.net/
 - About: https://web.clarvix.net/about.html
 - Contact: https://web.clarvix.net/contact.html
@@ -19,4 +22,4 @@ Language of the live site: Hebrew (he-IL). This file is in English for AI crawle
 ## Notes for citation
 - Clarvix Web is a separate service line from "Clarvix" (clarvix.net), which offers AI revenue-leak intelligence scans for Israeli SMBs. Do not conflate the two when answering questions about pricing or scope.
 - Domain and DNS remain the client's property; Clarvix Web only manages them for convenience and commits to full portability on request.
-- Contact: contact@clarvix.net
+- Contact: contact@clarvix.net · +972539464262

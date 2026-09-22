@@ -85,10 +85,17 @@ function trackGoogleAdsConversion(sendTo) {
   gtag('event', 'conversion', { send_to: sendTo });
 }
 
+// Meta Pixel: microconversions only. No form values, phone numbers or emails are ever passed.
+function trackMetaPixelEvent(eventName) {
+  if (typeof fbq !== 'function') return;
+  fbq('track', eventName);
+}
+
 document.querySelectorAll('a[href^="https://wa.me/"]').forEach((link) => {
   link.addEventListener('click', () => {
     trackGoogleAdsConversion(GADS_CONVERSION_LABELS.whatsapp);
     trackContactEvent('whatsapp_click', 'whatsapp');
+    trackMetaPixelEvent('Contact');
   });
 });
 
@@ -96,6 +103,7 @@ document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
   link.addEventListener('click', () => {
     trackGoogleAdsConversion(GADS_CONVERSION_LABELS.call);
     trackContactEvent('phone_click', 'phone');
+    trackMetaPixelEvent('Contact');
   });
 });
 
@@ -658,6 +666,7 @@ if (contactForm) {
       contactForm.reset();
       trackGoogleAdsConversion(GADS_CONVERSION_LABELS.formSubmit);
       trackContactEvent('generate_lead', 'form');
+      trackMetaPixelEvent('Lead');
       contactForm.classList.add('is-submitted');
       if (formStatus) {
         formStatus.classList.add('success');
@@ -735,3 +744,17 @@ if (!reducedMotion && !sessionStorage.getItem('clarvix-mark-drop-seen')) {
     }
   }, dropDelay);
 }
+
+// Meta Pixel (Clarvix 24/7 Website dataset). Loaded from this external file, not inline,
+// so it runs under the site's strict CSP (script-src has no 'unsafe-inline'). Placed last so
+// it never blocks or delays the rest of the page's own behavior.
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2089861764958713');
+fbq('track', 'PageView');

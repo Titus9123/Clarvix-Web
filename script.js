@@ -13,8 +13,9 @@ const GADS_CONVERSION_LABELS = {
 // First-touch attribution survives internal navigation. Never store arbitrary URL parameters.
 const ACQUISITION_KEY = 'clarvix_acquisition_v1';
 const UTM_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
-// Enable only after the receiving workflow accepts these additional fields.
-const LEAD_ATTRIBUTION_FIELDS_ENABLED = false;
+// Clarvix 24/7: the n8n webhook was asked to accept landing_page/original_referrer.
+// Verify the workflow before relying on these fields; flip back to false if it 400s.
+const LEAD_ATTRIBUTION_FIELDS_ENABLED = true;
 
 function campaignValue(value) {
   const text = String(value || '').trim();
@@ -95,6 +96,16 @@ document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
   link.addEventListener('click', () => {
     trackGoogleAdsConversion(GADS_CONVERSION_LABELS.call);
     trackContactEvent('phone_click', 'phone');
+  });
+});
+
+// Clarvix 24/7 funnel events: GA4 signals, never sent as Google Ads conversions —
+// only generate_lead (a submitted form) should be configured as a primary conversion.
+document.querySelectorAll('[data-track-event]').forEach((el) => {
+  el.addEventListener('click', () => {
+    const eventName = el.dataset.trackEvent;
+    const detail = el.dataset.plan ? { plan: el.dataset.plan } : {};
+    gtag('event', eventName, detail);
   });
 });
 
@@ -587,6 +598,23 @@ if (a11yToggle && a11yPanel) {
   });
 }
 
+// Clarvix 24/7: preselect the plan chosen on the pricing cards, and echo it in the
+// prefilled WhatsApp message, so intent captured on / carries through to contact.html.
+const PLAN_LABELS = { start: 'Start', growth: 'Growth' };
+const selectedPlan = new URLSearchParams(window.location.search).get('plan');
+if (selectedPlan && PLAN_LABELS[selectedPlan]) {
+  const planSelect = document.querySelector('#cf-plan');
+  if (planSelect) planSelect.value = selectedPlan;
+  document.querySelectorAll('a[href^="https://wa.me/"]').forEach((link) => {
+    try {
+      const url = new URL(link.href);
+      const text = url.searchParams.get('text') || '';
+      url.searchParams.set('text', `${text} (מסלול ${PLAN_LABELS[selectedPlan]})`);
+      link.href = url.toString();
+    } catch (_) { /* Malformed link — leave the default message as-is. */ }
+  });
+}
+
 // Contact form: secure first-party lead intake with campaign attribution.
 const contactForm = document.querySelector('#contact-form');
 const CONTACT_ENDPOINT = 'https://n8n.clarvix.net/webhook/clarvix/web-lead';
@@ -601,6 +629,9 @@ if (contactForm) {
       name: data.get('name'),
       phone: data.get('phone'),
       email: data.get('email'),
+      business_type: data.get('business_type'),
+      appointment_volume: data.get('appointment_volume'),
+      has_existing_site: data.get('has_existing_site'),
       plan: data.get('plan'),
       message: data.get('message'),
       company: data.get('company'),
@@ -608,6 +639,7 @@ if (contactForm) {
       referrer: document.referrer,
       ...leadAttributionFields(),
       source_language: document.documentElement.lang || 'he',
+      submitted_at: new Date().toISOString(),
     };
 
     if (submitButton) submitButton.disabled = true;
@@ -626,7 +658,11 @@ if (contactForm) {
       contactForm.reset();
       trackGoogleAdsConversion(GADS_CONVERSION_LABELS.formSubmit);
       trackContactEvent('generate_lead', 'form');
-      if (formStatus) formStatus.textContent = 'הפנייה נשלחה בהצלחה. נחזור אליכם תוך יום עסקים אחד.';
+      contactForm.classList.add('is-submitted');
+      if (formStatus) {
+        formStatus.classList.add('success');
+        formStatus.textContent = 'הפרטים התקבלו. נחזור אליכם בתוך יום עסקים אחד כדי לבדוק איזה מסלול מתאים לעסק.';
+      }
     } catch (error) {
       if (formStatus) formStatus.textContent = 'לא הצלחנו לשלוח כרגע. אפשר לנסות שוב או לפנות אלינו בוואטסאפ.';
       console.error('Clarvix contact form submission failed', error);

@@ -20,9 +20,13 @@ function visit(path, { referrer = '', session = storage(), result = { ok: true }
   const window = { location: new URL(path, BASE), sessionStorage: session, dataLayer: [] };
   const context = vm.createContext({ window, dataLayer: window.dataLayer, URL, URLSearchParams, Date,
     document: { referrer, documentElement: { lang: 'he' },
-      querySelectorAll: (selector) => [{ addEventListener: (_, fn) => { links[selector.includes('wa.me') ? 'whatsapp' : 'phone'] = fn; } }],
+      querySelectorAll: (selector) => [{ addEventListener: (_, fn) => {
+        if (selector.includes('wa.me')) links.whatsapp = fn;
+        else if (selector.startsWith('a[href^="tel:')) links.phone = fn;
+        else links.other = fn; // e.g. [data-track-event] — not exercised by these tests
+      } }],
       querySelector: (selector) => selector === '#contact-form' ? form : status },
-    FormData: class { get(key) { return { name: 'Test Person', phone: '0500000000', email: 'test@example.test', message: 'Test message', plan: 'landing', company: '' }[key]; } },
+    FormData: class { get(key) { return { name: 'Test Person', phone: '0500000000', email: 'test@example.test', message: 'Test message', plan: 'start', business_type: 'beauty', appointment_volume: '1', has_existing_site: 'no', company: '' }[key]; } },
     fetch: async (url, init) => { requests.push({ url, ...init, payload: JSON.parse(init.body) }); if (result instanceof Error) throw result; return await result; },
     console: { error() {} }
   });
@@ -69,9 +73,9 @@ test('storage denied or corrupt does not prevent a successful form submission', 
   }
 });
 
-test('default form payload remains compatible; new fields require the receiver gate',async()=>{
+test('default form payload includes attribution fields (n8n webhook updated to accept them)',async()=>{
   const page=visit('/contact.html');await page.send();
-  assert.deepEqual(Object.keys(page.requests[0].payload).sort(),['name','phone','email','plan','message','company','page_url','referrer','utm_source','utm_medium','utm_campaign','utm_term','utm_content','source_language'].sort());
+  assert.deepEqual(Object.keys(page.requests[0].payload).sort(),['name','phone','email','business_type','appointment_volume','has_existing_site','plan','message','company','page_url','referrer','landing_page','original_referrer','utm_source','utm_medium','utm_campaign','utm_term','utm_content','source_language','submitted_at'].sort());
 });
 
 test('email, phone-like campaign values and arbitrary parameters are not persisted',()=>{

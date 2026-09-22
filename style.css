@@ -135,6 +135,15 @@
 .care-plan ul li:before{content:"— "}
 @media(max-width:980px){.plan-grid,.care-grid{grid-template-columns:1fr}.addons-body{grid-template-columns:1fr}.addons-total{position:static}}
 @media(max-width:680px){.pricing{padding:64px 0}.plan-grid{gap:22px;margin-top:38px}.plan{padding:30px 22px 26px}.plan-amount{font-size:44px}.plan-features{gap:9px}.plan-features li{font-size:14px}.addons{margin-top:44px;padding-top:34px}.addons-head p{font-size:14px}.addons-body{margin-top:22px;gap:22px}.addons-list{gap:8px}.addons-list label{padding:13px 15px}.addons-total{padding:22px}.addons-total strong{font-size:36px;margin:8px 0}.care-grid{gap:18px;margin-top:44px}.care-plan{padding:26px}}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:30px}
+.calc-plan{border:1px solid var(--line);background:#fff;padding:22px 24px}
+.calc-plan h4{font-size:16px;font-weight:800}
+.calc-plan .plan-features{margin-top:14px;gap:8px}
+.calc-plan .plan-features li{font-size:14px}
+.calc-total{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:15px;color:var(--muted)}
+.calc-total strong{color:var(--ink);font-size:18px}
+.care-terms{margin-top:26px;color:var(--muted);font-size:13px;line-height:1.75;max-width:920px}
+@media(max-width:680px){.calc-grid{grid-template-columns:1fr;gap:14px;margin-top:22px}.calc-plan{padding:18px 20px}}
 
 /* Floating actions: WhatsApp + accessibility */
 .float-stack{position:fixed;z-index:500;right:20px;bottom:20px;display:flex;flex-direction:column;align-items:center;gap:14px}
@@ -215,6 +224,11 @@ html.a11y-no-motion .reveal{opacity:1!important;transform:none!important}
 .form-note{margin-top:14px;font-size:12.5px;color:var(--muted);text-align:center}
 .form-status{margin-top:14px;font-size:14px;font-weight:700;text-align:center;display:none}
 .form-status.visible{display:block}
+.form-status.success{font-size:19px;line-height:1.6;padding:26px 6px}
+.contact-form.is-submitted .form-row,.contact-form.is-submitted .form-two,.contact-form.is-submitted .form-checkbox,.contact-form.is-submitted .form-submit,.contact-form.is-submitted .form-note{display:none}
+.form-checkbox label{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--muted);font-weight:500}
+.form-checkbox input{margin-top:3px;width:16px;height:16px;flex-shrink:0;accent-color:var(--ink)}
+.form-checkbox a{color:var(--ink);text-decoration:underline}
 @media(max-width:980px){.contact-page-grid{grid-template-columns:1fr;gap:44px}}
 @media(max-width:680px){.contact-page{padding:150px 0 70px}.contact-form{padding:26px}.form-two{grid-template-columns:1fr}}
 

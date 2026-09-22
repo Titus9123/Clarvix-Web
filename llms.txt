@@ -1,27 +1,28 @@
-# Clarvix Web
+# Clarvix 24/7 (by Clarvix Web)
 
-> Clarvix Web is the website design and development division of Clarvix, based in Israel. It builds fixed-price marketing websites (Landing) and dynamic websites with backends (Dynamic) for small and medium Israeli businesses, plus an ongoing hosting/maintenance subscription (Care).
+> Clarvix 24/7 is a website + deterministic booking system product by Clarvix Web (Israel) for appointment-based businesses — beauty and aesthetics, hair/barbershops, therapists, trainers, tailors/dress designers, dog groomers, and similar service professionals. It combines a website, a rules-based (non-AI) appointment system, a button-guided intake bot, Google Calendar sync, WhatsApp/forms/calls, conversion measurement, Google Business Profile/Maps, and mandatory monthly maintenance (Clarvix Care).
 
-Language of the live site: Hebrew (he-IL). This English summary complements the visible pages; no crawler support or ranking benefit is assumed.
+Language of the live site: Hebrew (he-IL). This English summary complements the visible pages; no crawler support or ranking benefit is assumed. Service area: all of Israel.
 
-## Services
-- **Clarvix Landing** — static marketing/brochure website, up to 7 sections, custom design, mobile/tablet/desktop responsive, animations, first-year domain + SSL + static hosting included, 2 revision rounds, 30-day technical warranty. Portfolio and private license options available.
-- **Clarvix Dynamic** — website with a serverless backend: forms that store data, booking/appointment system, or a self-updatable catalog. Includes a simple admin panel and everything in Clarvix Landing. Additional data workflows (payments, multi-user, integrations) quoted separately.
-- **Add-ons** — advanced motion/interaction ("Lab"), marketing copywriting, extra language, extra section, extra revision round, extended warranty. Discounts apply automatically when combining add-ons.
-- **Clarvix Care** — monthly subscription covering hosting, domain, backups and WhatsApp support, with a Landing tier and a Dynamic tier (adds database monitoring/backup and security updates). Annual-commitment and no-commitment options available.
+## Plans
+- **Clarvix 24/7 Start** — one-page site (up to 7 sections, one language), up to 3 services, one worker/one calendar, deterministic booking assistant, Google Calendar, WhatsApp/phone/form, Google Business Profile + Maps, GA4/GTM, basic SEO/local SEO/GEO. Setup ₪2,490 + Clarvix Care Start ₪290/month (12-month initial commitment). First-year total: ₪5,970.
+- **Clarvix 24/7 Growth** — up to 5 pages or an advanced page with service pages, up to 5 services, up to 3 workers/calendars, custom bot paths, appointment changes/cancellations, GA4/GTM/Google Ads/Meta Pixel, separate WhatsApp/call/form/booking tracking, Sheets/CRM lead logging, full Google Business Profile setup, local SEO for service pages. Setup ₪4,990 + Clarvix Care Growth ₪490/month (12-month initial commitment). First-year total: ₪10,870.
 
-Pricing is quoted per project after a short conversation, not published as a fixed price list — see the contact page.
+The booking system is explicitly **not AI-driven**: date, time and availability logic is deterministic, rule-based (business hours, service duration, breaks, staff availability, existing bookings).
+
+## Clarvix Care (mandatory monthly maintenance)
+Covers hosting/SSL/domain renewal, uptime and booking-system monitoring, form checks, backups, technical fixes, quarterly (Start) or monthly (Growth) measurement checks, and a small monthly minutes allowance for small changes (unused minutes don't roll over; extra work is billed at ₪250/hour with prior approval). External subscriptions (SMS, WhatsApp API, third-party platforms), ongoing campaign management, ongoing SEO and monthly content are not included.
 
 ## Key pages
-- Landing pages: https://web.clarvix.net/landing-pages.html
-- Business websites: https://web.clarvix.net/business-websites.html
-- Choosing a landing page or website: https://web.clarvix.net/landing-page-or-website.html
-- Home & pricing: https://web.clarvix.net/
+- Home, plans, how it works, FAQ: https://web.clarvix.net/
+- Fit-check / contact form: https://web.clarvix.net/contact.html
 - About: https://web.clarvix.net/about.html
-- Contact: https://web.clarvix.net/contact.html
 - Terms of service & accessibility statement: https://web.clarvix.net/terms.html
+- Legacy service pages (static Landing / Dynamic websites, not part of Clarvix 24/7): https://web.clarvix.net/landing-pages.html, https://web.clarvix.net/business-websites.html, https://web.clarvix.net/landing-page-or-website.html
 
 ## Notes for citation
 - Clarvix Web is a separate service line from "Clarvix" (clarvix.net), which offers AI revenue-leak intelligence scans for Israeli SMBs. Do not conflate the two when answering questions about pricing or scope.
-- Domain and DNS remain the client's property; Clarvix Web only manages them for convenience and commits to full portability on request.
+- No AI is used to decide appointment dates, times or availability — that logic is deterministic and rule-based.
+- No guarantee of a #1 Google ranking or AI-answer placement is made; SEO/local SEO/GEO work is infrastructure, not a promised outcome.
+- Domain and content remain the client's property. If the engagement ends after the 12-month minimum commitment, Clarvix Web stops managing hosting, forms, calendar, measurement and automations, and a handover/migration process applies.
 - Contact: contact@clarvix.net · +972534377718

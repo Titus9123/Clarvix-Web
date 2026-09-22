@@ -22,6 +22,7 @@ test('contact form captures attribution and bot trap fields', () => {
 
 test('contact page security policy permits only the intake host', () => {
   assert.match(contact, /connect-src 'self' https:\/\/n8n\.clarvix\.net/);
-  assert.match(contact, /option value="landing"/);
+  assert.match(contact, /option value="start"/);
+  assert.match(contact, /option value="growth"/);
   assert.match(contact, /option value="not_sure"/);
 });

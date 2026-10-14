@@ -7,6 +7,7 @@
 - [ ] Contacto único autorizado para aprobar contenido.
 - [ ] Propuesta y contrato firmados; plan, 12 meses, coste total e IVA claramente indicados.
 - [ ] Pago inicial recibido y documento de cobro correcto para עוסק פטור.
+- [ ] La propuesta/contrato privado incluye nombre jurídico, número de עוסק y domicilio fiscal verificados; esos datos no se copian al repositorio público.
 - [ ] Decisión de proyecto privado / sin portfolio registrada.
 
 ## Alcance ABD

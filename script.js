@@ -13,7 +13,7 @@ const GADS_CONVERSION_LABELS = {
 // First-touch attribution survives internal navigation. Never store arbitrary URL parameters.
 const ACQUISITION_KEY = 'clarvix_acquisition_v1';
 const UTM_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
-// Clarvix 24/7: the n8n webhook was asked to accept landing_page/original_referrer.
+// Clarvix Core: the n8n webhook accepts landing_page/original_referrer.
 // Verify the workflow before relying on these fields; flip back to false if it 400s.
 const LEAD_ATTRIBUTION_FIELDS_ENABLED = true;
 
@@ -107,7 +107,7 @@ document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
   });
 });
 
-// Clarvix 24/7 funnel events: GA4 signals, never sent as Google Ads conversions —
+// Clarvix Core funnel events: GA4 signals, never sent as Google Ads conversions —
 // only generate_lead (a submitted form) should be configured as a primary conversion.
 document.querySelectorAll('[data-track-event]').forEach((el) => {
   el.addEventListener('click', () => {
@@ -606,9 +606,12 @@ if (a11yToggle && a11yPanel) {
   });
 }
 
-// Clarvix 24/7: preselect the plan chosen on the pricing cards, and echo it in the
+// Clarvix Core: preselect the payment option chosen on the pricing cards and echo it in the
 // prefilled WhatsApp message, so intent captured on / carries through to contact.html.
-const PLAN_LABELS = { start: 'Start', growth: 'Growth' };
+const PLAN_LABELS = {
+  core_monthly: 'Clarvix Core — מסלול חודשי',
+  core_annual: 'Clarvix Core — מסלול שנתי',
+};
 const selectedPlan = new URLSearchParams(window.location.search).get('plan');
 if (selectedPlan && PLAN_LABELS[selectedPlan]) {
   const planSelect = document.querySelector('#cf-plan');
@@ -620,6 +623,24 @@ if (selectedPlan && PLAN_LABELS[selectedPlan]) {
       url.searchParams.set('text', `${text} (מסלול ${PLAN_LABELS[selectedPlan]})`);
       link.href = url.toString();
     } catch (_) { /* Malformed link — leave the default message as-is. */ }
+  });
+}
+
+// Smart Request demo: builds the message locally; no answers are transmitted or stored.
+const smartDemoForm = document.querySelector('#smart-demo-form');
+if (smartDemoForm) {
+  const demoFields = ['service', 'city', 'problem', 'time'];
+  const demoMessage = document.querySelector('#smart-demo-message');
+  const demoWhatsapp = document.querySelector('#smart-demo-whatsapp');
+  smartDemoForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const summary = demoFields
+      .map((field) => document.querySelector(`#demo-${field}`)?.value || '')
+      .filter(Boolean)
+      .join(' · ');
+    if (demoMessage) demoMessage.textContent = summary;
+    if (demoWhatsapp) demoWhatsapp.href = `https://wa.me/972534377718?text=${encodeURIComponent(summary)}`;
+    trackEvent('smart_request_demo_complete', { demo_vertical: 'air_conditioning' });
   });
 }
 
@@ -745,7 +766,7 @@ if (!reducedMotion && !sessionStorage.getItem('clarvix-mark-drop-seen')) {
   }, dropDelay);
 }
 
-// Meta Pixel (Clarvix 24/7 Website dataset). Loaded from this external file, not inline,
+// Meta Pixel (Clarvix Core website dataset). Loaded from this external file, not inline,
 // so it runs under the site's strict CSP (script-src has no 'unsafe-inline'). Placed last so
 // it never blocks or delays the rest of the page's own behavior.
 !function(f,b,e,v,n,t,s)

@@ -26,7 +26,7 @@ function visit(path, { referrer = '', session = storage(), result = { ok: true }
         else links.other = fn; // e.g. [data-track-event] — not exercised by these tests
       } }],
       querySelector: (selector) => selector === '#contact-form' ? form : status },
-    FormData: class { get(key) { return { name: 'Test Person', phone: '0500000000', email: 'test@example.test', message: 'Test message', plan: 'start', business_type: 'beauty', appointment_volume: '1', has_existing_site: 'no', company: '' }[key]; } },
+    FormData: class { get(key) { return { name: 'Test Person', phone: '0500000000', email: 'test@example.test', message: 'Test message', plan: 'core_annual', business_type: 'technical_service', appointment_volume: '1', has_existing_site: 'no', company: '' }[key]; } },
     fetch: async (url, init) => { requests.push({ url, ...init, payload: JSON.parse(init.body) }); if (result instanceof Error) throw result; return await result; },
     console: { error() {} }
   });

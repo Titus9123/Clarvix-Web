@@ -243,3 +243,14 @@ html.a11y-no-motion .reveal{opacity:1!important;transform:none!important}
 .terms-body ul{margin-top:10px;padding-inline-start:22px}
 .terms-body section{scroll-margin-top:100px}
 @media(max-width:680px){.terms-page{padding:150px 0 70px}.terms-body{margin-top:40px;gap:34px}}
+
+/* Clarvix Core: local-only Smart Request demonstration */
+.smart-demo{padding:130px 0;border-top:1px solid var(--line)}
+.smart-demo-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:stretch}
+.smart-demo-form{background:#fff;border:1px solid var(--line);padding:34px}
+.smart-demo-result{min-height:100%;border:1px solid var(--ink);background:var(--acid);padding:38px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.smart-demo-before{display:inline-block;background:var(--ink);color:#fff;padding:8px 11px;font-size:13px;font-weight:700}
+.smart-demo-message{font-size:clamp(26px,3vw,40px);font-weight:900;line-height:1.2;letter-spacing:-.03em;margin:30px 0}
+.smart-demo-result .text-link{margin-top:auto}
+@media(max-width:820px){.smart-demo-layout{grid-template-columns:1fr}.smart-demo-result{min-height:340px}}
+@media(max-width:680px){.smart-demo{padding:64px 0}.smart-demo-form,.smart-demo-result{padding:24px}.smart-demo-message{font-size:27px}}

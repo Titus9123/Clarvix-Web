@@ -54,3 +54,17 @@ test('Google Ads measurement and conversion IDs remain intact', () => {
     assert.match(source, /<script async src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=AW-18364963340"><\/script>/);
   }
 });
+
+test('Clarvix Core offer replaces the retired booking plans everywhere on the home page', () => {
+  assert.match(html['index.html'], /Clarvix Core/);
+  assert.match(html['index.html'], /2,900/);
+  assert.match(html['index.html'], /2,200/);
+  assert.match(html['index.html'], /עוסק פטור/);
+  assert.doesNotMatch(html['index.html'], /Clarvix 24\/7|Clarvix Care|2,490|4,990/);
+});
+
+test('Smart Request demonstration is local-only and builds a WhatsApp URL in the browser', () => {
+  assert.match(html['index.html'], /id="smart-demo-form"/);
+  assert.match(script, /Smart Request demo: builds the message locally/);
+  assert.match(script, /encodeURIComponent\(summary\)/);
+});

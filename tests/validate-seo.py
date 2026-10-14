@@ -15,7 +15,7 @@ def visible(s):
  s=re.sub(r'<span aria-hidden="true">.*?</span>','',s,flags=re.S)
  from html import unescape
  return unescape(re.sub('<[^>]+>','',s)).strip()
-sources={p.name:p.read_text() for p in ROOT.glob('*.html')}
+sources={p.name:p.read_text(encoding='utf-8') for p in ROOT.glob('*.html')}
 pages={n:Page(s) for n,s in sources.items()}
 titles=set();descriptions=set();canons=set();count=0
 for name,page in pages.items():
@@ -42,7 +42,7 @@ for name,page in pages.items():
   count+=1
  for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>',s,re.S):
   data=json.loads(block);assert data['@context']=='https://schema.org'
-  graph=data['@graph'];org=next(x for x in graph if x['@type']=='Organization')
+  graph=data['@graph'];org=next(x for x in graph if x['@type']=='Organization' or isinstance(x['@type'],list) and 'Organization' in x['@type'])
   assert org['@id']==BASE+'#organization';assert 'address' not in org;assert 'sameAs' not in org
   for entity in graph:
    assert entity['@type']!='ProfessionalService'

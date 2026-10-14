@@ -664,7 +664,7 @@ if (a11yToggle && a11yPanel) {
 // Clarvix Core: preselect the payment option chosen on the pricing cards and echo it in the
 // prefilled WhatsApp message, so intent captured on / carries through to contact.html.
 const PLAN_LABELS = {
-  core_monthly: 'Clarvix Core — מסלול חודשי',
+  core_monthly: 'Clarvix Core — חבילת שנה בתשלומים',
   core_annual: 'Clarvix Core — מסלול שנתי',
 };
 const selectedPlan = new URLSearchParams(window.location.search).get('plan');

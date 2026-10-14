@@ -3,7 +3,7 @@
 ## Oferta y contenido
 
 - [ ] Clarvix Core ABD es el único producto presentado.
-- [ ] Mensual: 500 ₪ + 200 ₪ × 12 = 2.900 ₪.
+- [ ] Primera anualidad en cuotas: 200 ₪ × 12 + 500 ₪ una sola vez = 2.900 ₪.
 - [ ] Anual: 2.200 ₪, activación incluida y ahorro de 700 ₪.
 - [ ] עוסק פטור y futura aplicación de IVA expresados sin ambigüedad.
 - [ ] No hay promesas de leads, rankings, automatización o funciones C/E.

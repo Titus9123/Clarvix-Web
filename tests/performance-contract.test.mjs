@@ -67,6 +67,9 @@ test('Clarvix Core offer replaces the retired booking plans everywhere on the ho
   assert.match(html['index.html'], /Clarvix Core/);
   assert.match(html['index.html'], /2,900/);
   assert.match(html['index.html'], /2,200/);
+  assert.match(html['index.html'], /class="plan-amount">200</);
+  assert.match(html['index.html'], /500 ₪<\/bdi> <strong>חד־פעמי/);
+  assert.match(html['index.html'], /חבילת שנה ראשונה · מחיר כולל 2,900 ₪ ב־12 תשלומים/);
   assert.match(html['index.html'], /עוסק פטור/);
   assert.doesNotMatch(html['index.html'], /Clarvix 24\/7|Clarvix Care|2,490|4,990/);
 });

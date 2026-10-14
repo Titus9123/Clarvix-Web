@@ -85,11 +85,11 @@
       "offers": [
         {
           "@type": "Offer",
-          "name": "Clarvix Core — מסלול חודשי",
+          "name": "Clarvix Core — חבילת שנה ראשונה בתשלומים",
           "price": "500",
           "priceCurrency": "ILS",
           "url": "https://web.clarvix.net/#pricing",
-          "description": "500 ₪ דמי הפעלה והקמה + 200 ₪ לחודש, בהתחייבות ראשונית ל-12 חודשים. סך הכול 2,900 ₪ בשנה הראשונה."
+          "description": "חבילת שנה ראשונה במחיר כולל של 2,900 ₪: 200 ₪ לחודש למשך 12 חודשים + 500 ₪ חד־פעמי להפעלה ולהקמה."
         },
         {
           "@type": "Offer",
@@ -109,7 +109,7 @@
         {"@type": "Question", "name": "מה ההבדל בין Smart Request לטופס רגיל?", "acceptedAnswer": {"@type": "Answer", "text": "Smart Request שואל עד שש שאלות קצרות שרלוונטיות לעסק ומכין מהתשובות הודעה ברורה לוואטסאפ, במקום להשאיר את בעל העסק עם הודעה כללית כמו מחיר?"}},
         {"@type": "Question", "name": "האם WhatsApp API או אוטומציה כלולים?", "acceptedAnswer": {"@type": "Answer", "text": "לא. Clarvix Core יכול להכין ולפתוח הודעה מסודרת בוואטסאפ. אוטומציה רשמית, בוטים או WhatsApp API אינם כלולים."}},
         {"@type": "Question", "name": "מי הבעלים של הדומיין?", "acceptedAnswer": {"@type": "Answer", "text": "הלקוח הוא המחזיק החוקי של הדומיין מהיום הראשון. Clarvix מנהלת את הרישום, התשלום, החידוש, ה-DNS והאחסון כדי שהלקוח לא יצטרך להתעסק בצד הטכני."}},
-        {"@type": "Question", "name": "האם אפשר לבטל?", "acceptedAnswer": {"@type": "Answer", "text": "במסלול החודשי קיימת התחייבות ראשונית ל-12 חודשים. המסלול השנתי משולם מראש לשנה. תנאי הביטול והיציאה המלאים מופיעים בהסכם השירות."}},
+        {"@type": "Question", "name": "האם אפשר לבטל?", "acceptedAnswer": {"@type": "Answer", "text": "אפשר למסור הודעת יציאה בכל עת. המסלול החודשי הוא חבילת שנה ראשונה במחיר כולל של 2,900 ₪ המשולם בתשלומים, ולכן יציאה מוקדמת אינה מבטלת אוטומטית את יתרת המחיר. זכויות חובה ומקרה של הפרה יסודית מצד Clarvix נשמרים בהסכם."}},
         {"@type": "Question", "name": "מה כלול בשינויים?", "acceptedAnswer": {"@type": "Answer", "text": "לפני ההשקה כלולים שני סבבי תיקונים מרוכזים. לאחר ההשקה נכלל תיקון תקלות טכניות בלבד ואין מכסת שינויים חודשית; תוכן, עיצוב, עמודים, שפות, אינטגרציות או שינוי מבני מתומחרים בנפרד."}},
         {"@type": "Question", "name": "האם Clarvix מבטיחה לקוחות או דירוג בגוגל?", "acceptedAnswer": {"@type": "Answer", "text": "לא. האתר נבנה כדי להבהיר את ההצעה, להוביל לפעולה ולמדוד בקשות, אך אין הבטחה לכמות פניות, מכירות או מיקום בגוגל."}},
         {"@type": "Question", "name": "האם המחיר כולל מע״מ?", "acceptedAnswer": {"@type": "Answer", "text": "כיום Clarvix היא עוסק פטור ולכן אינה גובה מע״מ. אם המעמד ישתנה, מע״מ יתווסף לחיובים עתידיים בהתאם לדין ולהסכם."}},
@@ -259,9 +259,13 @@
         <div class="section-head reveal"><p class="section-index">04 — המחיר</p><h2>אותו Clarvix Core.<br>שתי דרכי תשלום ברורות.</h2></div>
         <div class="plan-grid">
           <article class="plan reveal" data-plan="core_monthly" data-tilt-card>
-            <div class="plan-head"><h3>Clarvix Core · חודשי</h3><p>למי שמעדיף לפרוס את ההשקעה</p></div>
-            <p class="plan-price"><span class="plan-from">הפעלה והקמה</span><span class="plan-currency">₪</span><span class="plan-amount">500</span></p>
-            <p class="plan-note">200 ₪ לחודש · התחייבות ראשונית ל־12 חודשים</p>
+            <div class="plan-head"><h3>Clarvix Core · בתשלומים</h3><p>למי שמעדיף לפרוס את ההשקעה</p></div>
+            <div class="plan-price plan-price-split" aria-label="200 שקלים לחודש ועוד 500 שקלים חד פעמי">
+              <span class="plan-primary"><bdi dir="ltr"><span class="plan-amount">200</span> <span class="plan-currency">₪</span></bdi><span class="plan-period">לחודש</span></span>
+              <span class="plan-plus" aria-hidden="true">+</span>
+              <span class="plan-once"><bdi dir="ltr">500 ₪</bdi> <strong>חד־פעמי</strong></span>
+            </div>
+            <p class="plan-note">חבילת שנה ראשונה · מחיר כולל 2,900 ₪ ב־12 תשלומים</p>
             <ul class="plan-features">
               <li>תצוגה מקדימה אישית לפני תשלום</li>
               <li>אתר פעולה בעמוד אחד, עד 7 אזורי תוכן</li>
@@ -291,11 +295,11 @@
         </div>
 
         <div class="addons reveal calc-box">
-          <div class="addons-head"><h3>המחיר המלא, בלי אותיות קטנות</h3><p>התצוגה האישית חינם. במסלול החודשי השנה הראשונה עולה 2,900 ₪; במסלול השנתי 2,200 ₪.</p></div>
+          <div class="addons-head"><h3>המחיר המלא, בלי אותיות קטנות</h3><p>התצוגה האישית חינם. חבילת השנה הראשונה עולה 2,900 ₪ בתשלומים, או 2,200 ₪ בתשלום שנתי מראש.</p></div>
           <div class="calc-grid">
             <div class="calc-plan">
-              <h4>מסלול חודשי</h4>
-              <ul class="plan-features"><li>500 ₪ הפעלה והקמה</li><li>200 ₪ × 12 חודשים</li></ul>
+              <h4>חבילת שנה בתשלומים</h4>
+              <ul class="plan-features"><li>500 ₪ חד־פעמי להפעלה ולהקמה</li><li>200 ₪ × 12 תשלומים חודשיים</li></ul>
               <p class="calc-total">סה"כ שנה ראשונה: <strong>2,900 ₪</strong></p>
             </div>
             <div class="calc-plan">
@@ -403,7 +407,7 @@
           <details class="faq-item reveal"><summary>מה ההבדל בין Smart Request לטופס רגיל?<span aria-hidden="true">+</span></summary><p>Smart Request שואל עד שש שאלות קצרות שרלוונטיות לעסק ומכין מהתשובות הודעה ברורה לוואטסאפ, במקום להשאיר את בעל העסק עם הודעה כללית כמו מחיר?</p></details>
           <details class="faq-item reveal"><summary>האם WhatsApp API או אוטומציה כלולים?<span aria-hidden="true">+</span></summary><p>לא. Clarvix Core יכול להכין ולפתוח הודעה מסודרת בוואטסאפ. אוטומציה רשמית, בוטים או WhatsApp API אינם כלולים.</p></details>
           <details class="faq-item reveal"><summary>מי הבעלים של הדומיין?<span aria-hidden="true">+</span></summary><p>הלקוח הוא המחזיק החוקי של הדומיין מהיום הראשון. Clarvix מנהלת את הרישום, התשלום, החידוש, ה-DNS והאחסון כדי שהלקוח לא יצטרך להתעסק בצד הטכני.</p></details>
-          <details class="faq-item reveal"><summary>האם אפשר לבטל?<span aria-hidden="true">+</span></summary><p>במסלול החודשי קיימת התחייבות ראשונית ל-12 חודשים. המסלול השנתי משולם מראש לשנה. תנאי הביטול והיציאה המלאים מופיעים בהסכם השירות.</p></details>
+          <details class="faq-item reveal"><summary>האם אפשר לבטל?<span aria-hidden="true">+</span></summary><p>אפשר למסור הודעת יציאה בכל עת. המסלול החודשי הוא חבילת שנה ראשונה במחיר כולל של 2,900 ₪ המשולם בתשלומים, ולכן יציאה מוקדמת אינה מבטלת אוטומטית את יתרת המחיר. זכויות חובה ומקרה של הפרה יסודית מצד Clarvix נשמרים בהסכם.</p></details>
           <details class="faq-item reveal"><summary>מה כלול בשינויים?<span aria-hidden="true">+</span></summary><p>לפני ההשקה כלולים שני סבבי תיקונים מרוכזים. לאחר ההשקה נכלל תיקון תקלות טכניות בלבד ואין מכסת שינויים חודשית; תוכן, עיצוב, עמודים, שפות, אינטגרציות או שינוי מבני מתומחרים בנפרד.</p></details>
           <details class="faq-item reveal"><summary>האם Clarvix מבטיחה לקוחות או דירוג בגוגל?<span aria-hidden="true">+</span></summary><p>לא. האתר נבנה כדי להבהיר את ההצעה, להוביל לפעולה ולמדוד בקשות, אך אין הבטחה לכמות פניות, מכירות או מיקום בגוגל.</p></details>
           <details class="faq-item reveal"><summary>האם המחיר כולל מע״מ?<span aria-hidden="true">+</span></summary><p>כיום Clarvix היא עוסק פטור ולכן אינה גובה מע״מ. אם המעמד ישתנה, מע״מ יתווסף לחיובים עתידיים בהתאם לדין ולהסכם.</p></details>

@@ -10,7 +10,7 @@ Este repositorio publica exclusivamente **Clarvix Core**, basado en:
 
 ## Oferta publicada
 
-- Mensual: 500 ILS de activación + 200 ILS/mes, con compromiso inicial de 12 meses.
+- Primera anualidad en cuotas: precio total 2.900 ILS, pagado con 200 ILS/mes durante 12 meses + 500 ILS una sola vez.
 - Anual: 2.200 ILS, activación incluida.
 - Confidencialidad opcional: 500 ILS, pago único.
 - Dos rondas consolidadas antes de publicar.

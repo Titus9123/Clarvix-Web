@@ -1,0 +1,2 @@
+prospect_id,created_at,business_name,legal_name,segment,city,website,contact_name,channel,contact_detail,source,fit_score,status,last_contact_at,next_action_at,preview_url,plan_interest,quoted_amount_ils,vat_status,objection,consent_basis,opt_out,notes
+CLX-0001,YYYY-MM-DD,,,,,,,,,manual_research,,identified,,,,,,,legitimate_business_research,false,

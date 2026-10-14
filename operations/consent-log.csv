@@ -1,0 +1,2 @@
+record_id,client_id,person_name,purpose,scope,legal_basis,channel,evidence_location,granted_at,expires_at,withdrawn_at,status,notes
+CONS-0001,,,,,,,,,,,pending,

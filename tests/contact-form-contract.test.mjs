@@ -25,4 +25,6 @@ test('contact page security policy permits only the intake host', () => {
   assert.match(contact, /option value="core_monthly"/);
   assert.match(contact, /option value="core_annual"/);
   assert.match(contact, /option value="not_sure"/);
+  assert.match(contact, /name="responder_count"/);
+  assert.match(contact, /href="privacy\.html"/);
 });

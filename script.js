@@ -1,8 +1,57 @@
-// Google Ads site-wide tag.
+// Optional analytics and advertising are loaded only after an explicit choice.
+// Until then the site runs with essential browser storage only.
 window.dataLayer = window.dataLayer || [];
 function gtag() { dataLayer.push(arguments); }
-gtag('js', new Date());
-gtag('config', 'AW-18364963340');
+const CONSENT_KEY = 'clarvix_consent_v1';
+let analyticsEnabled = false;
+
+function readConsent() {
+  try { return window.localStorage.getItem(CONSENT_KEY); } catch (_) { return null; }
+}
+
+function writeConsent(value) {
+  try { window.localStorage.setItem(CONSENT_KEY, value); } catch (_) { /* Choice remains valid for this page. */ }
+}
+
+function loadOptionalMeasurement() {
+  if (analyticsEnabled) return;
+  analyticsEnabled = true;
+
+  const googleScript = document.createElement('script');
+  googleScript.async = true;
+  googleScript.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18364963340';
+  document.head.appendChild(googleScript);
+  gtag('js', new Date());
+  gtag('config', 'AW-18364963340', { anonymize_ip: true });
+
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2089861764958713');
+  fbq('track', 'PageView');
+}
+
+function setConsent(value) {
+  writeConsent(value);
+  document.querySelector('.consent-banner')?.remove();
+  if (value === 'analytics') loadOptionalMeasurement();
+}
+
+function showConsentBanner() {
+  document.querySelector('.consent-banner')?.remove();
+  const banner = document.createElement('section');
+  banner.className = 'consent-banner';
+  banner.setAttribute('aria-label', 'העדפות פרטיות');
+  banner.innerHTML = '<div><strong>הפרטיות שלכם חשובה</strong><p>האתר משתמש באחסון חיוני להפעלה. Google Ads ו-Meta ייטענו רק אם תאשרו מדידה אופציונלית. אפשר להשתמש באתר ולשלוח פנייה גם בלי לאשר.</p><a href="privacy.html">למדיניות הפרטיות</a></div><div class="consent-actions"><button type="button" class="button consent-accept">אישור מדידה</button><button type="button" class="consent-essential">חיוני בלבד</button></div>';
+  document.body.appendChild(banner);
+  banner.querySelector('.consent-accept').addEventListener('click', () => setConsent('analytics'));
+  banner.querySelector('.consent-essential').addEventListener('click', () => setConsent('essential'));
+}
 
 const GADS_CONVERSION_LABELS = {
   whatsapp: 'AW-18364963340/NmvECPz3--EcEIy0jLVE',
@@ -77,17 +126,18 @@ function leadAttributionFields() {
 // These events contain no form values, URLs, phone numbers or email addresses.
 // A connected GA4 destination still needs to be verified in the Google tag settings.
 function trackContactEvent(eventName, method) {
+  if (!analyticsEnabled) return;
   gtag('event', eventName, { contact_method: method });
 }
 
 function trackGoogleAdsConversion(sendTo) {
-  if (typeof gtag !== 'function') return;
+  if (!analyticsEnabled || typeof gtag !== 'function') return;
   gtag('event', 'conversion', { send_to: sendTo });
 }
 
 // Meta Pixel: microconversions only. No form values, phone numbers or emails are ever passed.
 function trackMetaPixelEvent(eventName) {
-  if (typeof fbq !== 'function') return;
+  if (!analyticsEnabled || typeof fbq !== 'function') return;
   fbq('track', eventName);
 }
 
@@ -111,6 +161,7 @@ document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
 // only generate_lead (a submitted form) should be configured as a primary conversion.
 document.querySelectorAll('[data-track-event]').forEach((el) => {
   el.addEventListener('click', () => {
+    if (!analyticsEnabled) return;
     const eventName = el.dataset.trackEvent;
     const detail = el.dataset.plan ? { plan: el.dataset.plan } : {};
     gtag('event', eventName, detail);
@@ -127,6 +178,17 @@ if (window.top !== window.self) {
   }
 }
 
+const savedConsent = readConsent();
+if (savedConsent === 'analytics') loadOptionalMeasurement();
+else if (savedConsent !== 'essential') showConsentBanner();
+
+document.querySelectorAll('[data-open-consent]').forEach((button) => {
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
+    showConsentBanner();
+  });
+});
+
 const header = document.querySelector('#header');
 const menuButton = document.querySelector('.menu-button');
 const mobileMenu = document.querySelector('#mobile-menu');
@@ -139,10 +201,10 @@ const finePointer = window.matchMedia('(pointer: fine)').matches;
 let scrollFrame = 0;
 function updatePageChrome() {
   const scrollY = window.scrollY;
-  header.classList.toggle('scrolled', scrollY > 10);
+  if (header) header.classList.toggle('scrolled', scrollY > 10);
   const scrollable = root.scrollHeight - window.innerHeight;
   const progress = scrollable > 0 ? Math.min(1, scrollY / scrollable) : 0;
-  progressBar.style.width = `${progress * 100}%`;
+  if (progressBar) progressBar.style.width = `${progress * 100}%`;
 
   if (!reducedMotion) {
     const heroProgress = Math.min(1, scrollY / Math.max(1, window.innerHeight));
@@ -176,33 +238,37 @@ window.addEventListener('scroll', requestChromeUpdate, { passive: true });
 window.addEventListener('resize', requestChromeUpdate, { passive: true });
 
 function closeMenu() {
+  if (!menuButton || !mobileMenu || !header) return;
   menuButton.setAttribute('aria-expanded', 'false');
   menuButton.setAttribute('aria-label', 'פתיחת תפריט');
   mobileMenu.hidden = true;
   header.classList.remove('menu-open');
 }
 
-menuButton.addEventListener('click', () => {
-  const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
-  if (isOpen) {
-    closeMenu();
-    return;
-  }
-  menuButton.setAttribute('aria-expanded', 'true');
-  menuButton.setAttribute('aria-label', 'סגירת תפריט');
-  mobileMenu.hidden = false;
-  header.classList.add('menu-open');
-});
+if (menuButton && mobileMenu && header) {
+  menuButton.addEventListener('click', () => {
+    const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
+    if (isOpen) {
+      closeMenu();
+      return;
+    }
+    menuButton.setAttribute('aria-expanded', 'true');
+    menuButton.setAttribute('aria-label', 'סגירת תפריט');
+    mobileMenu.hidden = false;
+    header.classList.add('menu-open');
+  });
 
-mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
-window.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') {
-    closeMenu();
-    menuButton.focus();
-  }
-});
+  mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') {
+      closeMenu();
+      menuButton.focus();
+    }
+  });
+}
 
-document.querySelector('#year').textContent = new Date().getFullYear();
+const year = document.querySelector('#year');
+if (year) year.textContent = new Date().getFullYear();
 
 const revealItems = document.querySelectorAll('.reveal');
 const scramble = (element) => {
@@ -497,17 +563,6 @@ document.querySelectorAll('.plan-toggle').forEach((toggle) => {
   });
 });
 
-document.querySelectorAll('.care-toggle').forEach((toggle) => {
-  const plan = toggle.closest('.care-plan');
-  const amountEl = plan.querySelector('.care-amount');
-  toggle.querySelectorAll('button').forEach((button) => {
-    button.addEventListener('click', () => {
-      toggle.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item === button));
-      pulseAmount(amountEl, Number(button.dataset.price));
-    });
-  });
-});
-
 const addonInputs = document.querySelectorAll('[data-addon]');
 const addonsSum = document.querySelector('#addons-sum');
 const addonsHint = document.querySelector('#addons-hint');
@@ -659,7 +714,7 @@ if (contactForm) {
       phone: data.get('phone'),
       email: data.get('email'),
       business_type: data.get('business_type'),
-      appointment_volume: data.get('appointment_volume'),
+      responder_count: data.get('responder_count'),
       has_existing_site: data.get('has_existing_site'),
       plan: data.get('plan'),
       message: data.get('message'),
@@ -765,17 +820,3 @@ if (!reducedMotion && !sessionStorage.getItem('clarvix-mark-drop-seen')) {
     }
   }, dropDelay);
 }
-
-// Meta Pixel (Clarvix Core website dataset). Loaded from this external file, not inline,
-// so it runs under the site's strict CSP (script-src has no 'unsafe-inline'). Placed last so
-// it never blocks or delays the rest of the page's own behavior.
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '2089861764958713');
-fbq('track', 'PageView');

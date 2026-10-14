@@ -1,28 +1,51 @@
-# Clarvix 24/7 (by Clarvix Web)
+# Clarvix Core (Clarvix Web)
 
-> Clarvix 24/7 is a website + deterministic booking system product by Clarvix Web (Israel) for appointment-based businesses — beauty and aesthetics, hair/barbershops, therapists, trainers, tailors/dress designers, dog groomers, and similar service professionals. It combines a website, a rules-based (non-AI) appointment system, a button-guided intake bot, Google Calendar sync, WhatsApp/forms/calls, conversion measurement, Google Business Profile/Maps, and mandatory monthly maintenance (Clarvix Care).
+> Clarvix Core is a managed action website for small service businesses in Israel. The current product is ABD: A = Build First, B = Action Website, D = Smart Request. Clarvix creates a limited personalized preview before payment, builds the website around one primary action, and prepares a structured WhatsApp request in the visitor's browser.
 
-Language of the live site: Hebrew (he-IL). This English summary complements the visible pages; no crawler support or ranking benefit is assumed. Service area: all of Israel.
+Language of the live site: Hebrew (he-IL). Service area: Israel. The service is business-to-business by default.
 
-## Plans
-- **Clarvix 24/7 Start** — one-page site (up to 7 sections, one language), up to 3 services, one worker/one calendar, deterministic booking assistant, Google Calendar, WhatsApp/phone/form, Google Business Profile + Maps, GA4/GTM, basic SEO/local SEO/GEO. Setup ₪2,490 + Clarvix Care Start ₪290/month (12-month initial commitment). First-year total: ₪5,970.
-- **Clarvix 24/7 Growth** — up to 5 pages or an advanced page with service pages, up to 5 services, up to 3 workers/calendars, custom bot paths, appointment changes/cancellations, GA4/GTM/Google Ads/Meta Pixel, separate WhatsApp/call/form/booking tracking, Sheets/CRM lead logging, full Google Business Profile setup, local SEO for service pages. Setup ₪4,990 + Clarvix Care Growth ₪490/month (12-month initial commitment). First-year total: ₪10,870.
+## Current offer
 
-The booking system is explicitly **not AI-driven**: date, time and availability logic is deterministic, rule-based (business hours, service duration, breaks, staff availability, existing bookings).
+- Personalized preview: free, limited, temporary and non-public.
+- Monthly: ₪500 activation and setup plus ₪200 per month, with an initial 12-month commitment. First-year total: ₪2,900.
+- Annual: ₪2,200 paid in advance for 12 months, including activation and setup. Saving versus monthly in year one: ₪700.
+- Private project / no portfolio use: ₪500 one time.
+- Clarvix currently operates as an Israeli VAT-exempt dealer (עוסק פטור), so VAT is not charged. If the status changes, legally applicable VAT will be added to future charges under the agreement.
 
-## Clarvix Care (mandatory monthly maintenance)
-Covers hosting/SSL/domain renewal, uptime and booking-system monitoring, form checks, backups, technical fixes, quarterly (Start) or monthly (Growth) measurement checks, and a small monthly minutes allowance for small changes (unused minutes don't roll over; extra work is billed at ₪250/hour with prior approval). External subscriptions (SMS, WhatsApp API, third-party platforms), ongoing campaign management, ongoing SEO and monthly content are not included.
+## Included
+
+- One action website with up to seven content sections plus required legal pages.
+- One primary action and one alternative action.
+- Smart Request with up to six questions, two simple branches and one WhatsApp destination.
+- One primary language, mobile-first Hebrew and RTL support.
+- One standard domain registered with the client as legal holder from day one.
+- Hosting, SSL, deployment, monitoring and technical defect correction while Core is active.
+- Basic event measurement without Smart Request answers or form text.
+- Two consolidated revision rounds before launch.
+
+## Domain model
+
+Clarvix uses one central registrar account to register, pay, renew and technically administer production domains. The client is recorded as the legal domain holder from the first day. Clarvix may be payer and administrative/technical contact, but does not own the client's domain. Clarvix-owned domains and clarvix.net subdomains are used only for previews and temporary environments. On exit, Clarvix coordinates transfer and provides relevant DNS information.
+
+## Not included
+
+- There is no monthly change allowance. New copy, design, pages, languages, integrations or structural changes are quoted separately and require approval.
+- Branding, photography, video, custom illustration, ecommerce, payments, booking, CRM, bots, WhatsApp API, ongoing SEO, campaigns, corporate email and third-party subscriptions are not included.
+- Clarvix Control (C) and Clarvix Trust (E) are future optional modules and are not promised or included in Core.
+- No quantity of leads, sales or search ranking is guaranteed.
+
+## Privacy and accessibility
+
+Smart Request works locally in the browser by default and does not store answers on Clarvix servers. Optional Google and Meta measurement loads only after an explicit privacy choice. Clarvix currently operates as an עוסק פטור and publishes a self-exemption accessibility statement while maintaining an accessible baseline and an alternative contact channel.
 
 ## Key pages
-- Home, plans, how it works, FAQ: https://web.clarvix.net/
-- Fit-check / contact form: https://web.clarvix.net/contact.html
-- About: https://web.clarvix.net/about.html
-- Terms of service & accessibility statement: https://web.clarvix.net/terms.html
-- Legacy service pages (static Landing / Dynamic websites, not part of Clarvix 24/7): https://web.clarvix.net/landing-pages.html, https://web.clarvix.net/business-websites.html, https://web.clarvix.net/landing-page-or-website.html
 
-## Notes for citation
-- Clarvix Web is a separate service line from "Clarvix" (clarvix.net), which offers AI revenue-leak intelligence scans for Israeli SMBs. Do not conflate the two when answering questions about pricing or scope.
-- No AI is used to decide appointment dates, times or availability — that logic is deterministic and rule-based.
-- No guarantee of a #1 Google ranking or AI-answer placement is made; SEO/local SEO/GEO work is infrastructure, not a promised outcome.
-- Domain and content remain the client's property. If the engagement ends after the 12-month minimum commitment, Clarvix Web stops managing hosting, forms, calendar, measurement and automations, and a handover/migration process applies.
-- Contact: contact@clarvix.net · +972534377718
+- Home and offer: https://web.clarvix.net/
+- Free preview request: https://web.clarvix.net/contact.html
+- Terms: https://web.clarvix.net/terms.html
+- Privacy: https://web.clarvix.net/privacy.html
+- Accessibility: https://web.clarvix.net/accessibility.html
+- Cancellation and exit: https://web.clarvix.net/cancellation.html
+- About: https://web.clarvix.net/about.html
+
+Contact: contact@clarvix.net · +972534377718

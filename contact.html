@@ -7,8 +7,6 @@
   <meta name="color-scheme" content="light">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://googleads.g.doubleclick.net https://connect.facebook.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.googletagmanager.com https://www.facebook.com; connect-src 'self' https://n8n.clarvix.net https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net https://www.google-analytics.com https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net https://ad.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18364963340"></script>
-  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2089861764958713&ev=PageView&noscript=1" alt=""></noscript>
   <meta name="description" content="ספרו לנו על העסק והפעולה שחשובה לכם. אם יש התאמה, Clarvix תכין תצוגה מקדימה אישית ללא עלות וללא התחייבות.">
   <meta property="og:title" content="קבלו תצוגה מקדימה בחינם — Clarvix Core">
   <meta property="og:description" content="בודקים התאמה ומכינים כיוון אישי לעסק לפני תשלום.">
@@ -29,7 +27,7 @@
   <link rel="apple-touch-icon" href="images/favicon-icon-180.png">
   <link rel="preload" href="fonts/heebo-hebrew.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="fonts.css">
-  <link rel="stylesheet" href="style.css?v=seo-geo-1">
+  <link rel="stylesheet" href="style.css?v=core-2">
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
   <script type="application/ld+json">
 {
@@ -190,7 +188,7 @@
             </div>
             <div class="form-row">
               <label for="cf-volume">כמה אנשים עונים לפניות?</label>
-              <select id="cf-volume" name="appointment_volume">
+              <select id="cf-volume" name="responder_count">
                 <option value="1">רק אני</option>
                 <option value="2-3">2–3</option>
                 <option value="4-plus">4 ומעלה</option>
@@ -219,17 +217,17 @@
             <textarea id="cf-message" name="message" placeholder="מה העסק מציע, מאיפה מגיעות פניות היום ואיזה מידע אתם צריכים לפני שאפשר לענות?"></textarea>
           </div>
           <div class="form-row form-checkbox">
-            <label><input type="checkbox" id="cf-privacy" name="privacy_consent" required> קראתי ואני מסכים/ה ל<a href="terms.html#privacy">מדיניות הפרטיות</a></label>
+            <label><input type="checkbox" id="cf-privacy" name="privacy_notice_acknowledged" required> קראתי את <a href="privacy.html">הודעת הפרטיות</a></label>
           </div>
           <button type="submit" class="button form-submit">בקשו תצוגה אישית <span aria-hidden="true">←</span></button>
           <p class="form-status" id="form-status" role="status"></p>
-          <p class="form-note">מסירת הפרטים אינה חובה לפי חוק. המידע נדרש כדי לבדוק התאמה, להכין תצוגה וליצור אתכם קשר; הוא לא יימסר לצד שלישי למטרות שיווק. ניתן לבקש עיון, תיקון או מחיקה דרך contact@clarvix.net.</p>
+          <p class="form-note">מסירת הפרטים היא מרצון. הם משמשים לבדיקת התאמה, הכנת preview וחזרה אליכם, ומעובדים במערכת קליטת הפניות של Clarvix. ללא שם וטלפון לא נוכל לטפל בפנייה. אפשר לבקש עיון, תיקון או מחיקה כמפורט במדיניות.</p>
         </form>
       </div>
     </section>
   </main>
 
-  <footer><div class="shell footer-grid"><a class="brand" href="/"><img class="brand-logo" src="images/clarvix-web-logo.webp" width="400" height="85" alt="Clarvix Web"></a><p>Clarvix Core — רואים כיוון לפני שמשלמים.<br>אתר פעולה ו-Smart Request לעסקים קטנים בישראל.</p><nav aria-label="ניווט תחתון"><a href="/#how-it-works">איך זה עובד</a><a href="/#core">מה כלול</a><a href="/#pricing">מחיר</a><a href="/#work">עבודות</a><a href="/#faq">שאלות נפוצות</a><a href="about.html">אודות</a><a href="contact.html">תצוגה בחינם</a><a href="terms.html">תנאי שימוש</a></nav><small><a href="tel:+972534377718"><bdi dir="ltr">053-437-7718</bdi></a> · <a href="mailto:contact@clarvix.net">contact@clarvix.net</a><br>© <span id="year"></span> Clarvix. כל הזכויות שמורות.</small></div></footer>
+  <footer><div class="shell footer-grid"><a class="brand" href="/"><img class="brand-logo" src="images/clarvix-web-logo.webp" width="400" height="85" alt="Clarvix Web"></a><p>Clarvix Core — רואים כיוון לפני שמשלמים.<br>אתר פעולה ו-Smart Request לעסקים קטנים בישראל.</p><nav aria-label="ניווט תחתון"><a href="/#pricing">מחיר</a><a href="/#how-it-works">איך זה עובד</a><a href="/#core">מה כלול</a><a href="/#faq">שאלות נפוצות</a><a href="terms.html">תנאי שירות</a><a href="privacy.html">פרטיות</a><a href="accessibility.html">נגישות</a><a href="cancellation.html">ביטול ויציאה</a><a href="contact.html">יצירת קשר</a><button type="button" class="footer-link-button" data-open-consent>הגדרות פרטיות</button></nav><small>Clarvix · Albert Neumann · עוסק פטור<br><a href="tel:+972534377718"><bdi dir="ltr">053-437-7718</bdi></a> · <a href="mailto:contact@clarvix.net">contact@clarvix.net</a><br>מספר העוסק וכתובת למשלוח הודעות מופיעים בהצעה, בהסכם ובמסמך התשלום.<br>© <span id="year"></span> Clarvix. כל הזכויות שמורות.</small></div></footer>
 
   <div class="float-stack">
     <div class="a11y-widget">
@@ -244,7 +242,7 @@
         <button type="button" data-a11y="underline">הדגשת קישורים <span aria-hidden="true">U</span></button>
         <button type="button" data-a11y="motion">עצירת אנימציות <span aria-hidden="true">❚❚</span></button>
         <button type="button" data-a11y="reset">איפוס הגדרות <span aria-hidden="true">↺</span></button>
-        <a href="terms.html#accessibility" class="a11y-statement">הצהרת נגישות</a>
+        <a href="accessibility.html" class="a11y-statement">הצהרת נגישות</a>
       </div>
     </div>
     <a class="float-btn whatsapp-btn" href="https://wa.me/972534377718?text=%D7%94%D7%99%D7%99%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20Clarvix%20Core.%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%94%D7%AA%D7%90%D7%9E%D7%94%20%D7%9C%D7%AA%D7%A6%D7%95%D7%92%D7%94%20%D7%9E%D7%A7%D7%93%D7%99%D7%9E%D7%94%20%D7%90%D7%99%D7%A9%D7%99%D7%AA%20%D7%91%D7%97%D7%99%D7%A0%D7%9D." target="_blank" rel="noopener noreferrer" aria-label="שליחת הודעת וואטסאפ">
@@ -252,6 +250,6 @@
     </a>
   </div>
 
-  <script src="script.js?v=seo-geo-1" defer></script>
+  <script src="script.js?v=core-2" defer></script>
 </body>
 </html>

@@ -26,11 +26,12 @@ function visit(path, { referrer = '', session = storage(), result = { ok: true }
         else links.other = fn; // e.g. [data-track-event] — not exercised by these tests
       } }],
       querySelector: (selector) => selector === '#contact-form' ? form : status },
-    FormData: class { get(key) { return { name: 'Test Person', phone: '0500000000', email: 'test@example.test', message: 'Test message', plan: 'core_annual', business_type: 'technical_service', appointment_volume: '1', has_existing_site: 'no', company: '' }[key]; } },
+    FormData: class { get(key) { return { name: 'Test Person', phone: '0500000000', email: 'test@example.test', message: 'Test message', plan: 'core_annual', business_type: 'technical_service', responder_count: '1', has_existing_site: 'no', company: '' }[key]; } },
     fetch: async (url, init) => { requests.push({ url, ...init, payload: JSON.parse(init.body) }); if (result instanceof Error) throw result; return await result; },
     console: { error() {} }
   });
   vm.runInContext(extended ? attribution.replace('LEAD_ATTRIBUTION_FIELDS_ENABLED = false','LEAD_ATTRIBUTION_FIELDS_ENABLED = true') : attribution, context);
+  vm.runInContext('analyticsEnabled = true', context);
   vm.runInContext(formScript, context);
   return { session, context, requests, links, button, status, resets: () => resets,
     acquisition: () => JSON.parse(vm.runInContext('JSON.stringify(acquisition)',context)),
@@ -75,7 +76,7 @@ test('storage denied or corrupt does not prevent a successful form submission', 
 
 test('default form payload includes attribution fields (n8n webhook updated to accept them)',async()=>{
   const page=visit('/contact.html');await page.send();
-  assert.deepEqual(Object.keys(page.requests[0].payload).sort(),['name','phone','email','business_type','appointment_volume','has_existing_site','plan','message','company','page_url','referrer','landing_page','original_referrer','utm_source','utm_medium','utm_campaign','utm_term','utm_content','source_language','submitted_at'].sort());
+  assert.deepEqual(Object.keys(page.requests[0].payload).sort(),['name','phone','email','business_type','responder_count','has_existing_site','plan','message','company','page_url','referrer','landing_page','original_referrer','utm_source','utm_medium','utm_campaign','utm_term','utm_content','source_language','submitted_at'].sort());
 });
 
 test('email, phone-like campaign values and arbitrary parameters are not persisted',()=>{

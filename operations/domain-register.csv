@@ -1,0 +1,2 @@
+client_id,business_name,domain,holder_legal_name,holder_email,holder_phone,registrar,clarvix_account_reference,registered_at,expires_at,auto_renew,renewal_cost_ils,nameservers,dns_backup_location,authorization_received_at,transfer_lock,last_60_day_check,last_30_day_check,last_7_day_check,exit_status,notes
+,,,,,,LiveDNS,,,,true,,,,,,,,,active,

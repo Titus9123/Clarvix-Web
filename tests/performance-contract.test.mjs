@@ -45,14 +45,22 @@ test('mobile avoids continuous decorative canvas work while preserving desktop m
   assert.match(script, /if \(hero && heroCanvas && !reducedMotion && desktopMotion\)/);
 });
 
-test('Google Ads measurement and conversion IDs remain intact', () => {
+test('optional measurement retains conversion IDs and never loads before consent', () => {
   assert.match(script, /AW-18364963340/);
   assert.match(script, /NmvECPz3--EcEIy0jLVE/);
   assert.match(script, /UWaaCP_3--EcEIy0jLVE/);
   assert.match(script, /9EsmCPn3--EcEIy0jLVE/);
-  for (const source of Object.values(html)) {
-    assert.match(source, /<script async src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=AW-18364963340"><\/script>/);
-  }
+  for (const source of Object.values(html)) assert.doesNotMatch(source, /<script async src="https:\/\/www\.googletagmanager\.com/);
+  assert.match(script, /function loadOptionalMeasurement\(\)/);
+  assert.match(script, /savedConsent === 'analytics'/);
+  assert.match(script, /anonymize_ip: true/);
+});
+
+test('shared script tolerates legal pages without home-only navigation chrome', () => {
+  assert.match(script, /if \(header\) header\.classList\.toggle/);
+  assert.match(script, /if \(progressBar\) progressBar\.style\.width/);
+  assert.match(script, /if \(menuButton && mobileMenu && header\)/);
+  assert.match(script, /if \(year\) year\.textContent/);
 });
 
 test('Clarvix Core offer replaces the retired booking plans everywhere on the home page', () => {
@@ -61,6 +69,12 @@ test('Clarvix Core offer replaces the retired booking plans everywhere on the ho
   assert.match(html['index.html'], /2,200/);
   assert.match(html['index.html'], /עוסק פטור/);
   assert.doesNotMatch(html['index.html'], /Clarvix 24\/7|Clarvix Care|2,490|4,990/);
+});
+
+test('the current offer has no monthly change allowance and uses a central Clarvix domain account', () => {
+  assert.match(html['index.html'], /אין מכסת שינויים חודשית/);
+  assert.match(html['index.html'], /חשבון ניהול מרכזי/);
+  assert.doesNotMatch(html['index.html'], /15 דקות|microchange/i);
 });
 
 test('Smart Request demonstration is local-only and builds a WhatsApp URL in the browser', () => {

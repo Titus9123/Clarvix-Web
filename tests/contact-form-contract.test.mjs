@@ -20,6 +20,12 @@ test('contact form captures attribution and bot trap fields', () => {
   assert.match(contact, /name="company"/);
 });
 
+test('contact form matches the live intake requirement for email and phone', () => {
+  assert.match(contact, /id="cf-phone"[^>]*required/);
+  assert.match(contact, /id="cf-email"[^>]*required/);
+  assert.doesNotMatch(contact, /אימייל[^<]*\(לא חובה\)/);
+});
+
 test('contact page security policy permits only the intake host', () => {
   assert.match(contact, /connect-src 'self' https:\/\/n8n\.clarvix\.net/);
   assert.match(contact, /option value="core_monthly"/);

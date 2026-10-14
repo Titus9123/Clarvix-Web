@@ -28,4 +28,4 @@ Core no incluye cambios mensuales. Incluye dos rondas consolidadas antes del lan
 
 ## Datos que faltan para documentos definitivos
 
-Antes del primer contrato real deben completarse el número de עוסק y la dirección legal de notificaciones. No deben inventarse ni publicarse en el repositorio.
+Antes del primer contrato real deben completarse en la plantilla privada de Drive el número de עוסק y el domicilio legal de notificaciones. No deben inventarse ni publicarse en el repositorio. El archivo `contract-core-b2b-he.md` es solo un índice de las dos plantillas maestras y no una tercera copia contractual.

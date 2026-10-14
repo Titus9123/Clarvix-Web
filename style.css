@@ -236,6 +236,7 @@ html.a11y-no-motion .reveal{opacity:1!important;transform:none!important}
 @media(max-width:680px){.contact-page{padding:150px 0 70px}.contact-form{padding:26px}.form-two{grid-template-columns:1fr}}
 
 /* Terms page */
+.legal-page .site-header{background:rgba(9,13,13,.96);border-color:var(--line-dark)}
 .terms-page{padding:190px 0 100px;background:var(--paper);color:var(--ink)}
 .terms-page h1{font-size:clamp(34px,4.2vw,52px);letter-spacing:-.03em;margin:20px 0 18px}
 .terms-page .page-lead{max-width:680px;color:var(--muted);font-size:17px;line-height:1.8}

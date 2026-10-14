@@ -5,6 +5,8 @@
 - [ ] Clarvix Core ABD es el único producto presentado.
 - [ ] Primera anualidad en cuotas: 200 ₪ × 12 + 500 ₪ una sola vez = 2.900 ₪.
 - [ ] Anual: 2.200 ₪, activación incluida y ahorro de 700 ₪.
+- [ ] Salida antes de publicar por hitos 500/1.200/1.700 ₪; después, servicio futuro cesa y queda solo construcción decreciente.
+- [ ] Confidencialidad incluida; +500 ₪ se describe solo como no exhibición pública.
 - [ ] עוסק פטור y futura aplicación de IVA expresados sin ambigüedad.
 - [ ] No hay promesas de leads, rankings, automatización o funciones C/E.
 - [ ] No se ofrece ninguna cantidad de cambios mensuales.
@@ -15,7 +17,7 @@
 - [ ] Smart Request no almacena respuestas ni acepta datos sensibles.
 - [ ] Google y Meta no cargan antes del consentimiento opcional.
 - [ ] Enlaces visibles a términos, privacidad, accesibilidad, cancelación y contacto.
-- [ ] Identidad, número de עוסק y dirección legal aparecen en propuesta, contrato y documento de cobro.
+- [ ] Identidad, número de עוסק y domicilio fiscal aparecen en propuesta/contrato/documento privado cuando sean legalmente necesarios, nunca en el repositorio público.
 
 ## Dominio y salida
 

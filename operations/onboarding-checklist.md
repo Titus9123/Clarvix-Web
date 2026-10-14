@@ -5,10 +5,10 @@
 - [ ] Nombre legal, nombre comercial y número de עוסק/empresa verificados.
 - [ ] Confirmación escrita de que la compra es para fines empresariales.
 - [ ] Contacto único autorizado para aprobar contenido.
-- [ ] Propuesta y contrato firmados; plan, 12 meses, coste total e IVA claramente indicados.
-- [ ] Pago inicial recibido y documento de cobro correcto para עוסק פטור.
+- [ ] Propuesta y contrato firmados; coste total, asignación construcción/servicio, hitos, salida proporcional e IVA claramente indicados.
+- [ ] Antes del pago, חשבון עסקה/solicitud de pago si hace falta; después de cada cobro, קבלה en iCount. No emitir חשבונית מס mientras Clarvix sea עוסק פטור.
 - [ ] La propuesta/contrato privado incluye nombre jurídico, número de עוסק y domicilio fiscal verificados; esos datos no se copian al repositorio público.
-- [ ] Decisión de proyecto privado / sin portfolio registrada.
+- [ ] Confidencialidad incluida; decisión opcional de no exhibición pública (+500 ₪) registrada por separado.
 
 ## Alcance ABD
 

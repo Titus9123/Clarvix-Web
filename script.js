@@ -708,7 +708,7 @@ if (contactForm) {
       contactForm.classList.add('is-submitted');
       if (formStatus) {
         formStatus.classList.add('success');
-        formStatus.textContent = 'הפרטים התקבלו. נחזור אליכם בתוך יום עסקים אחד כדי לבדוק איזה מסלול מתאים לעסק.';
+        formStatus.textContent = 'הפרטים התקבלו. נחזור אליכם כדי לשוחח על הצרכים שלכם.';
       }
     } catch (error) {
       if (formStatus) formStatus.textContent = 'לא הצלחנו לשלוח כרגע. אפשר לנסות שוב או לפנות אלינו בוואטסאפ.';

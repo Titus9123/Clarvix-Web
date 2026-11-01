@@ -40,6 +40,7 @@ function setConsent(value) {
   writeConsent(value);
   document.querySelector('.consent-banner')?.remove();
   if (value === 'analytics') loadOptionalMeasurement();
+  else if (analyticsEnabled) window.location.reload();
 }
 
 function showConsentBanner() {

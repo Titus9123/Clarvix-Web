@@ -1,6 +1,36 @@
-import assert from "node:assert/strict";
-import {readFileSync} from "node:fs";
-import test from "node:test";
-const page=readFileSync(new URL("../contact.html",import.meta.url),"utf8");
-test("contact methods offer WhatsApp, email and phone",()=>{assert.match(page,/https:\/\/wa\.me\/972534377718/);assert.match(page,/mailto:contact@clarvix\.net/);assert.match(page,/tel:\+972534377718/);});
-test('form retains the original intake fields and endpoint',()=>{for(const field of ['name="name"','name="phone"','name="email"','name="business_type"','name="responder_count"','name="has_existing_site"','name="plan"']) assert.ok(page.includes(field),field); const s=readFileSync(new URL('../script.js',import.meta.url),'utf8');assert.match(s,/https:\/\/n8n\.clarvix\.net\/webhook\/clarvix\/web-lead/);assert.match(s,/fetch\(CONTACT_ENDPOINT/);});
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import test from 'node:test';
+
+const script = readFileSync(new URL('../script.js', import.meta.url), 'utf8');
+const contact = readFileSync(new URL('../contact.html', import.meta.url), 'utf8');
+
+test('contact form posts JSON to the Clarvix web-lead endpoint', () => {
+  assert.match(script, /https:\/\/n8n\.clarvix\.net\/webhook\/clarvix\/web-lead/);
+  assert.match(script, /fetch\(CONTACT_ENDPOINT/);
+  assert.match(script, /method:\s*'POST'/);
+  assert.doesNotMatch(script, /window\.location\.href\s*=\s*mailto/);
+});
+
+test('contact form captures attribution and bot trap fields', () => {
+  for (const field of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']) {
+    assert.match(script, new RegExp(field));
+  }
+  assert.match(script, /document\.referrer/);
+  assert.match(contact, /name="company"/);
+});
+
+test('contact form matches the live intake requirement for email and phone', () => {
+  assert.match(contact, /id="cf-phone"[^>]*required/);
+  assert.match(contact, /id="cf-email"[^>]*required/);
+  assert.doesNotMatch(contact, /אימייל[^<]*\(לא חובה\)/);
+});
+
+test('contact page security policy permits only the intake host', () => {
+  assert.match(contact, /connect-src 'self' https:\/\/n8n\.clarvix\.net/);
+  assert.match(contact, /option value="core_monthly"/);
+  assert.match(contact, /option value="core_annual"/);
+  assert.match(contact, /option value="not_sure"/);
+  assert.match(contact, /name="responder_count"/);
+  assert.match(contact, /href="privacy\.html"/);
+});

@@ -62,7 +62,7 @@ const GADS_CONVERSION_LABELS = {
 // First-touch attribution survives internal navigation. Never store arbitrary URL parameters.
 const ACQUISITION_KEY = 'clarvix_acquisition_v1';
 const UTM_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
-// Clarvix Core: the n8n webhook accepts landing_page/original_referrer.
+// The intake webhook accepts landing_page/original_referrer.
 // Verify the workflow before relying on these fields; flip back to false if it 400s.
 const LEAD_ATTRIBUTION_FIELDS_ENABLED = true;
 
@@ -157,7 +157,7 @@ document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
   });
 });
 
-// Clarvix Core funnel events: GA4 signals, never sent as Google Ads conversions —
+// Funnel events: GA4 signals, never sent as Google Ads conversions —
 // only generate_lead (a submitted form) should be configured as a primary conversion.
 document.querySelectorAll('[data-track-event]').forEach((el) => {
   el.addEventListener('click', () => {
@@ -658,44 +658,6 @@ if (a11yToggle && a11yPanel) {
       if (action === 'reset') a11yState = { textStep: 0, contrast: false, underline: false, noMotion: false };
       saveState(a11yState);
     });
-  });
-}
-
-// Clarvix Core: preselect the payment option chosen on the pricing cards and echo it in the
-// prefilled WhatsApp message, so intent captured on / carries through to contact.html.
-const PLAN_LABELS = {
-  core_monthly: 'Clarvix Core — חבילת שנה בתשלומים',
-  core_annual: 'Clarvix Core — מסלול שנתי',
-};
-const selectedPlan = new URLSearchParams(window.location.search).get('plan');
-if (selectedPlan && PLAN_LABELS[selectedPlan]) {
-  const planSelect = document.querySelector('#cf-plan');
-  if (planSelect) planSelect.value = selectedPlan;
-  document.querySelectorAll('a[href^="https://wa.me/"]').forEach((link) => {
-    try {
-      const url = new URL(link.href);
-      const text = url.searchParams.get('text') || '';
-      url.searchParams.set('text', `${text} (מסלול ${PLAN_LABELS[selectedPlan]})`);
-      link.href = url.toString();
-    } catch (_) { /* Malformed link — leave the default message as-is. */ }
-  });
-}
-
-// Smart Request demo: builds the message locally; no answers are transmitted or stored.
-const smartDemoForm = document.querySelector('#smart-demo-form');
-if (smartDemoForm) {
-  const demoFields = ['service', 'city', 'problem', 'time'];
-  const demoMessage = document.querySelector('#smart-demo-message');
-  const demoWhatsapp = document.querySelector('#smart-demo-whatsapp');
-  smartDemoForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const summary = demoFields
-      .map((field) => document.querySelector(`#demo-${field}`)?.value || '')
-      .filter(Boolean)
-      .join(' · ');
-    if (demoMessage) demoMessage.textContent = summary;
-    if (demoWhatsapp) demoWhatsapp.href = `https://wa.me/972534377718?text=${encodeURIComponent(summary)}`;
-    trackEvent('smart_request_demo_complete', { demo_vertical: 'air_conditioning' });
   });
 }
 

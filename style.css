@@ -248,7 +248,7 @@ html.a11y-no-motion .reveal{opacity:1!important;transform:none!important}
 .terms-body section{scroll-margin-top:100px}
 @media(max-width:680px){.terms-page{padding:150px 0 70px}.terms-body{margin-top:40px;gap:34px}}
 
-/* Clarvix Core: local-only Smart Request demonstration */
+/* Local demonstration styles */
 .smart-demo{padding:130px 0;border-top:1px solid var(--line)}
 .smart-demo-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:stretch}
 .smart-demo-form{background:#fff;border:1px solid var(--line);padding:34px}

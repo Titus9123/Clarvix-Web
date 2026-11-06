@@ -54,6 +54,14 @@ test('no hosting-provider leftovers: GitHub Pages is the only publishing target'
 test('privacy notice describes exactly the system in use: first-party form server and the contact mailbox', () => {
   const privacy = readFileSync(new URL('../privacy.html', import.meta.url), 'utf8');
   assert.match(privacy, /שרת הטפסים של Clarvix/);
+  assert.match(privacy, /מזהה מוצפן \(גיבוב\) של כתובת ה־IP/);
   assert.match(privacy, /contact@clarvix\.net/);
   assert.doesNotMatch(privacy, /n8n/i);
+});
+
+test('the form never hangs forever and keeps the visitor input until receipt is confirmed', () => {
+  assert.match(script, /new AbortController\(\)/);
+  assert.match(script, /signal: timeout\.signal/);
+  assert.match(script, /clearTimeout\(timer\)/);
+  assert.ok(script.indexOf('contactForm.reset()') > script.indexOf('confirmation.ok !== true'), 'reset only after confirmation');
 });

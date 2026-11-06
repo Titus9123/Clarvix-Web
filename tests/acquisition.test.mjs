@@ -18,7 +18,7 @@ function visit(path, { referrer = '', session = storage(), result = { ok: true, 
   let resets = 0;
   const form = { classList: { add() {} }, querySelector: () => button, addEventListener: (name, fn) => { events[name] = fn; }, reset: () => resets++ };
   const window = { location: new URL(path, BASE), sessionStorage: session, dataLayer: [] };
-  const context = vm.createContext({ window, dataLayer: window.dataLayer, URL, URLSearchParams, Date,
+  const context = vm.createContext({ window, dataLayer: window.dataLayer, URL, URLSearchParams, Date, AbortController, setTimeout, clearTimeout,
     document: { referrer, documentElement: { lang: 'he' },
       querySelectorAll: (selector) => [{ addEventListener: (_, fn) => {
         if (selector.includes('wa.me')) links.whatsapp = fn;

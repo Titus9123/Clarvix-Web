@@ -8,7 +8,7 @@ correo enviado; el receptor no guarda cuerpos de petición ni registra IP ni con
 `200 {"ok":true}` **solo después** de que el servidor SMTP acepte el mensaje; `422` validación (nombres de campo, nunca valores);
 `429` límite; `403` origen no permitido; `400` honeypot/JSON inválido; `502` fallo de entrega (nunca se simula un éxito).
 
-Controles: honeypot `company`, origen exacto, tipo de contenido, tamaño ≤16 KB, límites por IP (5/10 min) y globales (60/h) en la app
+Controles (revisados antes del despliegue): límites por IP/globales **persistentes** (SQLite en `StateDirectory`, solo hash salado de la IP + hora, borrado en ≤1 h), honeypot `company`, origen exacto, tipo de contenido, tamaño ≤16 KB, límites por IP (5/10 min) y globales (60/h) en la app
 y en nginx, enteros/enums cerrados, rechazo de enlaces en exceso, eliminación de caracteres de control (inyección de cabeceras),
 SMTP con TLS verificado (STARTTLS/SSL), credenciales solo por variables de entorno, `Reply-To` = correo del visitante.
 
@@ -31,3 +31,17 @@ Requisitos externos: registro DNS `A forms.clarvix.net → IP del VPS` y un usua
 ## Operación
 `journalctl -u clarvix-form` (solo muestra fallos de entrega por tipo de error, sin datos personales) · reinicio: `systemctl restart clarvix-form` ·
 rotar la contraseña SMTP: editar `/etc/clarvix-form/receiver.env` y reiniciar.
+
+## Revisión previa al despliegue (resumen)
+| Tema | Resolución |
+|---|---|
+| Límites tras reinicio | Persistentes en SQLite (hash salado de la IP, sin contenido); además `limit_req` de nginx, que no depende del servicio |
+| Errores SMTP | Transitorios (caída, timeout, 4xx): 1 reintento y `503 unavailable`. Permanentes (credenciales, 5xx, TLS): `502`, sin reintento. Nunca `200` sin aceptación del servidor de correo |
+| SMTP caído | El formulario muestra el mensaje de error con las alternativas (WhatsApp/teléfono/correo) y **conserva lo escrito**; tiempo máximo de espera 25 s en el navegador |
+| Abuso | Origen exacto, honeypot, enums, tamaño, anti-enlaces, límites, `limit_except POST` |
+| Credenciales | Solo en `/etc/clarvix-form/receiver.env` (root, 0600); nunca en el repo ni en el frontend. Usar un usuario SMTP exclusivo de envío |
+| systemd | `DynamicUser`, `StateDirectory` 0700, sin capacidades, `ProtectSystem=strict`, filtro de syscalls, `MemoryMax`; bloqueo de red opcional en `deploy/optional-network-lockdown.conf` |
+| Red | Escucha solo en `127.0.0.1`; abrir solo 22/80/443 (`ufw allow 22,80,443/tcp`); el puerto 8787 no se expone |
+| HTTPS | certbot (`--nginx`) instala el temporizador de renovación. Comprobar: `systemctl list-timers certbot.timer` y `certbot renew --dry-run`; nginx envía HSTS |
+| Tras reiniciar el VPS | `systemctl enable` (servicio y nginx) + `Restart=always`. Probar una vez con `sudo reboot` y luego `smoke_test.sh` |
+| Privacidad | El aviso del sitio declara: los datos viajan al buzón `contact@clarvix.net`, no se guardan en el servidor, y se conserva hasta 1 h un identificador con hash de la IP para limitar abusos |

@@ -11,8 +11,11 @@ GET  /healthz      -> 200 {"ok": true}
 import json
 import os
 import re
+import hashlib
 import secrets
 import smtplib
+import socket
+import sqlite3
 import ssl
 import sys
 import threading
@@ -106,6 +109,42 @@ class RateLimiter:
             return True
 
 
+class PersistentRateLimiter(RateLimiter):
+    """Same limits, but survive restarts. Stores only a salted hash of the client address and a timestamp
+    (never the raw IP, never lead data) in a small SQLite file, and deletes rows older than the longest window."""
+
+    def __init__(self, path, per_key, per_key_window, total, total_window, clock=time.time):
+        super().__init__(per_key, per_key_window, total, total_window, clock=clock)
+        self.db = sqlite3.connect(path, check_same_thread=False, isolation_level=None)
+        self.db.execute("PRAGMA journal_mode=WAL")
+        self.db.execute("CREATE TABLE IF NOT EXISTS hits (k TEXT NOT NULL, ts REAL NOT NULL)")
+        self.db.execute("CREATE INDEX IF NOT EXISTS hits_k ON hits (k, ts)")
+        self.db.execute("CREATE TABLE IF NOT EXISTS meta (name TEXT PRIMARY KEY, value TEXT NOT NULL)")
+        row = self.db.execute("SELECT value FROM meta WHERE name='salt'").fetchone()
+        if row:
+            self.salt = row[0]
+        else:
+            self.salt = secrets.token_hex(16)
+            self.db.execute("INSERT INTO meta VALUES ('salt', ?)", (self.salt,))
+
+    def allow(self, key):
+        now = self.clock()
+        hashed = hashlib.sha256((self.salt + key).encode()).hexdigest()[:20]
+        with self.lock:
+            self.db.execute("DELETE FROM hits WHERE ts < ?", (now - max(self.per_key_window, self.total_window),))
+            per_key = self.db.execute("SELECT COUNT(*) FROM hits WHERE k=? AND ts>=?", (hashed, now - self.per_key_window)).fetchone()[0]
+            total = self.db.execute("SELECT COUNT(*) FROM hits WHERE k='*' AND ts>=?", (now - self.total_window,)).fetchone()[0]
+            if per_key >= self.per_key or total >= self.total:
+                return False
+            self.db.execute("INSERT INTO hits VALUES (?, ?)", (hashed, now))
+            self.db.execute("INSERT INTO hits VALUES ('*', ?)", (now,))
+            return True
+
+
+class TransientMailError(Exception):
+    """The mail server could not be reached or asked us to retry later (4xx, timeout, disconnect)."""
+
+
 def build_message(lead, config):
     labels = [("שם", "name"), ("טלפון", "phone"), ("אימייל", "email"), ("סוג העסק", "business_type"),
               ("כמה אנשים עונים לפניות", "responder_count"), ("אתר קיים", "has_existing_site"), ("מסלול", "plan")]
@@ -123,9 +162,9 @@ def build_message(lead, config):
     return msg
 
 
-def send_mail(msg, config):
+def _deliver_once(msg, config):
     mode = config["smtp_security"]
-    timeout = 15
+    timeout = config.get("smtp_timeout", 8)
     if mode == "ssl":
         server = smtplib.SMTP_SSL(config["smtp_host"], config["smtp_port"], timeout=timeout, context=ssl.create_default_context())
     else:
@@ -143,6 +182,29 @@ def send_mail(msg, config):
             server.quit()
         except Exception:  # noqa: BLE001
             pass
+
+
+def send_mail(msg, config, sleep=time.sleep):
+    """Deliver with one retry for transient failures. Raises TransientMailError (retry later) or the original
+    permanent error (bad credentials, rejected recipient, TLS failure: retrying cannot help)."""
+    attempts = 2
+    for attempt in range(attempts):
+        try:
+            return _deliver_once(msg, config)
+        except (smtplib.SMTPServerDisconnected, smtplib.SMTPConnectError, socket.timeout, TimeoutError, ConnectionError) as exc:
+            error = exc
+        except smtplib.SMTPResponseException as exc:
+            if 400 <= exc.smtp_code < 500:
+                error = exc
+            else:
+                raise
+        except OSError as exc:
+            if isinstance(exc, (ssl.SSLError, smtplib.SMTPException)):
+                raise
+            error = exc
+        if attempt + 1 < attempts:
+            sleep(1.5)
+    raise TransientMailError(type(error).__name__) from error
 
 
 def load_config(env=None):
@@ -163,6 +225,8 @@ def load_config(env=None):
         "rate_ip_window": int(env.get("RATE_PER_IP_WINDOW", "600")),
         "rate_total": int(env.get("RATE_GLOBAL", "60")),
         "rate_total_window": int(env.get("RATE_GLOBAL_WINDOW", "3600")),
+        "rate_db": env.get("RATE_DB", ""),
+        "smtp_timeout": int(env.get("SMTP_TIMEOUT", "8")),
     }
     if not config["smtp_host"] or not config["mail_from"]:
         raise SystemExit("SMTP_HOST and MAIL_FROM/SMTP_USER are required")
@@ -174,7 +238,9 @@ def load_config(env=None):
 
 
 def make_handler(config, send=send_mail, limiter=None):
-    limiter = limiter or RateLimiter(config["rate_ip"], config["rate_ip_window"], config["rate_total"], config["rate_total_window"])
+    if limiter is None:
+        args = (config["rate_ip"], config["rate_ip_window"], config["rate_total"], config["rate_total_window"])
+        limiter = PersistentRateLimiter(config["rate_db"], *args) if config.get("rate_db") else RateLimiter(*args)
 
     class Handler(BaseHTTPRequestHandler):
         server_version = "ClarvixForm"
@@ -251,8 +317,12 @@ def make_handler(config, send=send_mail, limiter=None):
                 return self._json(422, {"ok": False, "error": "validation", "fields": errors})
             try:
                 send(build_message(lead, config), config)
-            except Exception as exc:  # noqa: BLE001  (log the class only: messages can contain addresses)
-                print(f"mail delivery failed: {type(exc).__name__}", file=sys.stderr, flush=True)
+            except TransientMailError as exc:  # SMTP unreachable/timeout/4xx even after one retry
+                print(f"mail temporarily unavailable: {exc}", file=sys.stderr, flush=True)
+                return self._json(503, {"ok": False, "error": "unavailable"}, retry_after=120)
+            except Exception as exc:  # noqa: BLE001  permanent: log class and SMTP code only (messages can contain addresses)
+                code = getattr(exc, "smtp_code", "")
+                print(f"mail delivery failed: {type(exc).__name__} {code}".strip(), file=sys.stderr, flush=True)
                 return self._json(502, {"ok": False, "error": "delivery"})
             return self._json(200, {"ok": True, "id": secrets.token_hex(6)})
 

@@ -752,11 +752,16 @@ if (contactForm) {
       formStatus.classList.add('visible');
     }
 
+    // If the receiver or its mail server does not answer, stop waiting: the visitor keeps what they typed
+    // (the form is reset only after a confirmed receipt) and sees the WhatsApp/phone/e-mail alternatives.
+    const timeout = new AbortController();
+    const timer = setTimeout(() => timeout.abort(), 25000);
     try {
       const response = await fetch(CONTACT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        signal: timeout.signal,
       });
       if (!response.ok) throw new Error(`Lead intake failed: ${response.status}`);
       // A lead exists only when the receiver confirms delivery; anything else is a failure, never a conversion.
@@ -775,6 +780,7 @@ if (contactForm) {
       if (formStatus) formStatus.textContent = 'לא הצלחנו לשלוח כרגע. אפשר לנסות שוב או לפנות אלינו בוואטסאפ.';
       console.error('Clarvix contact form submission failed', error);
     } finally {
+      clearTimeout(timer);
       if (submitButton) submitButton.disabled = false;
     }
   });

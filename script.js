@@ -68,8 +68,7 @@ const GADS_CONVERSION_LABELS = {
 // First-touch attribution survives internal navigation. Never store arbitrary URL parameters.
 const ACQUISITION_KEY = 'clarvix_acquisition_v1';
 const UTM_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
-// Clarvix Core: the n8n webhook accepts landing_page/original_referrer.
-// Verify the workflow before relying on these fields; flip back to false if it 400s.
+// The form receiver accepts landing_page/original_referrer (see server/form-receiver).
 const LEAD_ATTRIBUTION_FIELDS_ENABLED = true;
 
 function campaignValue(value) {
@@ -720,7 +719,9 @@ if (smartDemoForm) {
 
 // Contact form: secure first-party lead intake with campaign attribution.
 const contactForm = document.querySelector('#contact-form');
-const CONTACT_ENDPOINT = 'https://n8n.clarvix.net/webhook/clarvix/web-lead';
+// First-party receiver on the Clarvix VPS: validates the lead and e-mails it to contact@clarvix.net.
+// It answers {"ok":true} only after the mail server has accepted the message.
+const CONTACT_ENDPOINT = 'https://forms.clarvix.net/v1/contact';
 if (contactForm) {
   const formStatus = document.querySelector('#form-status');
   const submitButton = contactForm.querySelector('[type="submit"]');
@@ -751,13 +752,21 @@ if (contactForm) {
       formStatus.classList.add('visible');
     }
 
+    // If the receiver or its mail server does not answer, stop waiting: the visitor keeps what they typed
+    // (the form is reset only after a confirmed receipt) and sees the WhatsApp/phone/e-mail alternatives.
+    const timeout = new AbortController();
+    const timer = setTimeout(() => timeout.abort(), 25000);
     try {
       const response = await fetch(CONTACT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        signal: timeout.signal,
       });
       if (!response.ok) throw new Error(`Lead intake failed: ${response.status}`);
+      // A lead exists only when the receiver confirms delivery; anything else is a failure, never a conversion.
+      const confirmation = await response.json();
+      if (!confirmation || confirmation.ok !== true) throw new Error('Lead intake not confirmed');
       contactForm.reset();
       trackGoogleAdsConversion(GADS_CONVERSION_LABELS.formSubmit);
       trackContactEvent('generate_lead', 'form');
@@ -771,6 +780,7 @@ if (contactForm) {
       if (formStatus) formStatus.textContent = 'לא הצלחנו לשלוח כרגע. אפשר לנסות שוב או לפנות אלינו בוואטסאפ.';
       console.error('Clarvix contact form submission failed', error);
     } finally {
+      clearTimeout(timer);
       if (submitButton) submitButton.disabled = false;
     }
   });

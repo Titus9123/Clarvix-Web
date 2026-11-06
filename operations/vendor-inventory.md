@@ -5,7 +5,8 @@
 | GitHub Pages | Alojamiento público | IP y registros técnicos | Clarvix | 2FA, repositorio privado si procede, mínimo acceso | Export estático |
 | LiveDNS | Registro y renovación | Datos legales y contacto del Holder | Central Clarvix | 2FA, exactitud de Holder, recordatorios | TAC/transferencia |
 | Cloudflare | DNS y seguridad | DNS, IP y registros técnicos | Central Clarvix | 2FA, permisos mínimos, backup DNS | Cambio de nameservers |
-| n8n Clarvix | Recepción de leads | Datos del formulario | Clarvix | HTTPS, acceso limitado, retención 12 meses | Export/borrado |
+| Servidor de formularios Clarvix (VPS) | Recibir el formulario y reenviarlo por SMTP | Datos del formulario, solo en tránsito (no se almacenan ni se registran) | Clarvix | HTTPS, límites de solicitudes, credenciales SMTP solo en variables de entorno (0600) | Detener el servicio |
+| Correo de contact@clarvix.net | Recepción de leads | Datos del formulario | Clarvix | 2FA, retención definida por Clarvix | Export/borrado |
 | Google Ads | Medición opcional | Eventos e identificadores técnicos | Clarvix | Solo tras consentimiento, sin texto de formularios | Revocar etiqueta |
 | Meta Pixel | Medición opcional | Eventos e identificadores técnicos | Clarvix | Solo tras consentimiento, sin datos de contacto | Revocar pixel |
 | WhatsApp/Meta | Canal elegido por visitante | Mensaje que el visitante decide enviar | Visitante/cliente | No abrir ni enviar automáticamente | El usuario cancela antes de enviar |

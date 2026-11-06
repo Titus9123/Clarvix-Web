@@ -11,14 +11,14 @@ const storage = () => {
   const data = new Map();
   return { getItem: (key) => data.get(key) || null, setItem: (key, value) => data.set(key, value) };
 };
-function visit(path, { referrer = '', session = storage(), result = { ok: true }, extended = false } = {}) {
+function visit(path, { referrer = '', session = storage(), result = { ok: true, json: async () => ({ ok: true }) }, extended = false, consent = true } = {}) {
   const events = {}, links = {}, requests = [];
   const button = { disabled: false };
   const status = { textContent: '', classList: { add() {} } };
   let resets = 0;
-  const form = { querySelector: () => button, addEventListener: (name, fn) => { events[name] = fn; }, reset: () => resets++ };
+  const form = { classList: { add() {} }, querySelector: () => button, addEventListener: (name, fn) => { events[name] = fn; }, reset: () => resets++ };
   const window = { location: new URL(path, BASE), sessionStorage: session, dataLayer: [] };
-  const context = vm.createContext({ window, dataLayer: window.dataLayer, URL, URLSearchParams, Date,
+  const context = vm.createContext({ window, dataLayer: window.dataLayer, URL, URLSearchParams, Date, AbortController, setTimeout, clearTimeout,
     document: { referrer, documentElement: { lang: 'he' },
       querySelectorAll: (selector) => [{ addEventListener: (_, fn) => {
         if (selector.includes('wa.me')) links.whatsapp = fn;
@@ -31,7 +31,7 @@ function visit(path, { referrer = '', session = storage(), result = { ok: true }
     console: { error() {} }
   });
   vm.runInContext(extended ? attribution.replace('LEAD_ATTRIBUTION_FIELDS_ENABLED = false','LEAD_ATTRIBUTION_FIELDS_ENABLED = true') : attribution, context);
-  vm.runInContext('analyticsEnabled = true', context);
+  if (consent) vm.runInContext('analyticsEnabled = true', context);
   vm.runInContext(formScript, context);
   return { session, context, requests, links, button, status, resets: () => resets,
     acquisition: () => JSON.parse(vm.runInContext('JSON.stringify(acquisition)',context)),
@@ -74,7 +74,7 @@ test('storage denied or corrupt does not prevent a successful form submission', 
   }
 });
 
-test('default form payload includes attribution fields (n8n webhook updated to accept them)',async()=>{
+test('default form payload includes attribution fields (the receiver accepts them)',async()=>{
   const page=visit('/contact.html');await page.send();
   assert.deepEqual(Object.keys(page.requests[0].payload).sort(),['name','phone','email','business_type','responder_count','has_existing_site','plan','message','company','page_url','referrer','landing_page','original_referrer','utm_source','utm_medium','utm_campaign','utm_term','utm_content','source_language','submitted_at'].sort());
 });
@@ -98,7 +98,7 @@ test('one successful submission emits one lead and one original Ads conversion, 
   assert.doesNotMatch(JSON.stringify(events),/Test Person|0500000000|test@example|Test message/);
 });
 
-for(const [name,result] of [['HTTP failure',{ok:false,status:500}],['network failure',new Error('offline')]]){
+for(const [name,result] of [['HTTP failure',{ok:false,status:500}],['network failure',new Error('offline')],['HTTP 200 without confirmation',{ok:true,json:async()=>({ok:false})}],['HTTP 200 with an unreadable body',{ok:true,json:async()=>{throw new SyntaxError('bad json')}}],['HTTP 429 rate limit',{ok:false,status:429}]]){
   test(`${name} emits no conversion or lead and permits retry`,async()=>{
     const page=visit('/contact.html',{result});await page.send();assert.equal(page.events().length,0);
     assert.equal(page.resets(),0);assert.equal(page.button.disabled,false);assert.match(page.status.textContent,/לא הצלחנו/);
@@ -107,7 +107,7 @@ for(const [name,result] of [['HTTP failure',{ok:false,status:500}],['network fai
 
 test('repeated submission while request is pending sends once',async()=>{
   let resolve; const result=new Promise(r=>{resolve=r});const page=visit('/contact.html',{result});
-  const first=page.send();await page.send();assert.equal(page.requests.length,1);resolve({ok:true});await first;
+  const first=page.send();await page.send();assert.equal(page.requests.length,1);resolve({ok:true,json:async()=>({ok:true})});await first;
   assert.equal(page.events().filter(e=>e[1]==='generate_lead').length,1);
 });
 
@@ -145,4 +145,21 @@ test('after consent: GA4 and Ads are configured once each and a click yields one
   const configs = dataLayer.map((a) => Array.from(a)).filter((a) => a[0] === 'config').map((a) => a[1]);
   assert.deepEqual(configs, ['AW-18364963340', 'G-P4R22F19B8']);
   assert.equal(calls.filter((src) => src.includes('googletagmanager.com/gtag/js')).length, 1);
+});
+
+test('a confirmed lead emits one generate_lead (plus the existing Ads conversion) and resets the form', async () => {
+  const page = visit('/contact.html'); await page.send();
+  assert.deepEqual(page.events().map((e) => e[1]), ['conversion', 'generate_lead']);
+  assert.equal(page.resets(), 1); assert.match(page.status.textContent, /הפרטים התקבלו/);
+});
+
+test('without measurement consent a confirmed lead is still accepted but nothing is measured', async () => {
+  const page = visit('/contact.html', { consent: false }); await page.send();
+  assert.equal(page.events().length, 0); assert.equal(page.resets(), 1);
+});
+
+test('the form posts to the first-party receiver, not to a third-party automation host', () => {
+  const script = readFileSync(new URL('../script.js', import.meta.url), 'utf8');
+  assert.match(script, /const CONTACT_ENDPOINT = 'https:\/\/forms\.clarvix\.net\/v1\/contact';/);
+  assert.doesNotMatch(script, /n8n/i);
 });

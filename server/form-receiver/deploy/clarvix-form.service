@@ -1,0 +1,43 @@
+[Unit]
+Description=Clarvix contact form receiver
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/clarvix-form/receiver.py
+EnvironmentFile=/etc/clarvix-form/receiver.env
+Environment=RATE_DB=/var/lib/clarvix-form/ratelimit.db
+Restart=always
+RestartSec=3
+DynamicUser=yes
+StateDirectory=clarvix-form
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+MemoryMax=128M
+TasksMax=64
+
+[Install]
+WantedBy=multi-user.target

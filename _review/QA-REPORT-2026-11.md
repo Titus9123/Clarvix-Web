@@ -62,3 +62,8 @@ No existe configuración GA4 en el repo, ramas, historial (búsqueda de `G-`, `G
 ## 8. Bloqueos reales
 - **GA4 y Search Console:** no dispongo de navegador ni de tu sesión de Google en esta sesión (sin herramientas de navegador; sin carpetas de equipo conectadas). El conector **Windsor.ai** (cubre GA4, Search Console y Perfil de Empresa) está instalado pero en estado `needs_reconnect`: requiere que reautorices OAuth en claude.ai → Connectors. Sin eso no puedo comprobar propiedades, crear el flujo ni enviar el sitemap.
 - Mientras tanto, `GA4_MEASUREMENT_ID` queda vacío y no se envían datos a GA4.
+
+## 9. Ronda 3 — conectores (6-nov, verificado)
+- Comprobado con `ListConnectors`: Google Drive y Google Calendar **conectados y cargados**; **Windsor.ai sigue en `needs_reconnect` (connected=false, enabledInChat=false)** a nivel de organización, tras dos comprobaciones. No se puede leer ni escribir GA4/Search Console. No se confunde con falta de permisos: la autorización de Windsor no se completó.
+- El conector **n8n falló al conectar** (error 404 del servicio de conectores) y `n8n.clarvix.net` no es accesible desde la red de la sesión: no es posible inspeccionar el workflow ni garantizar que un envío de prueba sea inocuo. **No se envió ningún formulario real.**
+- Tarifa WhatsApp Israel obtenida (ver informe de Meta). Hosts habilitados en el entorno: `whatsappbusiness.com`.

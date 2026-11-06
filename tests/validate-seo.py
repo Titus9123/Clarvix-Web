@@ -69,7 +69,7 @@ assert len(urls)==len(set(urls));assert set(urls)==expected
 robots=(ROOT/'robots.txt').read_text();assert 'Sitemap: '+BASE+'sitemap.xml' in robots and 'Disallow' not in robots, 'robots.txt must reference the sitemap and block nothing'
 for u in urls:
  t=u[len(BASE):] or 'index.html';assert (ROOT/t).is_file(),u
- assert 'noindex' not in sources[t],f'{u} is noindex'
+ assert not any('noindex' in a.get('content','') for tg,a in pages[t].tags if tg=='meta' and a.get('name')=='robots'),f'{u} has a noindex robots meta'
 import datetime
 for e in ET.parse(ROOT/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}lastmod'):datetime.date.fromisoformat(e.text)
 print(f'PASS: {len(pages)} HTML pages; {count} internal links/assets; unique metadata, H1, RTL, anchors, canonicals, matching FAQ schema, nested 404 resources; {len(urls)} sitemap URLs.')

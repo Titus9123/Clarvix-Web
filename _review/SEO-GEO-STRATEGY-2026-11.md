@@ -8,11 +8,11 @@
 ## Oportunidades por intención
 | Búsqueda (hebreo) | Intención | Qué se observó en los resultados | Oportunidad / página |
 |---|---|---|---|
-| אתר לעסק בתשלום חודשי ללא דמי הקמה | Comercial | Casi sin resultados en hebreo: un advertorial de un proveedor y blogs extranjeros. Los buscadores preguntan por propiedad del dominio, salida y coste total | **Alta y diferenciadora** (coincide con el modelo real): `business-websites` (H1, title, FAQ, "preguntas para cualquier proveedor") |
+| אתר לעסק בתשלום חודשי ללא דמי הקמה | Comercial | Casi sin resultados en hebreo: un advertorial de un proveedor y blogs extranjeros. Los buscadores preguntan por propiedad del dominio, salida y coste total | **Alta y diferenciadora** (coincide con el modelo real): `business-websites` (title y H1: "אתר לעסק בתשלום חודשי וללא דמי הקמה נפרדים", FAQ, "preguntas para cualquier proveedor") |
 | הקמת אתר תדמית לעסק קטן | Comercial/informativa | Dominan medios y advertorials (ice, bhol, kikar, walla), comparativas Wix/WordPress, precios de 2021 | Competida; ángulo de pequeño negocio + modelo mensual: `business-websites` |
 | אתר בעמוד אחד לעסק / מתי כדאי | Informativa | Guías en inglés; poca cobertura hebrea | Sección "cómo elegir" en `business-websites` |
 | פרופיל עסק בגוגל / הופעה בגוגל מפות (עסק שירות) | Informativa→comercial | Guías de Google en inglés y de proveedores extranjeros; cobertura hebrea escasa | `google-business-profile` (negocio con dirección vs. que va al cliente, errores comunes) |
-| למה העסק שלי לא מופיע בגוגל | Problema (informativa) | Sobre todo traducciones/guías en inglés | **Nueva guía** `why-business-not-on-google` (6 comprobaciones) → enlaza a los servicios |
+| למה העסק שלי לא מופיע בגוגל | Problema (informativa) | Sobre todo traducciones/guías en inglés | **Nueva guía** `why-business-not-on-google` (3 situaciones distintas: perfil/mapas, indexación del sitio, y negocio que aparece pero posiciona mal) → enlaza a los servicios |
 | אוטומציה לעסקים קטנים | Mixta | Blogs de grandes proveedores (Salesforce IL), LinkedIn y estudios pequeños | `business-automation` con ángulo "un solo proceso" (el servicio real) |
 | מערכת לניהול פניות לעסק קטן | Comercial | CRM de grandes proveedores | Término genérico difícil; apuntar a frases de problema ("pierdo el rastro de las consultas") en `inquiries-and-bookings` |
 | מערכת זימון תורים | Comercial | Apps especializadas (Tor4You, LinedUp, Cali, iTor) | Término genérico poco realista; apuntar a "קביעת תורים באתר העסק" dentro de `inquiries-and-bookings` |

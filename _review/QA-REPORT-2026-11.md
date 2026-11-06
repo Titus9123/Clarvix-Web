@@ -43,3 +43,22 @@ No existe configuración GA4 en el repo, ramas, historial (búsqueda de `G-`, `G
 4. Google Ads: correos del 27-oct y 2-nov indican cuenta por verificar y conversiones sin medir; fuera del alcance de este PR.
 5. Envío real del formulario y revisión de que el endpoint n8n recibe los campos.
 6. `business-websites.html` era una redirección noindex a `/`; ahora es página real (decisión a confirmar).
+
+## 7. Ronda 2 (6-nov, tarde)
+- **Web en vivo** (tras habilitar `web.clarvix.net`): `/` 200, `robots.txt` 200, `sitemap.xml` 200, URL inexistente 404; el HTML de producción coincide en tamaño con `main` (20.384 B). Producción aún es la versión anterior a este PR.
+- **Lighthouse móvil, laboratorio (no son datos de campo):**
+
+| Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO | LCP | CLS |
+|---|---|---|---|---|---|---|
+| Producción `/` | 96 | 96 | 100 | 100 | 1,9 s | 0 |
+| Rama, home (local) | 95 | **100** | 100 | 100 | 2,5 s | 0 |
+| Rama, perfil Google | 100 | 100 | 100 | 100 | 1,5 s | 0,001 |
+| Rama, contacto | 100 | 100 | 100 | 100 | 1,4 s | 0 |
+
+(La home local y `main` local dieron ambas LCP 2,5 s: no hay regresión; producción mide por red real.)
+- **Dos defectos reales encontrados y corregidos:** (a) contraste 2,7:1 en "איך זה עובד" y FAQ (texto gris oscuro sobre fondo oscuro; ya ocurría en producción); (b) los logos del pie se deformaban con `height="85"`; añadido `height:auto`. Esto cambia el color del texto secundario de esas dos secciones (más claro); el diseño y el contenido no cambian.
+- PageSpeed API (CrUX/campo): 429 sin clave; no hay datos de campo.
+
+## 8. Bloqueos reales
+- **GA4 y Search Console:** no dispongo de navegador ni de tu sesión de Google en esta sesión (sin herramientas de navegador; sin carpetas de equipo conectadas). El conector **Windsor.ai** (cubre GA4, Search Console y Perfil de Empresa) está instalado pero en estado `needs_reconnect`: requiere que reautorices OAuth en claude.ai → Connectors. Sin eso no puedo comprobar propiedades, crear el flujo ni enviar el sitemap.
+- Mientras tanto, `GA4_MEASUREMENT_ID` queda vacío y no se envían datos a GA4.

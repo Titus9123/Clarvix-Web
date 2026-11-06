@@ -1,6 +1,8 @@
 # Automatización de WhatsApp con Meta — investigación (solo fase de estudio)
 
-**Método y límites:** `developers.facebook.com` no es accesible por descarga directa desde esta sesión (el host no resuelve). Los datos siguientes provienen de resúmenes de búsqueda sobre páginas oficiales de Meta (6-nov-2026). Algunos resúmenes admiten que ciertas páginas son antiguas; **antes de decidir, abre los enlaces y confirma**. No se obtuvieron tarifas en ILS.
+**Actualización:** la página oficial de precios se leyó directamente (`curl`, tras habilitar el dominio) y confirma: cobro por mensaje entregado, 1.000 mensajes de servicio gratis al mes por número desde el 1-oct-2026 y mensajes del cliente sin cargo. Israel (IL, +972) figura como mercado propio en la tarifa. El CSV de tarifas por moneda no se pudo descargar (el enlace está en `business.whatsapp.com`, que redirige a un host no permitido); falta el importe exacto.
+
+**Método (primera pasada):** `developers.facebook.com` no es accesible por descarga directa desde esta sesión (el host no resuelve). Los datos siguientes provienen de resúmenes de búsqueda sobre páginas oficiales de Meta (6-nov-2026). Algunos resúmenes admiten que ciertas páginas son antiguas; **antes de decidir, abre los enlaces y confirma**. No se obtuvieron tarifas en ILS.
 
 **Cómo habilitar el acceso directo:** en Claude Code web → Settings → Environment → Network → añadir `developers.facebook.com` (y `business.whatsapp.com`) a hosts permitidos. Si quieres, lo propongo yo desde la sesión con aprobación tuya.
 

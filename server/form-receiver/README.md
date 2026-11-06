@@ -12,16 +12,12 @@ Controles (revisados antes del despliegue): límites por IP/globales **persisten
 y en nginx, enteros/enums cerrados, rechazo de enlaces en exceso, eliminación de caracteres de control (inyección de cabeceras),
 SMTP con TLS verificado (STARTTLS/SSL), credenciales solo por variables de entorno, `Reply-To` = correo del visitante.
 
-## Instalación en el VPS (una sola vez)
+## Instalación en el VPS (una sola vez, un solo comando)
+`deploy/install.sh` es idempotente: comprueba DNS y puerto 443 (no toca n8n ni otro servicio; si 443 lo usa algo distinto de nginx, se detiene), instala nginx/certbot si faltan, copia el receptor y el servicio systemd, pide la contraseña SMTP por teclado (no se muestra ni viaja por chat; queda solo en `/etc/clarvix-form/receiver.env`, 0600), obtiene el certificado, activa la renovación automática y verifica.
 ```bash
-sudo install -d /opt/clarvix-form /etc/clarvix-form
-sudo cp receiver.py /opt/clarvix-form/
-sudo cp .env.example /etc/clarvix-form/receiver.env && sudo chmod 600 /etc/clarvix-form/receiver.env   # completar SMTP_* reales
-sudo cp deploy/clarvix-form.service /etc/systemd/system/ && sudo systemctl daemon-reload && sudo systemctl enable --now clarvix-form
-sudo cp deploy/nginx-forms.clarvix.net.conf /etc/nginx/sites-available/forms.clarvix.net
-sudo ln -s /etc/nginx/sites-available/forms.clarvix.net /etc/nginx/sites-enabled/ && sudo certbot --nginx -d forms.clarvix.net && sudo nginx -t && sudo systemctl reload nginx
+sudo REF=<sha-del-commit> bash -c "$(curl -fsSL https://raw.githubusercontent.com/Titus9123/Clarvix-Web/<sha-del-commit>/server/form-receiver/deploy/install.sh)"
 ```
-Requisitos externos: registro DNS `A forms.clarvix.net → IP del VPS` y un usuario SMTP exclusivo para envío (ver `.env.example`).
+Requisitos externos: registro DNS `A forms.clarvix.net → IP del VPS` (en Cloudflare, "solo DNS", sin proxy) y un buzón SMTP exclusivo de envío (p. ej. `forms@clarvix.net` en el proveedor del correo). `DRY_RUN=1` muestra los pasos sin cambiar nada. Configuración nginx validada solo por inspección (no había nginx en el entorno de pruebas): `nginx -t` del script la comprueba antes de recargar.
 
 ## Verificación antes del cambio de producción
 1. `python3 -m unittest test_receiver` (14 pruebas, servidor SMTP simulado).

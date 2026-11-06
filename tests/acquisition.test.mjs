@@ -120,7 +120,7 @@ test('contact clicks each emit one named event plus the matching original Ads ev
 
 test('GA4 is configured only with a valid ID, never twice, and only after consent', () => {
   const script = readFileSync(new URL('../script.js', import.meta.url), 'utf8');
-  assert.match(script, /const GA4_MEASUREMENT_ID = '';/);
+  assert.match(script, /const GA4_MEASUREMENT_ID = 'G-P4R22F19B8';/);
   assert.equal((script.match(/gtag\('config', GA4_MEASUREMENT_ID/g) || []).length, 1);
   assert.match(script, /\^G-\[A-Z0-9\]\{6,\}\$/);
 });
@@ -130,4 +130,19 @@ test('email links emit exactly one click_email event with location and path', ()
   assert.equal((script.match(/'click_email'/g) || []).length, 1);
   assert.match(script, /link_location/);
   assert.match(script, /page_path/);
+});
+
+test('after consent: GA4 and Ads are configured once each and a click yields one GA4 event', () => {
+  const calls = [];
+  const dataLayer = [];
+  const context = vm.createContext({ window: { location: new URL('/', BASE), sessionStorage: storage(), dataLayer, localStorage: storage() },
+    dataLayer, URL, URLSearchParams, Date, console: { error() {} }, fbq() {},
+    document: { referrer: '', documentElement: { lang: 'he' }, head: { appendChild: (el) => calls.push(el.src) },
+      createElement: () => ({}), getElementsByTagName: () => [{ parentNode: { insertBefore() {} } }],
+      querySelectorAll: () => [], querySelector: () => null } });
+  vm.runInContext(attribution, context);
+  vm.runInContext('loadOptionalMeasurement(); loadOptionalMeasurement();', context);
+  const configs = dataLayer.map((a) => Array.from(a)).filter((a) => a[0] === 'config').map((a) => a[1]);
+  assert.deepEqual(configs, ['AW-18364963340', 'G-P4R22F19B8']);
+  assert.equal(calls.filter((src) => src.includes('googletagmanager.com/gtag/js')).length, 1);
 });

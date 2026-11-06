@@ -67,3 +67,11 @@ No existe configuración GA4 en el repo, ramas, historial (búsqueda de `G-`, `G
 - Comprobado con `ListConnectors`: Google Drive y Google Calendar **conectados y cargados**; **Windsor.ai sigue en `needs_reconnect` (connected=false, enabledInChat=false)** a nivel de organización, tras dos comprobaciones. No se puede leer ni escribir GA4/Search Console. No se confunde con falta de permisos: la autorización de Windsor no se completó.
 - El conector **n8n falló al conectar** (error 404 del servicio de conectores) y `n8n.clarvix.net` no es accesible desde la red de la sesión: no es posible inspeccionar el workflow ni garantizar que un envío de prueba sea inocuo. **No se envió ningún formulario real.**
 - Tarifa WhatsApp Israel obtenida (ver informe de Meta). Hosts habilitados en el entorno: `whatsappbusiness.com`.
+
+## 10. Ronda 4 — Windsor.ai, GA4 y Search Console (6-nov)
+- **Windsor.ai operativo en Claude:** `connected=true`, 14 herramientas cargadas. Plan Windsor: Free. Fuentes realmente conectadas: **solo Google Analytics 4**. Search Console, Google Ads y Perfil de Empresa **no** están conectados en Windsor.
+- **GA4:** cuenta/propiedad "Clarvix" (ID 531280237, zona horaria Asia/Jerusalem, moneda USD) con **un único flujo web "Clarvix Web"** (stream 14313464457), ID de medición **G-P4R22F19B8**, ya integrado en `script.js` (solo tras consentimiento).
+- Datos históricos del flujo (2 años): www.clarvix.net (5-20 abr), clarvix.net (20 abr-26 may), 127.0.0.1 (28 jun-1 jul) y **freeutilitylab.com (4 nov, 3 eventos)**. **Nunca web.clarvix.net.** El último host es de otro proyecto que parece usar este mismo ID.
+- **Permisos de Windsor sobre GA4: solo lectura** (`list_actions` vacío). No se pueden crear propiedades/flujos ni marcar eventos clave. No se creó nada.
+- Prueba en navegador (local): sin consentimiento 0 peticiones y 0 eventos; con consentimiento 1 carga de gtag, `config` de AW y de G-P4R22F19B8 (una vez cada uno) y un único evento `click_whatsapp`/`click_phone`/`click_email` por clic. Aviso de privacidad actualizado para mencionar Google Analytics.
+- La recepción real en GA4 **no se pudo verificar**: la web con este cambio no está publicada.

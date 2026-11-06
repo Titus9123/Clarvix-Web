@@ -4,10 +4,10 @@ window.dataLayer = window.dataLayer || [];
 function gtag() { dataLayer.push(arguments); }
 const CONSENT_KEY = 'clarvix_consent_v1';
 let analyticsEnabled = false;
-// GA4 web stream ID (format G-XXXXXXXXXX). Left empty on purpose: no ID has been provided or found.
-// While empty, only the existing Google Ads tag runs. Click events are sent to every configured
-// destination, and Google Ads conversions use an explicit send_to, so nothing is counted twice.
-const GA4_MEASUREMENT_ID = '';
+// GA4 web stream "Clarvix Web" (property "Clarvix", stream 14313464457). Loaded only after consent.
+// Click events are sent to every configured destination, and Google Ads conversions use an explicit
+// send_to, so nothing is counted twice. Do not import GA4 click events into Google Ads as conversions.
+const GA4_MEASUREMENT_ID = 'G-P4R22F19B8';
 
 function readConsent() {
   try { return window.localStorage.getItem(CONSENT_KEY); } catch (_) { return null; }
@@ -53,7 +53,7 @@ function showConsentBanner() {
   const banner = document.createElement('section');
   banner.className = 'consent-banner';
   banner.setAttribute('aria-label', 'העדפות פרטיות');
-  banner.innerHTML = '<div><strong>הפרטיות שלכם חשובה</strong><p>האתר משתמש באחסון חיוני להפעלה. Google Ads ו-Meta ייטענו רק אם תאשרו מדידה אופציונלית. אפשר להשתמש באתר ולשלוח פנייה גם בלי לאשר.</p><a href="privacy.html">למדיניות הפרטיות</a></div><div class="consent-actions"><button type="button" class="button consent-accept">אישור מדידה</button><button type="button" class="consent-essential">חיוני בלבד</button></div>';
+  banner.innerHTML = '<div><strong>הפרטיות שלכם חשובה</strong><p>האתר משתמש באחסון חיוני להפעלה. Google Ads, Google Analytics ו-Meta ייטענו רק אם תאשרו מדידה אופציונלית. אפשר להשתמש באתר ולשלוח פנייה גם בלי לאשר.</p><a href="privacy.html">למדיניות הפרטיות</a></div><div class="consent-actions"><button type="button" class="button consent-accept">אישור מדידה</button><button type="button" class="consent-essential">חיוני בלבד</button></div>';
   document.body.appendChild(banner);
   banner.querySelector('.consent-accept').addEventListener('click', () => setConsent('analytics'));
   banner.querySelector('.consent-essential').addEventListener('click', () => setConsent('essential'));

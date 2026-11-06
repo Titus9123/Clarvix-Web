@@ -4,6 +4,10 @@ window.dataLayer = window.dataLayer || [];
 function gtag() { dataLayer.push(arguments); }
 const CONSENT_KEY = 'clarvix_consent_v1';
 let analyticsEnabled = false;
+// GA4 web stream ID (format G-XXXXXXXXXX). Left empty on purpose: no ID has been provided or found.
+// While empty, only the existing Google Ads tag runs. Click events are sent to every configured
+// destination, and Google Ads conversions use an explicit send_to, so nothing is counted twice.
+const GA4_MEASUREMENT_ID = '';
 
 function readConsent() {
   try { return window.localStorage.getItem(CONSENT_KEY); } catch (_) { return null; }
@@ -23,6 +27,7 @@ function loadOptionalMeasurement() {
   document.head.appendChild(googleScript);
   gtag('js', new Date());
   gtag('config', 'AW-18364963340', { anonymize_ip: true });
+  if (/^G-[A-Z0-9]{6,}$/.test(GA4_MEASUREMENT_ID)) gtag('config', GA4_MEASUREMENT_ID, { anonymize_ip: true });
 
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?

@@ -26,11 +26,11 @@ test('contact form matches the live intake requirement for email and phone', () 
   assert.doesNotMatch(contact, /אימייל[^<]*\(לא חובה\)/);
 });
 
-test('contact page security policy permits only the intake host', () => {
+test('contact page security policy permits only the intake host for form posts', () => {
   assert.match(contact, /connect-src 'self' https:\/\/n8n\.clarvix\.net/);
-  assert.match(contact, /option value="core_monthly"/);
-  assert.match(contact, /option value="core_annual"/);
-  assert.match(contact, /option value="not_sure"/);
+  assert.match(contact, /form-action 'self'/);
+  assert.match(contact, /name="plan" value="not_sure"/);
   assert.match(contact, /name="responder_count"/);
+  assert.match(contact, /name="privacy_notice_acknowledged"[^>]*required|id="cf-privacy"[^>]*required/);
   assert.match(contact, /href="privacy\.html"/);
 });

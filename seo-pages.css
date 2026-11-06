@@ -1,0 +1,11 @@
+/* Information pages (SEO/GEO). Reuses offer.css tokens and components. */
+.art{max-width:860px;margin:56px auto 96px}.art h1{font-size:clamp(2.1rem,4.4vw,3.3rem);line-height:1.2;margin:14px 0 18px}
+.crumbs{font-size:.9rem;color:var(--muted)}.crumbs a{text-decoration:underline;text-underline-offset:4px}
+.art-intro{font-size:1.2rem;line-height:1.9;color:#355147;max-width:720px}
+.art-section{padding-block:30px;border-top:1px solid var(--line);margin-top:30px}.art-section h2{font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.3;margin:0 0 16px}
+.art-section p,.art-section li{font-size:1.1rem;line-height:1.9;color:#355147}.art-section p+p{margin-top:14px}.art-section ul,.art-section ol{padding-inline-start:1.4rem;margin:0}.art-section li+li{margin-top:8px}
+.art-section a,.art-related a,.art-cta p a{text-decoration:underline;text-underline-offset:4px}
+.art-cta{background:var(--lime);border-radius:24px;padding:36px;margin-top:40px}.art-cta h2{font-size:clamp(1.6rem,3vw,2.2rem);margin:0 0 10px}.art-cta p{line-height:1.8}
+.art-actions{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}.art-actions .button{min-height:52px;justify-content:center}
+.art-related{margin-top:36px}.art-related h2{font-size:1.2rem}.art-related ul{padding-inline-start:1.2rem;line-height:2}
+@media(max-width:600px){.art{margin:28px auto 56px}.art-cta{padding:24px}.art-actions{flex-direction:column}.art-actions .button{width:100%}}

@@ -117,3 +117,17 @@ test('contact clicks each emit one named event plus the matching original Ads ev
   assert.equal(page.events()[0][2].send_to,'AW-18364963340/NmvECPz3--EcEIy0jLVE');
   assert.equal(page.events()[2][2].send_to,'AW-18364963340/UWaaCP_3--EcEIy0jLVE');
 });
+
+test('GA4 is configured only with a valid ID, never twice, and only after consent', () => {
+  const script = readFileSync(new URL('../script.js', import.meta.url), 'utf8');
+  assert.match(script, /const GA4_MEASUREMENT_ID = '';/);
+  assert.equal((script.match(/gtag\('config', GA4_MEASUREMENT_ID/g) || []).length, 1);
+  assert.match(script, /\^G-\[A-Z0-9\]\{6,\}\$/);
+});
+
+test('email links emit exactly one click_email event with location and path', () => {
+  const script = readFileSync(new URL('../script.js', import.meta.url), 'utf8');
+  assert.equal((script.match(/'click_email'/g) || []).length, 1);
+  assert.match(script, /link_location/);
+  assert.match(script, /page_path/);
+});

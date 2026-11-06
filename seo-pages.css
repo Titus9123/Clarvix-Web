@@ -9,3 +9,5 @@
 .art-actions{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}.art-actions .button{min-height:52px;justify-content:center}
 .art-related{margin-top:36px}.art-related h2{font-size:1.2rem}.art-related ul{padding-inline-start:1.2rem;line-height:2}
 @media(max-width:600px){.art{margin:28px auto 56px}.art-cta{padding:24px}.art-actions{flex-direction:column}.art-actions .button{width:100%}}
+.art-tldr{background:#fff;border:1px solid var(--line);border-inline-start:4px solid #567722;border-radius:12px;padding:18px 22px;margin:26px 0 8px;line-height:1.85;font-size:1.05rem;color:#243f36}
+.art-about{margin-top:28px;font-size:.92rem;color:var(--muted)}.art-about a{text-decoration:underline;text-underline-offset:4px}

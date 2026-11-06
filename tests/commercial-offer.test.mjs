@@ -11,8 +11,8 @@ const expected = readFileSync(new URL('./fixtures/commercial-offer.txt', import.
 
 function commercialText(source) {
   const start = source.indexOf('<section class="statement section-light" id="services">');
-  // The services..FAQ block ends where the contact section (new, no commercial content) begins.
-  const endCandidates = [source.indexOf('<section class="contact-cta'), source.indexOf('</main>')].filter((i) => i > start);
+  // The services..FAQ block ends where the new informational sections (resources, contact) begin.
+  const endCandidates = [source.indexOf('<section class="seo-resources'), source.indexOf('<section class="contact-cta'), source.indexOf('</main>')].filter((i) => i > start);
   const block = source.slice(start, Math.min(...endCandidates));
   return decodeHtml(block.replace(/<[^>]+>/g, '\n')).split('\n').map((l) => l.trim()).filter(Boolean).join('\n') + '\n';
 }

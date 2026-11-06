@@ -1,0 +1,47 @@
+name: Build, test and publish site (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test (SEO, contact, commercial-offer guard, artifact)
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          node --test tests/*.test.mjs
+          python3 tests/validate-seo.py
+          python3 -m unittest tests/test_site_artifact.py
+      - name: Build public artifact from allowlist
+        run: python3 scripts/build_site.py _site
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: _site
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

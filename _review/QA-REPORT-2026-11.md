@@ -75,3 +75,14 @@ No existe configuración GA4 en el repo, ramas, historial (búsqueda de `G-`, `G
 - **Permisos de Windsor sobre GA4: solo lectura** (`list_actions` vacío). No se pueden crear propiedades/flujos ni marcar eventos clave. No se creó nada.
 - Prueba en navegador (local): sin consentimiento 0 peticiones y 0 eventos; con consentimiento 1 carga de gtag, `config` de AW y de G-P4R22F19B8 (una vez cada uno) y un único evento `click_whatsapp`/`click_phone`/`click_email` por clic. Aviso de privacidad actualizado para mencionar Google Analytics.
 - La recepción real en GA4 **no se pudo verificar**: la web con este cambio no está publicada.
+
+## 11. Ronda 5 — separación de estadísticas y validación final (6-nov)
+**Causa de la mezcla (verificada leyendo HTML/GTM públicos, solo lectura):**
+- La home de freeutilitylab.com usa su propio ID `G-54GQ1ZT341`.
+- Sus subpáginas (p. ej. `/aistackcost/...`) cargan además el contenedor GTM `GTM-KQ8MQBNQ`, cuyo único tag es una etiqueta de Google con **`G-P4R22F19B8`** (el ID de Clarvix) en "All Pages". Ese contenedor es la fuente de los 3 eventos del 4-nov.
+- Otros hosts que han enviado datos a la propiedad: `www.clarvix.net`, `clarvix.net`, `127.0.0.1` (pruebas locales). Nunca `web.clarvix.net`. No existe otra propiedad GA4 visible desde Windsor (solo "Clarvix").
+- No hay eventos clave marcados en la propiedad (todos `(not set)`).
+- **Pendiente (no autorizado/sin herramienta):** quitar `G-P4R22F19B8` del contenedor GTM-KQ8MQBNQ (es de otro proyecto) y crear un flujo/propiedad exclusivo para `web.clarvix.net`. Mientras tanto, los informes de Clarvix Web deben filtrar `hostname = web.clarvix.net`. No se modificó ni borró nada.
+- Parámetros `link_location`/`contact_method`: para verlos en informes GA4 hay que registrarlos como dimensiones personalizadas (escritura en Admin, no disponible). `page_path`/página y nombre de evento sí son nativos.
+
+**Validación final del PR (commit actual):** 4 suites 38/38 pruebas, validador SEO PASS (13 páginas, 292 enlaces, 10 URLs de sitemap), texto comercial idéntico a producción (guardia), 3 páginas nuevas completas (H1, FAQ, JSON-LD, canonical, sitemap, enlaces desde la home), analítica sin consentimiento: 0 peticiones/0 eventos. Comparación móvil/escritorio con `main`: idéntica salvo (a) corrección de contraste en dos secciones, (b) nueva sección de contacto y enlaces de pie, (c) ruido de antialiasing de 3/765 en el logo.

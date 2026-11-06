@@ -12,12 +12,14 @@ Controles (revisados antes del despliegue): límites por IP/globales **persisten
 y en nginx, enteros/enums cerrados, rechazo de enlaces en exceso, eliminación de caracteres de control (inyección de cabeceras),
 SMTP con TLS verificado (STARTTLS/SSL), credenciales solo por variables de entorno, `Reply-To` = correo del visitante.
 
-## Instalación en el VPS (una sola vez, un solo comando)
-`deploy/install.sh` es idempotente: comprueba DNS y puerto 443 (no toca n8n ni otro servicio; si 443 lo usa algo distinto de nginx, se detiene), instala nginx/certbot si faltan, copia el receptor y el servicio systemd, pide la contraseña SMTP por teclado (no se muestra ni viaja por chat; queda solo en `/etc/clarvix-form/receiver.env`, 0600), obtiene el certificado, activa la renovación automática y verifica.
-```bash
-sudo REF=<sha-del-commit> bash -c "$(curl -fsSL https://raw.githubusercontent.com/Titus9123/Clarvix-Web/<sha-del-commit>/server/form-receiver/deploy/install.sh)"
-```
-Requisitos externos: registro DNS `A forms.clarvix.net → IP del VPS` (en Cloudflare, "solo DNS", sin proxy) y un buzón SMTP exclusivo de envío (p. ej. `forms@clarvix.net` en el proveedor del correo). `DRY_RUN=1` muestra los pasos sin cambiar nada. Configuración nginx validada solo por inspección (no había nginx en el entorno de pruebas): `nginx -t` del script la comprueba antes de recargar.
+## Instalación en el VPS (segura, reversible, sin tocar lo existente)
+1. **Reconocimiento solo lectura:** `ssh root@46.38.241.140 'bash -s' < deploy/preflight.sh` (SO, recursos, puertos, nginx/Caddy/Docker, certificados, conflictos, salida SMTP). No cambia nada y enmascara secretos.
+2. **Instalar** (SHA completo obligatorio; el script verifica que el commit descargado coincide y muestra los sha256 de lo que instala):
+   `install.sh --ref <sha40>` instala **solo** `/opt/clarvix-form`, `/etc/clarvix-form` y una unidad systemd en `127.0.0.1:8787`. No instala paquetes (salvo `--install-packages`), no descarga nada más que este commit y **no toca nginx/Caddy/otros servicios**: prepara su configuración en `/etc/clarvix-form/proxy/` y solo la aplica con `--apply-proxy` (copia de seguridad + validación + reversión automática). Con Caddy (lo más probable en este VPS: HTTP/3 anunciado y HSTS, no nginx) basta un bloque `forms.clarvix.net { reverse_proxy 127.0.0.1:8787 }` y Caddy gestiona el certificado y su renovación.
+3. **Revertir:** `install.sh --uninstall` (restaura las copias de seguridad; `--purge` borra también `/etc/clarvix-form`). Idempotente: se puede volver a ejecutar.
+La contraseña SMTP se teclea en el terminal (no se muestra, no va en argumentos ni en el repo). `--dry-run` muestra todo sin cambiar nada.
+
+Requisitos externos: registro DNS `A forms.clarvix.net → 46.38.241.140` (Cloudflare, "solo DNS") y un buzón SMTP exclusivo de envío.
 
 ## Verificación antes del cambio de producción
 1. `python3 -m unittest test_receiver` (14 pruebas, servidor SMTP simulado).

@@ -44,7 +44,9 @@ for name,page in pages.items():
   if url.fragment and target in pages:assert unquote(url.fragment) in pages[target].ids,f'{name}: broken {a[key]}'
   count+=1
  for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>',s,re.S):
-  data=json.loads(block);assert data['@context']=='https://schema.org'
+  def nodup(pairs):
+   keys=[k for k,_ in pairs];assert len(keys)==len(set(keys)),f'{name}: duplicate JSON-LD key in {keys}';return dict(pairs)
+  data=json.loads(block,object_pairs_hook=nodup);assert data['@context']=='https://schema.org'
   graph=data['@graph'];org=next(x for x in graph if x['@type']=='Organization' or isinstance(x['@type'],list) and 'Organization' in x['@type'])
   assert org['@id']==BASE+'#organization';assert 'address' not in org;assert 'sameAs' not in org
   for entity in graph:
@@ -64,4 +66,10 @@ for name,page in pages.items():
 urls=[e.text for e in ET.parse(ROOT/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
 expected={BASE+('' if n=='index.html' else n) for n in pages if n!='404.html' and 'http-equiv="refresh"' not in sources[n]}
 assert len(urls)==len(set(urls));assert set(urls)==expected
+robots=(ROOT/'robots.txt').read_text();assert 'Sitemap: '+BASE+'sitemap.xml' in robots and 'Disallow' not in robots, 'robots.txt must reference the sitemap and block nothing'
+for u in urls:
+ t=u[len(BASE):] or 'index.html';assert (ROOT/t).is_file(),u
+ assert 'noindex' not in sources[t],f'{u} is noindex'
+import datetime
+for e in ET.parse(ROOT/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}lastmod'):datetime.date.fromisoformat(e.text)
 print(f'PASS: {len(pages)} HTML pages; {count} internal links/assets; unique metadata, H1, RTL, anchors, canonicals, matching FAQ schema, nested 404 resources; {len(urls)} sitemap URLs.')

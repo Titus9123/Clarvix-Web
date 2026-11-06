@@ -14,7 +14,7 @@
 - **Agente de IA de Meta (Business Agent):** cobro aparte por tokens (dato de una página oficial; no relevante para la primera fase).
 
 ## Arquitectura recomendada (fase posterior)
-`Cliente → WhatsApp → Cloud API (Meta) → Webhook HTTPS → n8n (n8n.clarvix.net) → CRM/Sheet + respuesta`
+`Cliente → WhatsApp → Cloud API (Meta) → Webhook HTTPS propio → registro de contactos + respuesta (destino por definir; n8n queda fuera de la arquitectura)`
 - Webhook con token de verificación y validación de `X-Hub-Signature-256`.
 - Dentro de 24 h: respuesta libre; fuera: plantillas aprobadas.
 - Guardar por contacto: número, origen (UTM/botón), consentimiento y estado.
@@ -28,4 +28,4 @@
 6. Directo vs. proveedor (BSP): directo es más barato, requiere mantenimiento.
 
 ## Siguiente paso (requiere tu autorización)
-Crear/verificar el Business Portfolio y usar el número de prueba gratuito de Meta para un prototipo en n8n. Sin conectar el número real ni activar facturación.
+Crear/verificar el Business Portfolio y usar el número de prueba gratuito de Meta para un prototipo con un endpoint HTTPS mínimo. Sin conectar el número real ni activar facturación.

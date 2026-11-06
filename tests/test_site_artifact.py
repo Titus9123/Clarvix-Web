@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
+sys.dont_write_bytecode = True  # never leave __pycache__ behind
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import build_site  # noqa: E402
@@ -100,6 +101,29 @@ class ArtifactTest(unittest.TestCase):
         for url in urls:
             self.assertTrue(url.startswith(BASE), url)
             self.assertIn(url[len(BASE):] or "index.html", self.published, url)
+
+    def test_no_generated_files_are_tracked_and_ignore_rules_exist(self):
+        import subprocess
+        tracked = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.split("\n")
+        self.assertEqual([f for f in tracked if "__pycache__" in f or f.endswith((".pyc", ".pyo"))], [])
+        ignore = (ROOT / ".gitignore").read_text()
+        for rule in ("__pycache__/", "*.py[cod]", ".env", "*.pem", "_site/"):
+            self.assertIn(rule, ignore)
+
+    def test_workflow_has_least_privilege_permissions(self):
+        import re as _re
+        wf = (ROOT / ".github/workflows/pages.yml").read_text()
+        top = wf.split("jobs:")[0]
+        self.assertRegex(top, r"permissions:\s*\n\s+contents: read")
+        self.assertNotIn("pages: write", top)       # only the deploy job may write Pages
+        self.assertNotIn("id-token", top)
+        deploy = wf.split("  deploy:")[1]
+        self.assertIn("pages: write", deploy)
+        self.assertIn("id-token: write", deploy)
+        build = wf.split("  deploy:")[0]
+        self.assertNotIn("pages: write", build)
+        self.assertNotIn("configure-pages", wf)     # not needed for a plain static artifact
+        self.assertEqual(len(_re.findall(r"uses: [^@\s]+@v\d+", wf)), 3)  # checkout, upload-pages-artifact, deploy-pages (all pinned to a major version)
 
     def test_workflow_publishes_only_the_built_artifact(self):
         wf = (ROOT / ".github/workflows/pages.yml").read_text()

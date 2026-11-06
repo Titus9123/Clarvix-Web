@@ -19,14 +19,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test (SEO, contact, commercial-offer guard, artifact)
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
         run: |
           node --test tests/*.test.mjs
           python3 tests/validate-seo.py
           python3 -m unittest tests/test_site_artifact.py
       - name: Build public artifact from allowlist
         run: python3 scripts/build_site.py _site
-      - uses: actions/configure-pages@v5
-        if: github.ref == 'refs/heads/main'
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:

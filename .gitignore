@@ -1,0 +1,14 @@
+# Generated files and local secrets must never be committed (or published)
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+_site/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.log
+*.tmp
+.DS_Store

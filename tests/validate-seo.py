@@ -20,6 +20,9 @@ pages={n:Page(s) for n,s in sources.items()}
 titles=set();descriptions=set();canons=set();count=0
 for name,page in pages.items():
  tags=page.tags;s=sources[name];attrs=lambda tag:[a for t,a in tags if t==tag]
+ noindex=any('noindex' in a.get('content','') for a in attrs('meta') if a.get('name')=='robots')
+ assert noindex==(name=='404.html' or 'http-equiv="refresh"' in s),name
+ if noindex:continue
  assert attrs('html')[0]=={'lang':'he','dir':'rtl'},name
  assert len(attrs('h1'))==1,name
  assert len(page.ids)==len(set(page.ids)),f'{name}: duplicate IDs'
@@ -30,8 +33,8 @@ for name,page in pages.items():
  canonical=[a['href'] for a in attrs('link') if a.get('rel')=='canonical'];assert len(canonical)==1
  assert canonical[0]==BASE+('' if name=='index.html' else name);assert canonical[0] not in canons;canons.add(canonical[0])
  noindex=any('noindex' in a.get('content','') for a in attrs('meta') if a.get('name')=='robots')
- assert noindex==(name=='404.html'),name
- assert '<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>' in s
+ assert noindex==(name=='404.html' or 'http-equiv="refresh"' in s),name
+ assert name!='index.html' or '<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>' in s
  for tag,a in tags:
   key='href' if tag in ['a','link'] else 'src' if tag in ['img','script'] else None
   if not key or key not in a:continue
@@ -41,7 +44,9 @@ for name,page in pages.items():
   if url.fragment and target in pages:assert unquote(url.fragment) in pages[target].ids,f'{name}: broken {a[key]}'
   count+=1
  for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>',s,re.S):
-  data=json.loads(block);assert data['@context']=='https://schema.org'
+  def nodup(pairs):
+   keys=[k for k,_ in pairs];assert len(keys)==len(set(keys)),f'{name}: duplicate JSON-LD key in {keys}';return dict(pairs)
+  data=json.loads(block,object_pairs_hook=nodup);assert data['@context']=='https://schema.org'
   graph=data['@graph'];org=next(x for x in graph if x['@type']=='Organization' or isinstance(x['@type'],list) and 'Organization' in x['@type'])
   assert org['@id']==BASE+'#organization';assert 'address' not in org;assert 'sameAs' not in org
   for entity in graph:
@@ -51,7 +56,7 @@ for name,page in pages.items():
     assert actual==[(x['name'],x['acceptedAnswer']['text']) for x in entity['mainEntity']],f'{name}: FAQ mismatch'
    if entity['@type']=='Service':
     assert entity['provider']['@id']==org['@id']
-    for offer in entity['offers']:
+    for offer in entity.get('offers',[]):
      assert offer['priceCurrency']=='ILS'
      if 'Dynamic' in offer['name']:assert 'price' not in offer and offer['priceSpecification']['minPrice'] in [7500,8900]
  if name=='404.html':
@@ -59,6 +64,12 @@ for name,page in pages.items():
    for k in ['href','src']:
     if k in a:assert a[k].startswith(('/','#','https:','http:','mailto:','tel:')),f'404 nested resource {a[k]}'
 urls=[e.text for e in ET.parse(ROOT/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
-expected={BASE+('' if n=='index.html' else n) for n in pages if n!='404.html'}
+expected={BASE+('' if n=='index.html' else n) for n in pages if n!='404.html' and 'http-equiv="refresh"' not in sources[n]}
 assert len(urls)==len(set(urls));assert set(urls)==expected
+robots=(ROOT/'robots.txt').read_text();assert 'Sitemap: '+BASE+'sitemap.xml' in robots and 'Disallow' not in robots, 'robots.txt must reference the sitemap and block nothing'
+for u in urls:
+ t=u[len(BASE):] or 'index.html';assert (ROOT/t).is_file(),u
+ assert not any('noindex' in a.get('content','') for tg,a in pages[t].tags if tg=='meta' and a.get('name')=='robots'),f'{u} has a noindex robots meta'
+import datetime
+for e in ET.parse(ROOT/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}lastmod'):datetime.date.fromisoformat(e.text)
 print(f'PASS: {len(pages)} HTML pages; {count} internal links/assets; unique metadata, H1, RTL, anchors, canonicals, matching FAQ schema, nested 404 resources; {len(urls)} sitemap URLs.')

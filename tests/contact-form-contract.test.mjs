@@ -26,11 +26,26 @@ test('contact form matches the live intake requirement for email and phone', () 
   assert.doesNotMatch(contact, /אימייל[^<]*\(לא חובה\)/);
 });
 
-test('contact page security policy permits only the intake host', () => {
+test('contact page security policy permits only the intake host for form posts', () => {
   assert.match(contact, /connect-src 'self' https:\/\/n8n\.clarvix\.net/);
-  assert.match(contact, /option value="core_monthly"/);
-  assert.match(contact, /option value="core_annual"/);
-  assert.match(contact, /option value="not_sure"/);
+  assert.match(contact, /form-action 'self'/);
+  assert.match(contact, /name="plan" value="not_sure"/);
   assert.match(contact, /name="responder_count"/);
+  assert.match(contact, /name="privacy_notice_acknowledged"[^>]*required|id="cf-privacy"[^>]*required/);
   assert.match(contact, /href="privacy\.html"/);
+});
+
+test('only the contact page (the one with the lead form) allows connections to the intake host', async () => {
+  const { readdirSync } = await import('node:fs');
+  for (const file of readdirSync(new URL('../', import.meta.url)).filter((f) => f.endsWith('.html'))) {
+    const html = readFileSync(new URL('../' + file, import.meta.url), 'utf8');
+    assert.equal(html.includes('n8n.clarvix.net'), file === 'contact.html', file);
+  }
+});
+
+test('no hosting-provider leftovers: GitHub Pages is the only publishing target', async () => {
+  const { existsSync, readFileSync: read } = await import('node:fs');
+  for (const f of ['netlify.toml', '_redirects', '_headers', '.netlify', 'vercel.json']) assert.equal(existsSync(new URL('../' + f, import.meta.url)), false, f);
+  assert.equal(read(new URL('../CNAME', import.meta.url), 'utf8').trim(), 'web.clarvix.net');
+  assert.ok(existsSync(new URL('../.nojekyll', import.meta.url)));
 });

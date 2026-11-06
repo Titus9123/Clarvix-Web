@@ -4,6 +4,10 @@ window.dataLayer = window.dataLayer || [];
 function gtag() { dataLayer.push(arguments); }
 const CONSENT_KEY = 'clarvix_consent_v1';
 let analyticsEnabled = false;
+// GA4 web stream "Clarvix Web" (property "Clarvix", stream 14313464457). Loaded only after consent.
+// Click events are sent to every configured destination, and Google Ads conversions use an explicit
+// send_to, so nothing is counted twice. Do not import GA4 click events into Google Ads as conversions.
+const GA4_MEASUREMENT_ID = 'G-P4R22F19B8';
 
 function readConsent() {
   try { return window.localStorage.getItem(CONSENT_KEY); } catch (_) { return null; }
@@ -23,6 +27,7 @@ function loadOptionalMeasurement() {
   document.head.appendChild(googleScript);
   gtag('js', new Date());
   gtag('config', 'AW-18364963340', { anonymize_ip: true });
+  if (/^G-[A-Z0-9]{6,}$/.test(GA4_MEASUREMENT_ID)) gtag('config', GA4_MEASUREMENT_ID, { anonymize_ip: true });
 
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -48,7 +53,7 @@ function showConsentBanner() {
   const banner = document.createElement('section');
   banner.className = 'consent-banner';
   banner.setAttribute('aria-label', 'העדפות פרטיות');
-  banner.innerHTML = '<div><strong>הפרטיות שלכם חשובה</strong><p>האתר משתמש באחסון חיוני להפעלה. Google Ads ו-Meta ייטענו רק אם תאשרו מדידה אופציונלית. אפשר להשתמש באתר ולשלוח פנייה גם בלי לאשר.</p><a href="privacy.html">למדיניות הפרטיות</a></div><div class="consent-actions"><button type="button" class="button consent-accept">אישור מדידה</button><button type="button" class="consent-essential">חיוני בלבד</button></div>';
+  banner.innerHTML = '<div><strong>הפרטיות שלכם חשובה</strong><p>האתר משתמש באחסון חיוני להפעלה. Google Ads, Google Analytics ו-Meta ייטענו רק אם תאשרו מדידה אופציונלית. אפשר להשתמש באתר ולשלוח פנייה גם בלי לאשר.</p><a href="privacy.html">למדיניות הפרטיות</a></div><div class="consent-actions"><button type="button" class="button consent-accept">אישור מדידה</button><button type="button" class="consent-essential">חיוני בלבד</button></div>';
   document.body.appendChild(banner);
   banner.querySelector('.consent-accept').addEventListener('click', () => setConsent('analytics'));
   banner.querySelector('.consent-essential').addEventListener('click', () => setConsent('essential'));
@@ -126,9 +131,15 @@ function leadAttributionFields() {
 
 // These events contain no form values, URLs, phone numbers or email addresses.
 // A connected GA4 destination still needs to be verified in the Google tag settings.
-function trackContactEvent(eventName, method) {
+function trackContactEvent(eventName, method, link) {
   if (!analyticsEnabled) return;
-  gtag('event', eventName, { contact_method: method });
+  // link_location and page_path let reports show which page and button produced the click.
+  // A click is an intent signal only, not a conversation, a connected call or a sale.
+  gtag('event', eventName, {
+    contact_method: method,
+    link_location: link?.dataset?.contactLocation || 'other',
+    page_path: window.location.pathname,
+  });
 }
 
 function trackGoogleAdsConversion(sendTo) {
@@ -145,7 +156,7 @@ function trackMetaPixelEvent(eventName) {
 document.querySelectorAll('a[href^="https://wa.me/"]').forEach((link) => {
   link.addEventListener('click', () => {
     trackGoogleAdsConversion(GADS_CONVERSION_LABELS.whatsapp);
-    trackContactEvent('whatsapp_click', 'whatsapp');
+    trackContactEvent('click_whatsapp', 'whatsapp', link);
     trackMetaPixelEvent('Contact');
   });
 });
@@ -153,7 +164,14 @@ document.querySelectorAll('a[href^="https://wa.me/"]').forEach((link) => {
 document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
   link.addEventListener('click', () => {
     trackGoogleAdsConversion(GADS_CONVERSION_LABELS.call);
-    trackContactEvent('phone_click', 'phone');
+    trackContactEvent('click_phone', 'phone', link);
+    trackMetaPixelEvent('Contact');
+  });
+});
+
+document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
+  link.addEventListener('click', () => {
+    trackContactEvent('click_email', 'email', link);
     trackMetaPixelEvent('Contact');
   });
 });

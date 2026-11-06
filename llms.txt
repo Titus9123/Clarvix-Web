@@ -1,3 +1,19 @@
 # Clarvix Web
 
-הטמעת פתרונות דיגיטליים בהתאמה אישית לעסקים. אתרים, נוכחות בגוגל, ניהול פניות, קביעת תורים ואוטומציות. פרטים ותנאים: https://web.clarvix.net/
+> Clarvix Web מטמיעה פתרונות דיגיטליים בהתאמה אישית לעסקים בישראל: אתר לעסק, פרופיל עסק בגוגל, ניהול פניות, קביעת תורים ואוטומציה פשוטה. המחיר חודשי וללא דמי הקמה נפרדים. אין הבטחה למיקום בגוגל או לכמות לקוחות. אלברט נוימן אחראי על Clarvix Web ועל הקשר עם בעלי העסקים.
+
+## שירותים
+- [אתר לעסק בתשלום חודשי, ללא דמי הקמה נפרדים](https://web.clarvix.net/business-websites.html): אתר בעמוד אחד או עד 4 עמודים, מותאם לנייד ולעברית, עם פרטי העסק ודרכי קשר.
+- [פרופיל עסק בגוגל](https://web.clarvix.net/google-business-profile.html): הקמה ועדכון פרטי העסק, בהתאם לתנאי Google.
+- [ניהול פניות וקביעת תורים](https://web.clarvix.net/inquiries-and-bookings.html): רישום פניות ומעקב, וניהול זמינות ובקשות; בכפוף לבדיקת היתכנות.
+- [אוטומציה פשוטה](https://web.clarvix.net/business-automation.html): תהליך אחד בהתאמה לעסק; בכפוף לבדיקת היתכנות.
+
+## מדריכים
+- [למה העסק שלי לא מופיע בגוגל? שלושה מצבים שונים ואיך בודקים כל אחד](https://web.clarvix.net/why-business-not-on-google.html): פרופיל עסק ומפות, אינדוקס האתר, ועסק שמופיע בעמדות נמוכות.
+
+## מידע על החברה
+- [מחיר ותנאים](https://web.clarvix.net/#pricing)
+- [אודות](https://web.clarvix.net/about.html)
+- [ביטול ויציאה](https://web.clarvix.net/cancellation.html)
+- [פרטיות](https://web.clarvix.net/privacy.html)
+- [יצירת קשר](https://web.clarvix.net/contact.html): טלפון ווואטסאפ 053-437-7718, דוא״ל contact@clarvix.net

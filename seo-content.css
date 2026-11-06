@@ -10,3 +10,11 @@
 .comparison-scroll caption{text-align:start;font-weight:700;padding-bottom:12px}.comparison-scroll th,.comparison-scroll td{padding:16px;text-align:start;vertical-align:top;border:1px solid var(--line);min-width:120px}
 .comparison-scroll thead{background:var(--ink);color:white}.comparison-scroll tbody th{background:var(--paper-2)}.content-section .faq-item summary{font-size:19px}
 @media(max-width:680px){.hero-copy h1{font-size:clamp(36px,10.2vw,58px)}.content-body{padding-block:24px 48px}.content-section{padding-block:28px}.content-section p,.content-section li{font-size:17px}.comparison-scroll th,.comparison-scroll td{padding:12px}}
+
+.contact-cta{padding-block:96px}.contact-cta h2{font-size:clamp(32px,4.2vw,56px);line-height:1.12;letter-spacing:-.03em;margin:16px 0 20px}.contact-cta p{font-size:18px;line-height:1.8}
+.contact-methods{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0}.contact-methods .button{min-height:56px;gap:14px}
+@media(max-width:680px){.contact-cta{padding-block:56px}.contact-methods{flex-direction:column}.contact-methods .button{width:100%}}
+.more-info{display:flex;flex-wrap:wrap;gap:8px 24px;margin:8px 0 20px}.more-info a{text-decoration:underline;text-underline-offset:4px;font-weight:700;padding:6px 0}
+/* Accessibility: these sections sit on the dark page background but inherited the dark "muted" text colour (contrast 2.7:1). */
+.process{--muted:#c4cecb}
+.resource-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:28px}.resource-card{display:flex;flex-direction:column;gap:8px;padding:22px;border:1px solid var(--line);background:#fff;color:var(--ink);text-decoration:none}.resource-card strong{font-size:1.15rem;line-height:1.35}.resource-card span{color:var(--muted);line-height:1.7;font-size:.98rem}.resource-card:hover,.resource-card:focus-visible{border-color:var(--ink)}.seo-resources{padding-block:88px}.seo-resources h2{font-size:clamp(28px,3.6vw,46px);line-height:1.15;letter-spacing:-.03em;margin-top:10px}@media(max-width:680px){.seo-resources{padding-block:52px}}

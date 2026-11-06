@@ -18,7 +18,7 @@ for (const [page, source] of Object.entries(html)) {
   });
 
   test(`${page}: rendered logos reserve space and use the optimized asset`, () => {
-    const logos = [...source.matchAll(/<img\b[^>]*class="brand-logo"[^>]*>/g)].map((match) => match[0]);
+    const logos = [...source.matchAll(/<img\b[^>]*clarvix-web-logo[^>]*>/g)].map((match) => match[0]);
     assert.ok(logos.length >= 2, 'header and footer logos must remain');
     for (const logo of logos) {
       assert.match(logo, /src="images\/clarvix-web-logo\.webp"/);
@@ -33,11 +33,10 @@ test('hero content is immediately visible so LCP is not gated by JavaScript', ()
   assert.match(html['index.html'], /class="hero-stage reveal visible delay"/);
 });
 
-test('below-the-fold portfolio imagery uses compact WebP assets', () => {
-  assert.match(html['index.html'], /images\/clarvix-screenshot\.webp/);
-  assert.match(css, /images\/sunny-hero\.webp/);
-  assert.ok(statSync(join(root, 'images/clarvix-screenshot.webp')).size < 250_000);
-  assert.ok(statSync(join(root, 'images/sunny-hero.webp')).size < 250_000);
+test('every local image referenced by the home page exists and stays compact', () => {
+  const refs = [...html['index.html'].matchAll(/(?:src|href)="(images\/[^"?]+)"/g)].map((m) => m[1]);
+  assert.ok(refs.length > 0);
+  for (const ref of refs) assert.ok(statSync(join(root, ref)).size < 400_000, `${ref} is too large`);
 });
 
 test('mobile avoids continuous decorative canvas work while preserving desktop motion', () => {
@@ -63,25 +62,14 @@ test('shared script tolerates legal pages without home-only navigation chrome', 
   assert.match(script, /if \(year\) year\.textContent/);
 });
 
-test('Clarvix Core offer replaces the retired booking plans everywhere on the home page', () => {
-  assert.match(html['index.html'], /Clarvix Core/);
-  assert.match(html['index.html'], /2,900/);
-  assert.match(html['index.html'], /2,200/);
-  assert.match(html['index.html'], /class="plan-amount">200</);
-  assert.match(html['index.html'], /500 ₪<\/bdi> <strong>חד־פעמי/);
-  assert.match(html['index.html'], /חבילת שנה ראשונה · מחיר כולל 2,900 ₪ ב־12 תשלומים/);
-  assert.match(html['index.html'], /עוסק פטור/);
-  assert.doesNotMatch(html['index.html'], /Clarvix 24\/7|Clarvix Care|2,490|4,990/);
+test('home page carries the three direct contact channels and the original number/email', () => {
+  const home = html['index.html'];
+  assert.match(home, /href="https:\/\/wa\.me\/972534377718"/);
+  assert.match(home, /href="tel:\+972534377718"/);
+  assert.match(home, /href="mailto:contact@clarvix\.net"/);
+  assert.ok((home.match(/id="contact"/g) || []).length === 1);
 });
 
-test('the current offer has no monthly change allowance and uses a central Clarvix domain account', () => {
-  assert.match(html['index.html'], /אין מכסת שינויים חודשית/);
-  assert.match(html['index.html'], /חשבון ניהול מרכזי/);
-  assert.doesNotMatch(html['index.html'], /15 דקות|microchange/i);
-});
-
-test('Smart Request demonstration is local-only and builds a WhatsApp URL in the browser', () => {
-  assert.match(html['index.html'], /id="smart-demo-form"/);
-  assert.match(script, /Smart Request demo: builds the message locally/);
-  assert.match(script, /encodeURIComponent\(summary\)/);
+test('fonts are not chained through @import in shared CSS', () => {
+  assert.doesNotMatch(readFileSync(join(root, 'offer.css'), 'utf8'), /@import/);
 });

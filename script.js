@@ -126,9 +126,15 @@ function leadAttributionFields() {
 
 // These events contain no form values, URLs, phone numbers or email addresses.
 // A connected GA4 destination still needs to be verified in the Google tag settings.
-function trackContactEvent(eventName, method) {
+function trackContactEvent(eventName, method, link) {
   if (!analyticsEnabled) return;
-  gtag('event', eventName, { contact_method: method });
+  // link_location and page_path let reports show which page and button produced the click.
+  // A click is an intent signal only, not a conversation, a connected call or a sale.
+  gtag('event', eventName, {
+    contact_method: method,
+    link_location: link?.dataset?.contactLocation || 'other',
+    page_path: window.location.pathname,
+  });
 }
 
 function trackGoogleAdsConversion(sendTo) {
@@ -145,7 +151,7 @@ function trackMetaPixelEvent(eventName) {
 document.querySelectorAll('a[href^="https://wa.me/"]').forEach((link) => {
   link.addEventListener('click', () => {
     trackGoogleAdsConversion(GADS_CONVERSION_LABELS.whatsapp);
-    trackContactEvent('whatsapp_click', 'whatsapp');
+    trackContactEvent('click_whatsapp', 'whatsapp', link);
     trackMetaPixelEvent('Contact');
   });
 });
@@ -153,7 +159,14 @@ document.querySelectorAll('a[href^="https://wa.me/"]').forEach((link) => {
 document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
   link.addEventListener('click', () => {
     trackGoogleAdsConversion(GADS_CONVERSION_LABELS.call);
-    trackContactEvent('phone_click', 'phone');
+    trackContactEvent('click_phone', 'phone', link);
+    trackMetaPixelEvent('Contact');
+  });
+});
+
+document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
+  link.addEventListener('click', () => {
+    trackContactEvent('click_email', 'email', link);
     trackMetaPixelEvent('Contact');
   });
 });

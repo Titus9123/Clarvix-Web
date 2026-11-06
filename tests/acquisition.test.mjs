@@ -113,7 +113,7 @@ test('repeated submission while request is pending sends once',async()=>{
 
 test('contact clicks each emit one named event plus the matching original Ads event',()=>{
   const page=visit('/');page.links.whatsapp();page.links.phone();
-  assert.deepEqual(page.events().map(e=>e[1]),['conversion','whatsapp_click','conversion','phone_click']);
+  assert.deepEqual(page.events().map(e=>e[1]),['conversion','click_whatsapp','conversion','click_phone']);
   assert.equal(page.events()[0][2].send_to,'AW-18364963340/NmvECPz3--EcEIy0jLVE');
   assert.equal(page.events()[2][2].send_to,'AW-18364963340/UWaaCP_3--EcEIy0jLVE');
 });

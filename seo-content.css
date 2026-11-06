@@ -10,3 +10,7 @@
 .comparison-scroll caption{text-align:start;font-weight:700;padding-bottom:12px}.comparison-scroll th,.comparison-scroll td{padding:16px;text-align:start;vertical-align:top;border:1px solid var(--line);min-width:120px}
 .comparison-scroll thead{background:var(--ink);color:white}.comparison-scroll tbody th{background:var(--paper-2)}.content-section .faq-item summary{font-size:19px}
 @media(max-width:680px){.hero-copy h1{font-size:clamp(36px,10.2vw,58px)}.content-body{padding-block:24px 48px}.content-section{padding-block:28px}.content-section p,.content-section li{font-size:17px}.comparison-scroll th,.comparison-scroll td{padding:12px}}
+
+.contact-cta{padding-block:96px}.contact-cta h2{font-size:clamp(32px,4.2vw,56px);line-height:1.12;letter-spacing:-.03em;margin:16px 0 20px}.contact-cta p{font-size:18px;line-height:1.8}
+.contact-methods{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0}.contact-methods .button{min-height:56px;gap:14px}
+@media(max-width:680px){.contact-cta{padding-block:56px}.contact-methods{flex-direction:column}.contact-methods .button{width:100%}}

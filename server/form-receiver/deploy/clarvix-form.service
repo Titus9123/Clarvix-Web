@@ -1,0 +1,23 @@
+[Unit]
+Description=Clarvix contact form receiver
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/clarvix-form/receiver.py
+EnvironmentFile=/etc/clarvix-form/receiver.env
+DynamicUser=yes
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+MemoryMax=128M
+
+[Install]
+WantedBy=multi-user.target

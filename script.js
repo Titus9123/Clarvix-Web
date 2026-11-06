@@ -68,8 +68,7 @@ const GADS_CONVERSION_LABELS = {
 // First-touch attribution survives internal navigation. Never store arbitrary URL parameters.
 const ACQUISITION_KEY = 'clarvix_acquisition_v1';
 const UTM_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
-// Clarvix Core: the n8n webhook accepts landing_page/original_referrer.
-// Verify the workflow before relying on these fields; flip back to false if it 400s.
+// The form receiver accepts landing_page/original_referrer (see server/form-receiver).
 const LEAD_ATTRIBUTION_FIELDS_ENABLED = true;
 
 function campaignValue(value) {
@@ -720,7 +719,9 @@ if (smartDemoForm) {
 
 // Contact form: secure first-party lead intake with campaign attribution.
 const contactForm = document.querySelector('#contact-form');
-const CONTACT_ENDPOINT = 'https://n8n.clarvix.net/webhook/clarvix/web-lead';
+// First-party receiver on the Clarvix VPS: validates the lead and e-mails it to contact@clarvix.net.
+// It answers {"ok":true} only after the mail server has accepted the message.
+const CONTACT_ENDPOINT = 'https://forms.clarvix.net/v1/contact';
 if (contactForm) {
   const formStatus = document.querySelector('#form-status');
   const submitButton = contactForm.querySelector('[type="submit"]');
@@ -758,6 +759,9 @@ if (contactForm) {
         body: JSON.stringify(payload),
       });
       if (!response.ok) throw new Error(`Lead intake failed: ${response.status}`);
+      // A lead exists only when the receiver confirms delivery; anything else is a failure, never a conversion.
+      const confirmation = await response.json();
+      if (!confirmation || confirmation.ok !== true) throw new Error('Lead intake not confirmed');
       contactForm.reset();
       trackGoogleAdsConversion(GADS_CONVERSION_LABELS.formSubmit);
       trackContactEvent('generate_lead', 'form');
